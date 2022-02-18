@@ -22,6 +22,7 @@ class UserResource extends JsonResource
 //            'avatar' => $this->avatar,
             'isAdmin' => $this->isAdmin(),
             'emailVerified' => $this->email_verified_at,
+            'company' => new CompanyResource($this->company)
         ];
     }
 }

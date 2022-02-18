@@ -42,7 +42,7 @@
 import {Form} from "vee-validate";
 import * as Yup from "yup";
 import CommonInput from "../../components/common/CommonInput";
-import AuthService from "../../services/AuthService";
+import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 
 export default {
@@ -55,7 +55,7 @@ export default {
 
   setup() {
     function onSubmit(values, actions) {
-      AuthService.registerUser(values)
+      ApiService.registerUser(values)
           .then(() => this.$router.push({ name: 'Home'}))
           .catch((error) => {
             const errors = getError(error)

@@ -12,14 +12,16 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Validate and update the given user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
+     * @param mixed $user
+     * @param array $input
      * @return void
      */
     public function update($user, array $input)
     {
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
+
+            'phone' => ['required', 'alpha_num', 'max:255'],
 
             'email' => [
                 'required',
@@ -28,6 +30,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
                 'max:255',
                 Rule::unique('users')->ignore($user->id),
             ],
+
+            'password' => ['nullable', 'min:6', 'confirmed']
         ])->validateWithBag('updateProfileInformation');
 
         if ($input['email'] !== $user->email &&
@@ -37,6 +41,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
+                // TODO: Каую-нить функцию для приведения к единому формату номера
+                'phone' => $input['phone']
             ])->save();
         }
     }
@@ -44,8 +50,8 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     /**
      * Update the given verified user's profile information.
      *
-     * @param  mixed  $user
-     * @param  array  $input
+     * @param mixed $user
+     * @param array $input
      * @return void
      */
     protected function updateVerifiedUser($user, array $input)

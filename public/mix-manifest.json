@@ -1,8 +1,8 @@
 {
     "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
     "/js/home.js": "/js/home.js",
-    "/js/register.js": "/js/register.js",
     "/js/login.js": "/js/login.js",
-    "/js/not-found.js": "/js/not-found.js"
+    "/js/register.js": "/js/register.js",
+    "/js/not-found.js": "/js/not-found.js",
+    "/css/app.css": "/css/app.css"
 }

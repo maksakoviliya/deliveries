@@ -30,7 +30,7 @@
 import {Form} from "vee-validate";
 import * as Yup from "yup";
 import CommonInput from "../../components/common/CommonInput";
-import AuthService from "../../services/AuthService";
+import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
@@ -49,7 +49,7 @@ export default {
 
     async function onSubmit(values, actions) {
       try {
-        await AuthService.login(values);
+        await ApiService.login(values);
         const authUser = await store.dispatch("auth/getAuthUser");
         if (authUser) {
           await store.dispatch("auth/setGuest", { value: "isNotGuest" });

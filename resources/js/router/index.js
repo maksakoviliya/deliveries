@@ -29,6 +29,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ "../views/Home"),
   },
   {
+    path: "/profile",
+    name: "profile",
+    meta: { middleware: [auth] },
+    component: () => import(/* webpackChunkName: "home" */ "../views/Profile"),
+  },
+  {
     path: "/dashboard",
     name: "dashboard",
     meta: { middleware: [auth, admin] },
