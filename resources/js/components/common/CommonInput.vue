@@ -2,7 +2,7 @@
   <div
       class="w-full relative"
   >
-    <label :for="name" class="block text-sm font-medium">{{ label }}</label>
+    <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <input
         class="block px-3 py-2 rounded border w-full outline-2 outline-indigo-300"
         :class="{ 'border-red-400': !!errorMessage }"
@@ -40,7 +40,7 @@ export default {
     },
     label: {
       type: String,
-      required: true,
+      required: false,
     },
     successMessage: {
       type: String,

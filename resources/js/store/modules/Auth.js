@@ -55,7 +55,6 @@ export const actions = {
 
 export const getters = {
     authUser: (state) => {
-        console.log('getters.authUser')
         return state.user;
     },
     isAdmin: (state) => {
