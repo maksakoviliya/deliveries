@@ -5,6 +5,7 @@ export const getError = (error) => {
   }
 
   if (!error.response) {
+      console.log('error', error)
     console.error(`API ${error.config.url} not found`);
     return errorMessage;
   }

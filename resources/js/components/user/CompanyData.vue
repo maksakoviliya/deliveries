@@ -38,9 +38,8 @@
 
       <div class="flex justify-end p-5 lg:ml-4 mt-auto">
         <span class="sm:ml-3">
-        <button type="submit"
-                class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
-          <template v-if="company">
+          <CommonButton>
+           <template v-if="company">
             <CheckIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
           Изменить
           </template>
@@ -48,7 +47,7 @@
             <ViewGridAddIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
           Добавить
           </template>
-        </button>
+          </CommonButton>
       </span>
       </div>
     </Form>
@@ -65,6 +64,7 @@ import {Form} from "vee-validate";
 import {getError} from "../../utils/helpers";
 import {ViewGridAddIcon} from "@heroicons/vue/outline";
 import CommonSelect from "../common/CommonSelect";
+import CommonButton from "../common/CommonButton";
 
 export default {
   components: {
@@ -73,7 +73,8 @@ export default {
     Form,
     CheckIcon,
     ViewGridAddIcon,
-    CommonSelect
+    CommonSelect,
+    CommonButton
   },
 
   data() {
@@ -265,8 +266,8 @@ export default {
     }),
     onSubmit(values, actions) {
       try {
-        if(this.company.id) {
-          values.id =  this.company.id
+        if (this.company && this.company.id) {
+          values.id = this.company.id
         }
         this.setCompany(values)
         this.$notify({
