@@ -6,19 +6,11 @@ export const namespaced = true;
 
 export const state = {
     user: null,
-    loading: false,
-    error: null,
 };
 
 export const mutations = {
     SET_USER(state, user) {
         state.user = user;
-    },
-    SET_LOADING(state, loading) {
-        state.loading = loading;
-    },
-    SET_ERROR(state, error) {
-        state.error = error;
     },
     SET_COMPANY(state, payload) {
         state.user.company = payload
@@ -35,27 +27,27 @@ export const actions = {
                     router.push({path: "/login"});
             })
             .catch((error) => {
-                commit("SET_ERROR", getError(error));
+                commit("SET_ERROR", getError(error), { root: true });
             });
     },
     async getAuthUser({commit}) {
-        commit("SET_LOADING", true);
+        commit("SET_LOADING", true, { root: true });
         try {
             const response = await ApiService.getAuthUser();
             commit("SET_USER", response.data.data);
             return response.data.data;
         } catch (error) {
             commit("SET_USER", null);
-            commit("SET_ERROR", getError(error));
+            commit("SET_ERROR", getError(error), { root: true });
         } finally {
-            commit("SET_LOADING", false);
+            commit("SET_LOADING", false, { root: true });
         }
     },
     setGuest(context, {value}) {
         window.localStorage.setItem("guest", value);
     },
     async setCompany({commit, getters}, data) {
-        commit("SET_LOADING", true);
+        commit("SET_LOADING", true, { root: true });
         try {
             let response = null;
             console.log('start')
@@ -70,11 +62,11 @@ export const actions = {
             commit("SET_COMPANY", response.data.data);
             return response.data.data;
         } catch (error) {
-            commit("SET_ERROR", getError(error));
+            commit("SET_ERROR", getError(error), { root: true });
             console.log('errr herer')
             throw error
         } finally {
-            commit("SET_LOADING", false);
+            commit("SET_LOADING", false, { root: true });
         }
     }
 };

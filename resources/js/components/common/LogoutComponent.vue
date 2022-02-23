@@ -32,15 +32,13 @@
                 </div>
               </div>
             </div>
-            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
-              <button type="button"
-                      class="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-                      @click="$emit('submit')">Выйти
-              </button>
-              <button type="button"
-                      class="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
-                      @click="$emit('close')" ref="cancelButtonRef">Отменить
-              </button>
+            <div class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+              <CommonButton type="button" color="danger" @click="$emit('submit')">
+                Выйти
+              </CommonButton>
+              <CommonButton type="button" color="outline-gray" @click="$emit('close')">
+                Отменить
+              </CommonButton>
             </div>
           </div>
         </TransitionChild>
@@ -53,6 +51,7 @@
 import {ref} from 'vue'
 import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
 import {LogoutIcon} from '@heroicons/vue/outline'
+import CommonButton from "./CommonButton";
 
 export default {
   components: {
@@ -62,6 +61,7 @@ export default {
     TransitionChild,
     TransitionRoot,
     LogoutIcon,
+    CommonButton
   },
 
   props: {

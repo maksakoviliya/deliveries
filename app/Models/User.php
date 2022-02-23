@@ -45,13 +45,27 @@ class User extends Authenticatable implements MustVerifyEmail
         'email_verified_at' => 'datetime',
     ];
 
+    /**
+     * @return bool
+     */
     public function isAdmin(): bool
     {
         return $this->role_id == self::ROLE_ADMIN;
     }
 
-    public function company()
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function company(): \Illuminate\Database\Eloquent\Relations\HasOne
     {
         return $this->hasOne(Company::class);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function recipients(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Recipient::class);
     }
 }

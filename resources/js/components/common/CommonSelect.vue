@@ -12,7 +12,7 @@
         @input="handleChange"
         @blur="handleBlur"
     >
-      <option v-for="option in options" :key="option.key" :value="option.value">{{ option.label }}</option>
+      <option v-for="option in options" :key="option[key]" :value="option[valueKey]">{{ option[labelKey] }}</option>
     </select>
 
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
@@ -47,6 +47,18 @@ export default {
       type: Array,
       required: true,
     },
+    key: {
+      type: String,
+      default: 'key'
+    },
+    labelKey: {
+      type: String,
+      default: 'label'
+    },
+    valueKey: {
+      type: String,
+      default: 'value'
+    }
   },
   setup(props) {
     // we don't provide any rules here because we are using form-level validation

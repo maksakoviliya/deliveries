@@ -4,11 +4,13 @@
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список заказов</h1>
     </div>
-    <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between">
-      <OrdersSearch />
-      <CommonButton class="whitespace-nowrap" color="success">
+    <div
+        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between">
+      <OrdersSearch/>
+      <CommonButton class="whitespace-nowrap" color="success" component="router-link"
+                    :to="{name: 'home', params: {id: 'create'}, query: $route.query}">
         <template v-slot:icon>
-          <PlusIcon class="-ml-1 mr-2 h-5 w-5"></PlusIcon>
+          <PlusIcon class="-ml-1 mr-2 h-4 w-4"></PlusIcon>
         </template>
         Добавить заказ
       </CommonButton>
@@ -75,6 +77,8 @@
         </div>
       </div>
     </div>
+
+    <OrderForm />
   </div>
 </template>
 
@@ -82,6 +86,7 @@
 import OrdersSearch from "./orders/OrdersSearch";
 import CommonButton from "./common/CommonButton";
 import {PlusIcon} from "@heroicons/vue/outline";
+import OrderForm from "./orders/OrderForm";
 
 const people = [
   {
@@ -96,7 +101,8 @@ const people = [
 ]
 
 export default {
-  components: {OrdersSearch, CommonButton, PlusIcon},
+  components: {OrdersSearch, CommonButton, PlusIcon, OrderForm},
+
   setup() {
     return {
       people,

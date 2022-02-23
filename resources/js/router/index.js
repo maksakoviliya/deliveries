@@ -24,6 +24,10 @@ function middlewarePipeline(context, middleware, index) {
 const routes = [
   {
     path: "/",
+    redirect: { name: 'home' }
+  },
+  {
+    path: "/orders/:id?",
     name: "home",
     meta: { middleware: [auth] },
     component: () => import(/* webpackChunkName: "home" */ "../views/Home"),

@@ -66,5 +66,10 @@ export default {
   },
   updateCompany(payload) {
     return authClient.put(`/companies/${payload.id}`, payload);
+  },
+
+  // Orders
+  fetchRecipients() {
+    return authClient.get("/recipients");
   }
 };
