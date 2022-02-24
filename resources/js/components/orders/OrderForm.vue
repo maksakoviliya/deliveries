@@ -23,7 +23,6 @@
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Форма заказа</DialogTitle>
               <div class="grid md:grid-cols-2 gap-4 mt-4 ">
-                <div>
                   <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
                     <h4 class="font-medium"> Получатель: </h4>
                     <CommonSelect name="recipient_id"
@@ -45,14 +44,29 @@
                     <CommonInput name="product_name"
                                  label="Наименование товара"
                                  placeholder="Наименование товара"/>
-                  </div>
-
+                </div>
+                <div class="flex flex-col gap-2">
+                  <CommonDatepicker name="delivery_interval" label="Дата доставки" />
                   <CommonSelect name="type"
                                 label="Тип доставки"
-                                class="mt-2"
                                 :options="types"/>
+                  <CommonInput name="assessed_value"
+                               label="Оценочная стоимость"
+                               placeholder="Оценочная стоимость"/>
+                  <CommonInput name="cod"
+                               type="checkbox"
+                               label="Наложенный платеж"
+                               placeholder="Наложенный платеж"/>
+                  <CommonSelect name="payment_type"
+                                label="Тип оплаты"
+                                :options="payment_types"/>
+                  <CommonInput name="weight"
+                               label="Вес"
+                               placeholder="Вес"/>
+                  <CommonInput name="comment"
+                               label="Комментарий"
+                               placeholder="Комментарий"/>
                 </div>
-                <div>asd</div>
               </div>
             </div>
             <div class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
@@ -79,6 +93,9 @@ import * as yup from "yup";
 import {mapActions, mapGetters} from "vuex";
 import CommonSelect from "../common/CommonSelect";
 import CommonInput from "../common/CommonInput";
+import CommonDatepicker from "../common/CommonDatepicker";
+import ApiService from "../../services/ApiService";
+import {getError} from "../../utils/helpers";
 
 export default {
   name: "OrderForm",
@@ -93,27 +110,29 @@ export default {
     LogoutIcon,
     CommonButton,
     CommonSelect,
-    CommonInput
+    CommonInput,
+    CommonDatepicker
   },
 
   data() {
     const schema = yup.object({
       name: yup.string().required(),
+      cod: yup.boolean()
     });
 
     const order = {
       recipient_id: null,
-      name: null,
+      name: "",
       address: null,
       phone: null,
       product_name: null,
       type: 'foot',
-      delivery_from: null,
-      delivery_to: null,
+      delivery_interval: null,
       assessed_value: null,
-      cod: null,
-      payment_type: null,
+      cod: false,
+      payment_type: 'card',
       comment: null,
+      weight: null,
     }
 
     return {
@@ -129,6 +148,18 @@ export default {
           key: 'car',
           value: 'car',
           label: 'На автомобиле',
+        },
+      ],
+      payment_types: [
+        {
+          key: 'cash',
+          value: 'cash',
+          label: 'Наличными',
+        },
+        {
+          key: 'card',
+          value: 'card',
+          label: 'Безналичный',
         },
       ]
     }
@@ -152,7 +183,23 @@ export default {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
     onSubmit(values) {
-      console.log('values', values)
+      ApiService.createOrder(values)
+          .then((res) => {
+            console.log('res', res)
+            this.$notify({
+              type: 'success',
+              title: 'Заказ создан'
+            })
+            this.$emit('close')
+          })
+          .catch((error) => {
+            const errors = getError(error)
+            actions.setErrors(errors);
+            this.$notify({
+              type: 'error',
+              title: 'Возникла ошибка!',
+            })
+          });
     },
     handleSelectRecipient(event) {
       const {
@@ -182,7 +229,7 @@ export default {
 
   async mounted() {
     await this.fetchRecipients()
-    if (this.$route.params.id !== 'create') {
+    if (this.$route.params.id && this.$route.params.id !== 'create') {
       await this.setOrder(this.$route.params.id)
     }
   }

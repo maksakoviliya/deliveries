@@ -49,4 +49,16 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
+    async fetchOrders({commit}, params = {}) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.fetchOrders(params);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
 }

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->dateTime('delivery_from');
             $table->dateTime('delivery_to');
             $table->float('assessed_value');
+            $table->float('weight');
             $table->boolean('cod')->default(false);
             $table->enum('payment_type', ['cash', 'card']);
             $table->text('comment');

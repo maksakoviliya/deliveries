@@ -71,5 +71,15 @@ export default {
   // Orders
   fetchRecipients() {
     return authClient.get("/recipients");
+  },
+  fetchOrders(params) {
+    return authClient.get("/orders", params);
+  },
+  fetchOrder(id) {
+    console.log('id', id)
+    // return authClient.get("/recipients");
+  },
+  createOrder(payload) {
+    return authClient.post("/orders", payload);
   }
 };

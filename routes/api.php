@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\TokenController;
 use App\Http\Controllers\UserController;
@@ -29,4 +30,8 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Recipients
     Route::get('/recipients', [RecipientController::class, 'index'])->name('recipients.index');
+
+    // Orders
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
 });
