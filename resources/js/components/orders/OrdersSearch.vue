@@ -1,23 +1,24 @@
 <template>
-  <Form
-      @submit="onSubmit"
-      :validation-schema="schema"
-      :initial-values="search"
-      class="flex gap-2"
-      v-slot="{ values }"
-  >
-    <CommonInput
-        name="search"
-        type="text"
-        placeholder="Поиск по заказам"
-    />
-    <CommonButton>
-      <template v-slot:icon>
-        <SearchIcon class="-ml-1 mr-2 h-5 w-5"></SearchIcon>
-      </template>
-      Поиск
-    </CommonButton>
-  </Form>
+  <div>Тут будет фильтр</div>
+<!--  <Form-->
+<!--      @submit="onSubmit"-->
+<!--      :validation-schema="schema"-->
+<!--      :initial-values="search"-->
+<!--      class="flex gap-2"-->
+<!--      v-slot="{ values }"-->
+<!--  >-->
+<!--    <CommonInput-->
+<!--        name="search"-->
+<!--        type="text"-->
+<!--        placeholder="Поиск по заказам"-->
+<!--    />-->
+<!--    <CommonButton>-->
+<!--      <template v-slot:icon>-->
+<!--        <SearchIcon class="-ml-1 mr-2 h-5 w-5"></SearchIcon>-->
+<!--      </template>-->
+<!--      Поиск-->
+<!--    </CommonButton>-->
+<!--  </Form>-->
 </template>
 
 <script>

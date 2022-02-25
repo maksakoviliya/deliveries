@@ -3,7 +3,7 @@
   <div>
     <Navbar />
 
-    <OrdersList class="max-w-4xl mx-auto mt-10">
+    <OrdersList class="max-w-5xl mx-auto mt-10">
 
     </OrdersList>
   </div>

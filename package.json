@@ -23,6 +23,7 @@
         "@headlessui/vue": "^1.4.3",
         "@heroicons/vue": "^1.0.5",
         "@kyvg/vue3-notification": "^2.3.4",
+        "luxon": "^2.3.1",
         "vee-validate": "^4.5.8",
         "vue": "^3.2.31",
         "vue3-date-time-picker": "^2.7.0",

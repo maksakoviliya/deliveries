@@ -11,9 +11,13 @@ export const getError = (error) => {
   }
   if (process.env.NODE_ENV === "development") {
     if (error && error.response) {
-      console.error(error.response.data);
-      console.error(error.response.status);
-      console.error(error.response.headers);
+      console.error('data', error.response.data);
+      console.error('status', error.response.status);
+      console.error('headers', error.response.headers);
+      // this.$notify({
+      //   type: 'error',
+      //   title: 'Ошибка'
+      // })
     }
   }
   if (error.response.data && error.response.data.errors) {

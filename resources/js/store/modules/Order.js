@@ -12,6 +12,9 @@ export const getters = {
     recipients: (state) => {
         return state.recipients;
     },
+    orders: (state) => {
+        return state.orders;
+    },
 }
 
 export const mutations = {
@@ -53,6 +56,7 @@ export const actions = {
         commit("SET_LOADING", true, { root: true });
         try {
             let response = await ApiService.fetchOrders(params);
+            commit("SET_ORDERS", response.data.data);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });

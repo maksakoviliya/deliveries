@@ -50,6 +50,9 @@ export default {
       type: String,
       default: "",
     },
+    checkboxValue: {
+      required: false
+    }
   },
   setup(props) {
     // we don't provide any rules here because we are using form-level validation

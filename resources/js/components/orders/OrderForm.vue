@@ -17,46 +17,44 @@
           <Form
               @submit="onSubmit"
               :validation-schema="schema"
-              v-slot="{ values }"
+              v-slot="{ values, setValues }"
               :initial-values="order"
               class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Форма заказа</DialogTitle>
               <div class="grid md:grid-cols-2 gap-4 mt-4 ">
-                  <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
-                    <h4 class="font-medium"> Получатель: </h4>
-                    <CommonSelect name="recipient_id"
-                                  key="id"
-                                  label="Выберите из ваших получателей или введите вручную"
-                                  label-key="name"
-                                  value-key="id"
-                                  @input="handleSelectRecipient"
-                                  :options="recipients"/>
-                    <CommonInput name="name"
-                                 label="ФИО или наименование ИП/ООО"
-                                 placeholder="ФИО или наименование ИП/ООО"/>
-                    <CommonInput name="phone"
-                                 label="Телефон"
-                                 placeholder="Телефон"/>
-                    <CommonInput name="address"
-                                 label="Адрес доставки"
-                                 placeholder="Адрес доставки"/>
-                    <CommonInput name="product_name"
-                                 label="Наименование товара"
-                                 placeholder="Наименование товара"/>
+                <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
+                  <h4 class="font-medium" > Получатель: </h4>
+                  <CommonSelect name="recipient_id"
+                                key="id"
+                                label="Выберите из ваших получателей или введите вручную"
+                                label-key="name"
+                                value-key="id"
+                                @input="handleSelectRecipient(setValues)"
+                                :options="recipients"/>
+                  <CommonInput name="name"
+                               label="ФИО или наименование ИП/ООО"
+                               placeholder="ФИО или наименование ИП/ООО"/>
+                  <CommonInput name="phone"
+                               label="Телефон"
+                               placeholder="Телефон"/>
+                  <CommonInput name="address"
+                               label="Адрес доставки"
+                               placeholder="Адрес доставки"/>
+                  <CommonInput name="product_name"
+                               label="Наименование товара"
+                               placeholder="Наименование товара"/>
                 </div>
                 <div class="flex flex-col gap-2">
-                  <CommonDatepicker name="delivery_interval" label="Дата доставки" />
+                  <CommonDatepicker name="delivery_interval" label="Дата доставки"/>
                   <CommonSelect name="type"
                                 label="Тип доставки"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
                                label="Оценочная стоимость"
                                placeholder="Оценочная стоимость"/>
-                  <CommonInput name="cod"
-                               type="checkbox"
-                               label="Наложенный платеж"
-                               placeholder="Наложенный платеж"/>
+                  <CommonCheckbox name="cod"
+                                  label="Наложенный платеж"/>
                   <CommonSelect name="payment_type"
                                 label="Тип оплаты"
                                 :options="payment_types"/>
@@ -73,7 +71,7 @@
               <CommonButton type="submit" color="success">
                 Оформить заказ
               </CommonButton>
-              <CommonButton type="button" color="outline-gray" @click="$emit('close')">
+              <CommonButton type="button" color="outline-gray" @click="handleClose">
                 Отменить
               </CommonButton>
             </div>
@@ -96,11 +94,28 @@ import CommonInput from "../common/CommonInput";
 import CommonDatepicker from "../common/CommonDatepicker";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
+import CommonCheckbox from "../common/CommonCheckbox";
+
+const order = {
+  recipient_id: null,
+  name: "",
+  address: null,
+  phone: null,
+  product_name: null,
+  type: 'foot',
+  delivery_interval: null,
+  assessed_value: null,
+  cod: false,
+  payment_type: 'card',
+  comment: null,
+  weight: null,
+}
 
 export default {
   name: "OrderForm",
 
   components: {
+    CommonCheckbox,
     Dialog,
     Form,
     DialogOverlay,
@@ -111,29 +126,20 @@ export default {
     CommonButton,
     CommonSelect,
     CommonInput,
-    CommonDatepicker
+    CommonDatepicker,
   },
 
   data() {
     const schema = yup.object({
       name: yup.string().required(),
+      phone: yup.string().required(),
+      address: yup.string().required(),
+      product_name: yup.string().required(),
+      assessed_value: yup.string().required(),
+      delivery_interval: yup.array(),
+      weight: yup.number().required(),
       cod: yup.boolean()
     });
-
-    const order = {
-      recipient_id: null,
-      name: "",
-      address: null,
-      phone: null,
-      product_name: null,
-      type: 'foot',
-      delivery_interval: null,
-      assessed_value: null,
-      cod: false,
-      payment_type: 'card',
-      comment: null,
-      weight: null,
-    }
 
     return {
       schema,
@@ -178,18 +184,21 @@ export default {
     ...mapActions({
       fetchRecipients: "order/fetchRecipients",
       fetchOrder: "order/fetchOrder",
+      fetchOrders: "order/fetchOrders"
     }),
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    onSubmit(values) {
+    onSubmit(values, actions) {
       ApiService.createOrder(values)
-          .then((res) => {
+          .then(async (res) => {
             console.log('res', res)
             this.$notify({
               type: 'success',
               title: 'Заказ создан'
             })
+            await this.fetchOrders()
+            this.handleClose()
             this.$emit('close')
           })
           .catch((error) => {
@@ -201,7 +210,7 @@ export default {
             })
           });
     },
-    handleSelectRecipient(event) {
+    handleSelectRecipient(setValues) {
       const {
         id,
         name,
@@ -210,16 +219,26 @@ export default {
         product_name
       } = this.recipients.find(item => parseInt(item.id) === parseInt(event.target.value))
 
-      this.order.recipient_id = id
-      this.order.name = name
-      this.order.phone = phone
-      this.order.address = address
-      this.order.product_name = product_name
+      setValues({
+        id,
+        name,
+        phone,
+        address,
+        product_name,
+      })
+
+      // this.$refs.myForm.setValues({
+      //   recipient_id: id,
+      //   name: name,
+      //   phone: phone,
+      //   address: address,
+      //   product_name: product_name,
+      // })
     },
     async setOrder(id) {
       this.fetchOrder(id)
           .then(res => {
-            console.log('res', res)
+            this.order = res
           })
           .catch(e => {
             console.log('e', e)
