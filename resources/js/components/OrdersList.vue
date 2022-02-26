@@ -60,13 +60,13 @@
                   <div class="text-xs text-gray-500">{{ `${parseDate(order.delivery_interval[0])} - ${parseDate(order.delivery_interval[1])}`  }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.cod  }}</div>
+                  <div class="text-xs text-gray-500">{{ order.cod ? 'Да' : 'Нет'  }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.payment_type  }}</div>
+                  <div class="text-xs text-gray-500">{{ order.payment_type === 'card' ? 'Карта' : 'Безнал'  }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.courier_id }}</div>
+                  <div class="text-xs text-gray-500">{{ order.courier_id ? 'courier' : 'Не назначен' }}</div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ order.price }}</div>
