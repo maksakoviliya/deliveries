@@ -59,7 +59,7 @@
                                 label="Тип оплаты"
                                 :options="payment_types"/>
                   <CommonInput name="weight"
-                               label="Вес"
+                               label="Вес (кг)"
                                placeholder="Вес"/>
                   <CommonInput name="comment"
                                label="Комментарий"

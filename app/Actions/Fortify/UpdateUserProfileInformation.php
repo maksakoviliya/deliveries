@@ -3,6 +3,7 @@
 namespace App\Actions\Fortify;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Laravel\Fortify\Contracts\UpdatesUserProfileInformation;
@@ -33,7 +34,6 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
 
             'password' => ['nullable', 'min:6', 'confirmed']
         ])->validateWithBag('updateProfileInformation');
-
         if ($input['email'] !== $user->email &&
             $user instanceof MustVerifyEmail) {
             $this->updateVerifiedUser($user, $input);
@@ -41,10 +41,10 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $user->forceFill([
                 'name' => $input['name'],
                 'email' => $input['email'],
-                // TODO: Каую-нить функцию для приведения к единому формату номера
-                'phone' => $input['phone']
+                'phone' => $this->formatPhone($input['phone'])
             ])->save();
         }
+        $this->updatePassword($user, $input['password']);
     }
 
     /**
@@ -54,7 +54,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
      * @param array $input
      * @return void
      */
-    protected function updateVerifiedUser($user, array $input)
+    protected function updateVerifiedUser(mixed $user, array $input)
     {
         $user->forceFill([
             'name' => $input['name'],
@@ -63,5 +63,23 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         ])->save();
 
         $user->sendEmailVerificationNotification();
+    }
+
+    /**
+     * @param $user
+     * @param $password
+     * @return void
+     */
+    protected function updatePassword($user, $password)
+    {
+        $user->forceFill([
+            'password' => Hash::make($password),
+        ])->save();
+    }
+
+    protected function formatPhone($phone)
+    {
+        // TODO: Каую-нить функцию для приведения к единому формату номера
+        return $phone;
     }
 }

@@ -11,7 +11,7 @@
         class="border-t border-gray-200 flex flex-col justify-between"
         v-slot="{ values }"
     >
-      <div class="max-h-[390px] overflow-y-auto">
+      <div >
         <dl>
           <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
                :class="i % 2 === 0 ? 'bg-white' : 'bg-gray-100'" v-for="(field, i) in fields"

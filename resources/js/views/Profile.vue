@@ -3,7 +3,7 @@
     <Navbar/>
 
     <div class="max-w-4xl mx-auto mt-10 flex flex-col md:flex-row gap-5 px-3 items-stretch">
-      <UserProfile class="md:w-1/2" />
+      <UserProfile class="md:w-1/2 self-start" />
 
       <CompanyData class="md:w-1/2" />
     </div>
