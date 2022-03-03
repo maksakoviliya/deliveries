@@ -11,45 +11,52 @@
         class="border-t border-gray-200 flex flex-col justify-between"
         v-slot="{ values }"
     >
-      <div >
+      <div v-if="values['type']">
         <dl>
+          <template v-for="(field, i) in fields">
+
           <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
-               :class="i % 2 === 0 ? 'bg-white' : 'bg-gray-100'" v-for="(field, i) in fields"
-               :key="field.key">
+               :class="i % 2 === 0 ? 'bg-white' : 'bg-gray-100'" v-if="field.for.includes(values['type'])" :key="field.key">
             <dt class="text-sm font-medium text-gray-500">{{ field.label }}</dt>
             <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
               <CommonInput
                   v-if="field.type !== 'select'"
                   :is="field.component"
                   :name="field.key"
+                  :disabled="field.disabled"
                   :type="field.type"
                   :placeholder="field.placeholder"
               />
               <CommonSelect
                   v-else
                   :is="field.component"
+                  :disabled="field.disabled"
                   :name="field.key"
                   :options="field.options"
               />
             </dd>
           </div>
+          </template>
         </dl>
       </div>
-
-      <div class="flex justify-end p-5 lg:ml-4 mt-auto">
-        <span class="sm:ml-3">
-          <CommonButton>
-           <template v-if="company">
-            <CheckIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
-          Изменить
-          </template>
-          <template v-else>
-            <ViewGridAddIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
-          Добавить
-          </template>
-          </CommonButton>
-      </span>
+      <div v-else class="px-4 py-5text-3xl my-16 font-semibold text-gray-300 text-center">
+        Информация заполняется
       </div>
+
+<!--      <div class="flex justify-end p-5 lg:ml-4 mt-auto">-->
+<!--        <span class="sm:ml-3">-->
+<!--          <CommonButton>-->
+<!--           <template v-if="company">-->
+<!--            <CheckIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>-->
+<!--          Изменить-->
+<!--          </template>-->
+<!--          <template v-else>-->
+<!--            <ViewGridAddIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>-->
+<!--          Добавить-->
+<!--          </template>-->
+<!--          </CommonButton>-->
+<!--      </span>-->
+<!--      </div>-->
     </Form>
   </div>
 </template>
@@ -122,12 +129,16 @@ export default {
           key: 'title',
           label: 'Название',
           placeholder: "Ваше имя",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'type',
           label: 'Тип юр. лица',
           type: "select",
+          for: ['ip', 'ooo'],
+          disabled: true,
           options: [
             {
               key: 'ip',
@@ -146,111 +157,146 @@ export default {
           label: 'Полное наименование организации',
           placeholder: "Полное наименование организации",
           type: "text",
-          if: 'ooo'
+          for: ['ooo'],
+          disabled: true
         },
         {
           key: 'opf',
           label: 'ОПФ',
           placeholder: "ОПФ",
+          for: ['ooo'],
+          disabled: true,
           type: "text"
         },
         {
           key: 'inn',
           label: 'ИНН',
           placeholder: "ИНН",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'ogrn',
           label: 'ОГРН',
           placeholder: "ОГРН",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'okpo',
           label: 'ОКПО',
           placeholder: "ОКПО",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'address',
           label: 'Адрес',
           placeholder: "Адрес",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'oktmo',
           label: 'ОКТМО',
           placeholder: "ОКТМО",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'okved',
           label: 'ОКВЕД',
           placeholder: "ОКВЕД",
-          type: "text"
+          type: "text",
+          for: ['ip'],
+          disabled: true
         },
         {
           key: 'pfr',
           label: 'ПФР',
           placeholder: "ПФР",
-          type: "text"
+          type: "text",
+          for: ['ip'],
+          disabled: true
         },
         {
           key: 'rs',
           label: 'Рассч.счет',
           placeholder: "Рассч.счет",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'bank',
           label: 'Банк',
           placeholder: "Банк",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'bank_address',
           label: 'Адрес банка',
           placeholder: "Адрес банка",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'bik',
           label: 'БИК',
           placeholder: "БИК",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'ks',
           label: 'КС',
           placeholder: "КС",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'phone',
           label: 'Телефон',
           placeholder: "Телефон",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'mail',
           label: 'Почта',
           placeholder: "Почта",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'kpp',
           label: 'КПП',
           placeholder: "КПП",
-          type: "text"
+          type: "text",
+          for: ['ip', 'ooo'],
+          disabled: true
         },
         {
           key: 'okato',
           label: 'ОКАТО',
           placeholder: "ОКАТО",
-          type: "text"
+          type: "text",
+          for: ['ooo'],
+          disabled: true
         },
-      ]
+      ],
     }
   },
 

@@ -12,8 +12,8 @@ class Order extends Model
     protected $guarded = ['id', 'created_at'];
 
     protected $casts = [
-        'delivery_from' => 'date',
-        'delivery_to' => 'date'
+        'delivery_from' => 'datetime',
+        'delivery_to' => 'datetime'
     ];
 
     public function recipient()

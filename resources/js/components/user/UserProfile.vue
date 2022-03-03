@@ -18,6 +18,7 @@
             <CommonInput
                 :is="field.component"
                 :name="field.key"
+                :disabled="field.disabled"
                 :type="field.type"
                 :placeholder="field.placeholder"
             />
@@ -89,6 +90,7 @@ export default {
         {
           key: 'email',
           label: 'Email',
+          disabled: true,
           placeholder: "Ваш Email",
           type: "text"
         },

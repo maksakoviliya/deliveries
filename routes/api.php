@@ -35,4 +35,10 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
+
+    // Clients
+    Route::middleware(['admin'])->group(function() {
+        Route::get('/clients', [UserController::class, 'index'])->name('clients.index');
+        Route::get('/clients/{user}', [UserController::class, 'show'])->name('clients.show');
+    });
 });

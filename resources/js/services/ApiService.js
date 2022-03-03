@@ -80,5 +80,13 @@ export default {
   },
   createOrder(payload) {
     return authClient.post("/orders", payload);
+  },
+
+  // Clients
+  getClients() {
+    return authClient.get("/clients");
+  },
+  getClient(id) {
+    return authClient.get(`/clients/${id}`);
   }
 };

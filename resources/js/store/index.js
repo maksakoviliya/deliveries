@@ -1,6 +1,7 @@
 import {createStore} from "vuex";
 import * as auth from "./modules/Auth"
 import * as order from "./modules/Order"
+import * as client from "./modules/Client"
 
 export default createStore({
     state: {
@@ -18,6 +19,7 @@ export default createStore({
     actions: {},
     modules: {
         auth,
-        order
+        order,
+        client
     }
 });

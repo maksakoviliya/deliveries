@@ -12,6 +12,7 @@
         :value="inputValue"
         :placeholder="placeholder"
         @input="handleChange"
+        :disabled="disabled"
         @blur="handleBlur"
     />
 
@@ -33,6 +34,10 @@ export default {
     value: {
       type: String,
       default: "",
+    },
+    disabled: {
+      type: Boolean,
+      default: false,
     },
     name: {
       type: String,

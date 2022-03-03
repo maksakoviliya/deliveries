@@ -6,7 +6,7 @@
     </div>
     <div
         class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      <OrdersSearch/>
+      <OrdersSearch v-if="orders.length" />
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
                     :to="{name: 'home', params: {id: 'create'}, query: $route.query}">
         <template v-slot:icon>
@@ -18,7 +18,7 @@
     <div class="flex flex-col mt-5">
       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 align-bottom inline-block min-w-full sm:px-6 lg:px-8">
-          <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+          <div v-if="orders.length" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
             <table class="min-w-full divide-y divide-gray-200">
               <thead class="bg-gray-50">
               <tr>
@@ -52,9 +52,9 @@
               </tr>
               </thead>
               <tbody class="bg-white divide-y divide-gray-200">
-              <tr v-for="order in orders" :key="order.id">
+              <tr v-for="(order, i) in orders" :key="order.id">
                 <td class="px-6 py-2 whitespace-nowrap">
-                  {{ order.id }}
+                  {{ i + 1 }}
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ `${parseDate(order.delivery_interval[0])} - ${parseDate(order.delivery_interval[1])}`  }}</div>
@@ -98,6 +98,9 @@
               </tr>
               </tfoot>
             </table>
+          </div>
+          <div class="text-3xl my-16 font-semibold text-gray-300 text-center" v-else>
+            Заказов пока нет
           </div>
         </div>
       </div>

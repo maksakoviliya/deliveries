@@ -48,7 +48,15 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     meta: { middleware: [auth, admin] },
-    component: () => import(/* webpackChunkName: "home" */ "../views/Dashboard"),
+    component: () => import(/* webpackChunkName: "home" */ "../views/admin/Dashboard"),
+    children: [
+      {
+        path: "/dashboard/clients/:id?",
+        name: "clients",
+        meta: { middleware: [auth, admin] },
+        component: () => import(/* webpackChunkName: "home" */ "../views/admin/clients/ClientsList"),
+      }
+    ]
   },
   {
     path: "/login",
