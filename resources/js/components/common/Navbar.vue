@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6">
       <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
         <div class="flex justify-start">
-          <LogoLink />
+          <LogoLink/>
         </div>
         <div class="-mr-2 -my-2 md:hidden">
           <PopoverButton
@@ -22,8 +22,11 @@
           <!--          <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900"> Docs </a>-->
 
         </PopoverGroup>
-        <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0">
-
+        <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0 gap-3">
+          <router-link :to="{name: 'dashboard'}" class="flex items-center font-medium hover:text-gray-900 text-gray-500 gap-2">
+            <IdentificationIcon class="w-5 h-5" />
+            Админ панель
+          </router-link>
           <Popover class="relative" v-slot="{ open }">
             <PopoverButton
                 :class="[open ? 'text-gray-900' : 'text-gray-500', 'group bg-white rounded-md inline-flex items-center text-base font-medium hover:text-gray-900 outline-none']">
@@ -108,6 +111,7 @@
 <script>
 import {Popover, PopoverButton, PopoverGroup, PopoverPanel} from "@headlessui/vue";
 import {
+  IdentificationIcon,
   LogoutIcon,
   MenuIcon, UserIcon,
   XIcon,
@@ -132,7 +136,8 @@ export default {
     ChevronDownIcon,
     GlobeIcon,
     LogoutComponent,
-    LogoLink
+    LogoLink,
+    IdentificationIcon
   },
 
   computed: {

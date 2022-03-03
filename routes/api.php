@@ -40,5 +40,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['admin'])->group(function() {
         Route::get('/clients', [UserController::class, 'index'])->name('clients.index');
         Route::get('/clients/{user}', [UserController::class, 'show'])->name('clients.show');
+        Route::post('/clients', [UserController::class, 'store'])->name('clients.store');
     });
 });

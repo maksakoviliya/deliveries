@@ -30,7 +30,7 @@
                 </div>
                 <dl class="h-[400px] overflow-auto bg-gray-50 ">
                   <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
-                        v-for="(field, i) in userFields"
+                       v-for="(field, i) in userFields"
                        :key="field.key">
                     <dt class="text-sm font-medium text-gray-500">{{ field.label }}</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
@@ -86,7 +86,7 @@
                         <template v-slot:icon>
                           <CheckIcon class="-ml-1 mr-2 h-5 w-5" aria-hidden="true"/>
                         </template>
-                        Изменить
+                        {{ $route.params.id === 'create' ? 'Создать' : 'Изменить' }}
                       </CommonButton>
                   </span>
             </div>
@@ -109,6 +109,9 @@ import CommonSelect from "../../../components/common/CommonSelect";
 import * as yup from "yup";
 import CommonInput from "../../../components/common/CommonInput";
 import {Form} from "vee-validate";
+import ApiService from "../../../services/ApiService";
+import {getError} from "../../../utils/helpers";
+import {mapActions} from "vuex";
 
 export default {
   name: "ClientForm",
@@ -347,23 +350,9 @@ export default {
       bik: yup.string().nullable(true),
       ks: yup.string().nullable(true),
       company_phone: yup.string().nullable(true),
-      // phone: yup.string().nullable(true).phone(),
       mail: yup.string().nullable(true),
       kpp: yup.string().nullable(true),
       okato: yup.string().nullable(true),
-      // email: yup.string().required().email(),
-      // phone: yup.string().nullable(true).phone(),
-      // password: yup.string().test(
-      //     'empty-or-6-characters-check',
-      //     'Password must be at least 6 characters',
-      //     password => !password || password.length >= 6,
-      // ),
-      // password_confirmation: Yup.string()
-      //     .when('password', {
-      //       is: (val) => val,
-      //       then: (schema) => schema.min(6).oneOf([yup.ref("password")], "Passwords do not match"),
-      //       otherwise: (schema) => schema.min(0),
-      //     }),
     });
 
     return {
@@ -381,11 +370,38 @@ export default {
   },
 
   methods: {
+    ...mapActions({
+      fetchClients: "client/fetchClients"
+    }),
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    onSubmit(values) {
-      console.log('values', values)
+    onSubmit(values, actions) {
+      let prom = null
+      if (this.$route.params.id && this.$route.params.id !== 'create') {
+        prom = ApiService.updateClient(values, this.$route.params.id)
+      } else {
+        prom = ApiService.createClient(values)
+      }
+
+      prom.then(async (res) => {
+        console.log('res', res)
+        this.$notify({
+          type: 'success',
+          title: 'Данные клиентов обновлены'
+        })
+        await this.fetchClients()
+        this.handleClose()
+        this.$emit('close')
+      })
+          .catch((error) => {
+            const errors = getError(error)
+            actions.setErrors(errors);
+            this.$notify({
+              type: 'error',
+              title: 'Возникла ошибка!',
+            })
+          });
     }
   }
 }

@@ -88,5 +88,11 @@ export default {
   },
   getClient(id) {
     return authClient.get(`/clients/${id}`);
+  },
+  createClient(params) {
+    return authClient.post('/clients/', params);
+  },
+  updateClient(id, params) {
+    return authClient.post(`/clients/${id}`, params);
   }
 };
