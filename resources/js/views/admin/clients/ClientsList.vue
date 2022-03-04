@@ -37,7 +37,7 @@
                 Заказы
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Статус
+                Тариф
               </th>
               <th scope="col" class="relative px-6 py-3">
                 <span class="sr-only">Edit</span>
@@ -63,10 +63,10 @@
                 </div>
               </td>
               <td class="px-6 py-2">
-                <div class="text-xs text-gray-500">{{ client.company  }}</div>
+                <div class="text-xs text-gray-500">{{ client.company ? client.company.title : ''  }}</div>
               </td>
               <td class="px-6 py-2">
-                <div class="text-xs text-gray-500">{{ client.orders }}</div>
+                <div class="text-xs text-gray-500">{{ client.orders_count }}</div>
               </td>
               <td class="px-6 py-2">
                 <div class="text-xs text-gray-500">{{ client.status }}</div>

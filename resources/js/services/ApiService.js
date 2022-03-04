@@ -90,7 +90,7 @@ export default {
     return authClient.get(`/clients/${id}`);
   },
   createClient(params) {
-    return authClient.post('/clients/', params);
+    return authClient.post('/clients', params);
   },
   updateClient(id, params) {
     return authClient.post(`/clients/${id}`, params);

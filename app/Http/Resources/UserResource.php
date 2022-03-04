@@ -22,7 +22,9 @@ class UserResource extends JsonResource
 //            'avatar' => $this->avatar,
             'isAdmin' => $this->isAdmin(),
             'emailVerified' => $this->email_verified_at,
-            'company' => new CompanyResource($this->company)
+            'orders_count' => $this->orders->count(),
+            'company' => new CompanyResource($this->company),
+            'tarif' => $this->company ? new TarifResource($this->company->tarif) : null
         ];
     }
 }

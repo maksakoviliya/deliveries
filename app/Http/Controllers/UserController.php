@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\UserResource;
 use App\Models\Company;
+use App\Models\Tarif;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,6 +66,14 @@ class UserController extends Controller
             "mail" => $request->input('mail'),
             "kpp" => $request->input('kpp'),
             'user_id' => $user->id
+        ]);
+
+        $tarif = Tarif::create([
+            'foot_today' => $request->input('foot_today') ?? 0,
+            'foot' => $request->input('foot') ?? 0,
+            'car_today' => $request->input('car_today') ?? 0,
+            'car' => $request->input('car') ?? 0,
+            'company_id' => $company->id
         ]);
 
         return new UserResource($user);

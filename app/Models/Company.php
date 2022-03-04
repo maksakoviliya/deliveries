@@ -10,4 +10,9 @@ class Company extends Model
     use HasFactory;
 
     protected $guarded = ['id', 'created_at'];
+
+    public function tarif()
+    {
+        return $this->hasOne(Tarif::class);
+    }
 }

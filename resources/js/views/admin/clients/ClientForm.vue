@@ -19,7 +19,7 @@
               @submit="onSubmit"
               :validation-schema="schema"
               :initial-values="company"
-              class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full"
+              class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full"
               v-slot="{ values }"
           >
             <div class="flex items-stretch">
@@ -77,6 +77,28 @@
                     </template>
                   </dl>
                 </div>
+              </div>
+              <div class="flex-1">
+                <div class="px-4 py-5 sm:px-6">
+                  <h3 class="text-lg leading-6 font-medium text-gray-900">Тариф</h3>
+                  <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
+                </div>
+                <dl class="h-[400px] overflow-auto bg-gray-50 ">
+                  <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
+                       v-for="(field, i) in tarifFields"
+                       :key="field.key">
+                    <dt class="text-sm font-medium text-gray-500">{{ field.label }}</dt>
+                    <dd class="mt-1 text-sm text-gray-900 sm:mt-0 sm:col-span-2">
+                      <CommonInput
+                          :is="field.component"
+                          :name="field.key"
+                          :disabled="field.disabled"
+                          :type="field.type"
+                          :placeholder="field.placeholder"
+                      />
+                    </dd>
+                  </div>
+                </dl>
               </div>
             </div>
 
@@ -317,6 +339,32 @@ export default {
         type: "password"
       },
     ];
+    const tarifFields = [
+      {
+        key: 'foot_today',
+        label: 'Пешая - сегодня (₽)',
+        placeholder: "Стоимость доставки",
+        type: "text"
+      },
+      {
+        key: 'foot',
+        label: 'Пешая (₽)',
+        placeholder: "Стоимость доставки",
+        type: "text"
+      },
+      {
+        key: 'car_today',
+        label: ' Авто - сегодня (₽)',
+        placeholder: "Стоимость доставки",
+        type: "text"
+      },
+      {
+        key: 'car',
+        label: 'Авто (₽)',
+        placeholder: "Стоимость доставки",
+        type: "text"
+      },
+    ];
     const schema = yup.object({
       name: yup.string().required(),
       email: yup.string().required().email(),
@@ -353,13 +401,24 @@ export default {
       mail: yup.string().nullable(true),
       kpp: yup.string().nullable(true),
       okato: yup.string().nullable(true),
+
+      foot_today: yup.number().min(0).max(99999).nullable(true),
+      foot: yup.number().min(0).max(99999).nullable(true),
+      car_today: yup.number().min(0).max(99999).nullable(true),
+      car: yup.number().min(0).max(99999).nullable(true),
     });
 
     return {
       schema,
       companyFields,
       userFields,
-      company: {}
+      tarifFields,
+      company: {
+        foot_today: null,
+        foot: null,
+        car_today: null,
+        car: null,
+      }
     }
   },
 
@@ -381,6 +440,7 @@ export default {
       if (this.$route.params.id && this.$route.params.id !== 'create') {
         prom = ApiService.updateClient(values, this.$route.params.id)
       } else {
+        console.log('asdasd')
         prom = ApiService.createClient(values)
       }
 
