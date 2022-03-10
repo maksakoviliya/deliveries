@@ -5,17 +5,19 @@
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <!--    <Datepicker :id="name" :name="name" v-model="date" :class="{ 'border-red-400': !!errorMessage }"></Datepicker>-->
 
-    <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" @update:modelValue="handleChange" format="dd.MM.yyyy HH:mm"
-                :range="range" teleport=".datepicker" position="left" :auto-position="false" :start-time="{ hours: '12', minutes: '00' }"
+    <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" @update:modelValue="handleValueChange"
+                format="dd.MM.yyyy HH:mm"
+                :range="range" teleport=".datepicker" position="left" :auto-position="false"
+                :start-time="[{ hours: '9', minutes: '00' }, { hours: '18', minutes: '00' }]"
                 :alt-position="((el) => {
       return {
         top: '100%', left: 0, transform: 0
       }
     })"></Datepicker>
-        <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
-           v-show="errorMessage || meta.valid">
-          {{ errorMessage || successMessage }}
-        </p>
+    <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
+       v-show="errorMessage || meta.valid">
+      {{ errorMessage || successMessage }}
+    </p>
   </div>
 </template>
 
@@ -60,7 +62,7 @@ export default {
       default: new Date()
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     // we don't provide any rules here because we are using form-level validation
     // https://vee-validate.logaretm.com/v4/guide/validation#form-level-validation
     const {
@@ -73,8 +75,13 @@ export default {
       initialValue: props.value,
     });
 
+    const handleValueChange = (val) => {
+      emit('change', val)
+      handleChange(val)
+    }
+
     return {
-      handleChange,
+      handleValueChange,
       handleBlur,
       errorMessage,
       inputValue,

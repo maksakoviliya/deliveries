@@ -94,5 +94,8 @@ export default {
   },
   updateClient(id, params) {
     return authClient.post(`/clients/${id}`, params);
+  },
+  removeClient(id) {
+    return authClient.delete(`/clients/${id}`);
   }
 };

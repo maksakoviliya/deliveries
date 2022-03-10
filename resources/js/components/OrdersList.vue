@@ -8,12 +8,14 @@
         class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
       <OrdersSearch v-if="orders.length" />
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
+                    v-if="user.tarif"
                     :to="{name: 'home', params: {id: 'create'}, query: $route.query}">
         <template v-slot:icon>
           <PlusIcon class="-ml-1 mr-2 h-4 w-4"></PlusIcon>
         </template>
         Новый заказ
       </CommonButton>
+      <p v-else class="text-sm text-gray-400">Пока вы не можете создавть заказы</p>
     </div>
     <div class="flex flex-col mt-5">
       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -69,7 +71,7 @@
                   <div class="text-xs text-gray-500">{{ order.courier_id ? 'courier' : 'Не назначен' }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.price }}</div>
+                  <div class="text-xs text-gray-500">{{ order.price ? `${order.price}₽` : '' }}</div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ order.act_id }}</div>
@@ -133,7 +135,8 @@ export default {
 
   computed: {
     ...mapGetters({
-      orders: "order/orders"
+      orders: "order/orders",
+      user: "auth/authUser"
     }),
     filter() {
       return {

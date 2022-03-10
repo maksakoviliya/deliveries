@@ -18,7 +18,7 @@
           <Form
               @submit="onSubmit"
               :validation-schema="schema"
-              :initial-values="company"
+              :initial-values="client"
               class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full"
               v-slot="{ values }"
           >
@@ -28,7 +28,7 @@
                   <h3 class="text-lg leading-6 font-medium text-gray-900">Профиль пользователя</h3>
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
-                <dl class="h-[400px] overflow-auto bg-gray-50 ">
+                <dl class="h-[40vh] overflow-auto bg-gray-50 ">
                   <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
                        v-for="(field, i) in userFields"
                        :key="field.key">
@@ -51,7 +51,7 @@
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
                 <div>
-                  <dl class="h-[400px] overflow-auto bg-gray-50 ">
+                  <dl class="h-[40vh] overflow-auto bg-gray-50 ">
                     <template v-for="(field, i) in companyFields">
 
                       <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
@@ -83,7 +83,7 @@
                   <h3 class="text-lg leading-6 font-medium text-gray-900">Тариф</h3>
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
-                <dl class="h-[400px] overflow-auto bg-gray-50 ">
+                <dl class="h-[40vh] overflow-auto bg-gray-50 ">
                   <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
                        v-for="(field, i) in tarifFields"
                        :key="field.key">
@@ -134,6 +134,7 @@ import {Form} from "vee-validate";
 import ApiService from "../../../services/ApiService";
 import {getError} from "../../../utils/helpers";
 import {mapActions} from "vuex";
+import {omit} from "lodash";
 
 export default {
   name: "ClientForm",
@@ -158,7 +159,7 @@ export default {
       {
         key: 'title',
         label: 'Название',
-        placeholder: "Ваше имя",
+        placeholder: "Название организации",
         type: "text",
         for: ['ip', 'ooo'],
       },
@@ -413,7 +414,7 @@ export default {
       companyFields,
       userFields,
       tarifFields,
-      company: {
+      client: {
         foot_today: null,
         foot: null,
         car_today: null,
@@ -430,7 +431,8 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchClients: "client/fetchClients"
+      fetchClients: "client/fetchClients",
+      fetchClient: "client/fetchClient"
     }),
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
@@ -438,9 +440,8 @@ export default {
     onSubmit(values, actions) {
       let prom = null
       if (this.$route.params.id && this.$route.params.id !== 'create') {
-        prom = ApiService.updateClient(values, this.$route.params.id)
+        prom = ApiService.updateClient(this.$route.params.id, values)
       } else {
-        console.log('asdasd')
         prom = ApiService.createClient(values)
       }
 
@@ -462,6 +463,19 @@ export default {
               title: 'Возникла ошибка!',
             })
           });
+    },
+  },
+
+  async mounted() {
+    if (this.$route.params.id && this.$route.params.id !== 'create') {
+      let data = await this.fetchClient(this.$route.params.id)
+      this.client = {
+        ...omit(data, ['company', 'tarif']),
+        ...omit(data.company, ['phone']),
+        ...data.tarif,
+        'company_phone': data.company ? data.company.phone : null
+      }
+      console.log('client', this.client)
     }
   }
 }

@@ -27,6 +27,7 @@ class OrderController extends Controller
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
             "payment_type" => "required|in:cash,card",
+            "price" => "required",
             "comment" => "nullable",
             "weight" => "nullable",
         ]);
@@ -47,6 +48,7 @@ class OrderController extends Controller
             'delivery_to' => Carbon::parse($request->input('delivery_interval')[1]),
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
+            'price' => $request->input('price'),
             'cod' => $request->input('cod') ? $request->input('cod') : false,
             'payment_type' => $request->input('payment_type'),
             'user_id' => Auth::user()->id,

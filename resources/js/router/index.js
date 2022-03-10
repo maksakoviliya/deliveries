@@ -3,6 +3,7 @@ import store from "../store";
 import guest from "./middleware/guest";
 import auth from "./middleware/auth";
 import admin from "./middleware/admin";
+import notAdmin from "./middleware/notAdmin";
 
 function middlewarePipeline(context, middleware, index) {
   const nextMiddleware = middleware[index]
@@ -29,13 +30,13 @@ const routes = [
   {
     path: "/orders/:id?",
     name: "home",
-    meta: { middleware: [auth] },
+    meta: { middleware: [auth, notAdmin] },
     component: () => import(/* webpackChunkName: "home" */ "../views/Home"),
   },
   {
     path: "/acts/:id?",
     name: "acts",
-    meta: { middleware: [auth] },
+    meta: { middleware: [auth, notAdmin] },
     component: () => import(/* webpackChunkName: "home" */ "../views/Home"),
   },
   {

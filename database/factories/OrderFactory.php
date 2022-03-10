@@ -22,6 +22,7 @@ class OrderFactory extends Factory
             'delivery_to' => $this->faker->dateTime(),
             'assessed_value' => $this->faker->randomFloat(2, 0, 1000),
             'weight' => $this->faker->randomNumber(4),
+            'price' => $this->faker->randomFloat(2, 0, 10000),
             'cod' => $this->faker->randomElement([true, false]),
             'payment_type' => $this->faker->randomElement(['card', 'cash']),
             'user_id' => mt_rand(1, 10),

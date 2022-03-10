@@ -21,20 +21,20 @@
               <div class="sm:flex sm:items-start">
                 <div
                     class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                  <LogoutIcon class="h-6 w-6 text-red-600" aria-hidden="true"/>
+                  <TrashIcon class="h-6 w-6 text-red-600" aria-hidden="true"/>
                 </div>
                 <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                  <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Выход из аккаунта?
+                  <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Удаление пользователя?
                   </DialogTitle>
                   <div class="mt-2">
-                    <p class="text-sm text-gray-500">Вы действительно хотите выйти?</p>
+                    <p class="text-sm text-gray-500">Вы действительно хотите безвозратно удалить пользователя?</p>
                   </div>
                 </div>
               </div>
             </div>
             <div class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
               <CommonButton type="button" color="danger" @click="$emit('submit')">
-                Выйти
+                Удалить
               </CommonButton>
               <CommonButton type="button" color="outline-gray" @click="$emit('close')">
                 Отменить
@@ -49,17 +49,18 @@
 
 <script>
 import {Dialog, DialogOverlay, DialogTitle, TransitionChild, TransitionRoot} from '@headlessui/vue'
-import {LogoutIcon} from '@heroicons/vue/outline'
-import CommonButton from "./CommonButton";
+import CommonButton from "../common/CommonButton";
+import {TrashIcon} from "@heroicons/vue/outline";
 
 export default {
+  name: "DeleteConfirmation",
   components: {
     Dialog,
     DialogOverlay,
     DialogTitle,
     TransitionChild,
     TransitionRoot,
-    LogoutIcon,
+    TrashIcon,
     CommonButton
   },
 

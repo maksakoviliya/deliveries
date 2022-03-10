@@ -46,9 +46,10 @@
                                placeholder="Наименование товара"/>
                 </div>
                 <div class="flex flex-col gap-2">
-                  <CommonDatepicker name="delivery_interval" label="Дата доставки"/>
+                  <CommonDatepicker name="delivery_interval" label="Дата доставки" @change="handleChangeDate" />
                   <CommonSelect name="type"
                                 label="Тип доставки"
+                                @change="handleChangeType"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
                                label="Оценочная стоимость"
@@ -64,16 +65,21 @@
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
+
+                  <input name="price" v-model="cost">
                 </div>
               </div>
             </div>
-            <div class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse gap-2">
+            <div class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center gap-2">
               <CommonButton type="submit" color="success">
                 Оформить заказ
               </CommonButton>
               <CommonButton type="button" color="outline-gray" @click="handleClose">
                 Отменить
               </CommonButton>
+              <div class="mr-auto">
+                <b>Стоимость доставки</b>: {{ cost }}₽
+              </div>
             </div>
           </Form>
         </TransitionChild>
@@ -95,6 +101,7 @@ import CommonDatepicker from "../common/CommonDatepicker";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import CommonCheckbox from "../common/CommonCheckbox";
+const { DateTime } = require("luxon");
 
 const order = {
   recipient_id: null,
@@ -167,17 +174,23 @@ export default {
           value: 'card',
           label: 'Безналичный',
         },
-      ]
+      ],
+      todayDelivery: false,
+      deliveryType: 'foot',
     }
   },
 
   computed: {
     ...mapGetters({
-      recipients: "order/recipients"
+      recipients: "order/recipients",
+      user: 'auth/authUser'
     }),
     open() {
       return !!this.$route.params.id
     },
+    cost() {
+      return this.user.tarif[this.deliveryType + (this.todayDelivery ? `_${this.todayDelivery}` : '')]
+    }
   },
 
   methods: {
@@ -189,7 +202,15 @@ export default {
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
+    handleChangeType(event) {
+      this.deliveryType = event.target.value
+    },
+    handleChangeDate(val) {
+      let isToday = DateTime.fromJSDate(val[0]) <= DateTime.now() &&  DateTime.now() < DateTime.fromJSDate(val[1])
+      this.todayDelivery = isToday ? 'today' : false
+    },
     onSubmit(values, actions) {
+     values.price = this.cost
       ApiService.createOrder(values)
           .then(async (res) => {
             console.log('res', res)
