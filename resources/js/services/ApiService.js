@@ -85,6 +85,9 @@ export default {
     fetchAllOrders(params) {
         return authClient.get("/allOrders", params);
     },
+    removeOrder(id) {
+        return authClient.delete(`/orders/${id}`);
+    },
 
     // Clients
     getClients() {

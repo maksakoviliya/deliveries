@@ -47,6 +47,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         // Orders
         Route::get('/allOrders', [OrderController::class, 'allOrders'])->name('orders.all');
+        Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
         // Couriers
         Route::get('/couriers', [CourierController::class, 'index'])->name('couriers.index');

@@ -89,9 +89,9 @@
                     <router-link :to="{name: $route.name, params: { id: order.id }, query: $route.query}" class="text-indigo-600 hover:text-indigo-900">
                       <PencilAltIcon class="w-4 h-4" />
                     </router-link>
-                    <a href="#" class="text-red-600 hover:text-red-900">
+                    <button @click="showModalDeleteForm(order)" class="text-red-600 hover:text-red-900">
                       <TrashIcon class="w-4 h-4" />
-                    </a>
+                    </button>
                   </div>
                 </td>
               </tr>
@@ -114,7 +114,10 @@
 
 <!--    <ClientForm :key="$route.params.id"/>-->
 
-<!--    <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm"/>-->
+    <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm">
+      <template v-slot:title>Удаление заказа!</template>
+      <template v-slot:description>Вы действительно хотите безвозвратно удалить заказ? Заказ также перестанет отображаться и у клиента.</template>
+    </DeleteConfirmation>
 
   </div>
 </template>
@@ -123,6 +126,9 @@
 import {mapActions, mapGetters} from "vuex";
 import {DateTime} from "luxon";
 import {PencilAltIcon, TrashIcon} from "@heroicons/vue/outline";
+import DeleteConfirmation from "../../../components/orders/DeleteConfirmation";
+import ApiService from "../../../services/ApiService";
+import {getError} from "../../../utils/helpers";
 
 export default {
   name: "OrdersList",
@@ -130,12 +136,20 @@ export default {
   components: {
     PencilAltIcon,
     TrashIcon,
+    DeleteConfirmation,
   },
 
   computed: {
     ...mapGetters({
       orders: "order/allOrders"
     })
+  },
+
+  data() {
+    return {
+      showDeleteConfirmation: false,
+      deletingItem: null
+    }
   },
 
   methods: {
@@ -162,7 +176,33 @@ export default {
         case 'undelivered': return 'bg-red-100 text-red-800'
         default: return status
       }
-    }
+    },
+    showModalDeleteForm(client) {
+      this.deletingItem = client
+      this.showDeleteConfirmation = true
+    },
+    handleCloseDeleteForm() {
+      this.deletingItem = null
+      this.showDeleteConfirmation = false
+    },
+    handleDelete() {
+      ApiService.removeOrder(this.deletingItem.id).then(async () => {
+        this.$notify({
+          type: 'warning',
+          title: 'Данные заказов обновлены'
+        })
+        this.handleCloseDeleteForm()
+        await this.fetchAllOrders()
+      })
+          .catch((error) => {
+            this.$notify({
+              type: 'error',
+              title: 'Возникла ошибка!',
+            })
+            const errors = getError(error)
+            actions.setErrors(errors);
+          });
+    },
   },
 
   mounted() {

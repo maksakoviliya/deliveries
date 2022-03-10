@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Recipient;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -65,5 +66,13 @@ class OrderController extends Controller
     public function show(Order $order)
     {
         return new OrderResource($order);
+    }
+
+    public function destroy(Order $order)
+    {
+        if (Auth::user()->role_id == User::ROLE_ADMIN || $order->status == 'processing') {
+            return $order->delete();
+        }
+        abort(403);
     }
 }
