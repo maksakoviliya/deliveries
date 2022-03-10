@@ -36,6 +36,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
+    Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     Route::middleware(['admin'])->group(function() {
         // Clients
@@ -47,7 +48,6 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
         // Orders
         Route::get('/allOrders', [OrderController::class, 'allOrders'])->name('orders.all');
-        Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
         // Couriers
         Route::get('/couriers', [CourierController::class, 'index'])->name('couriers.index');
