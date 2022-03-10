@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\CourierController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\RecipientController;
 use App\Http\Controllers\TokenController;
@@ -36,12 +37,22 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
 
-    // Clients
     Route::middleware(['admin'])->group(function() {
+        // Clients
         Route::get('/clients', [UserController::class, 'index'])->name('clients.index');
         Route::get('/clients/{user}', [UserController::class, 'show'])->name('clients.show');
         Route::post('/clients', [UserController::class, 'store'])->name('clients.store');
         Route::post('/clients/{user}', [UserController::class, 'update'])->name('clients.update');
         Route::delete('/clients/{user}', [UserController::class, 'destroy'])->name('clients.destroy');
+
+        // Orders
+        Route::get('/allOrders', [OrderController::class, 'allOrders'])->name('orders.all');
+
+        // Couriers
+        Route::get('/couriers', [CourierController::class, 'index'])->name('couriers.index');
+        Route::get('/couriers/{courier}', [CourierController::class, 'show'])->name('couriers.show');
+        Route::post('/couriers', [CourierController::class, 'store'])->name('couriers.store');
+        Route::post('/couriers/{courier}', [CourierController::class, 'update'])->name('couriers.update');
+        Route::delete('/couriers/{courier}', [CourierController::class, 'destroy'])->name('couriers.destroy');
     });
 });

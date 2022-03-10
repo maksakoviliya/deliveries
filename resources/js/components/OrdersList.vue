@@ -78,7 +78,7 @@
                 </td>
                 <td class="px-6 py-2 whitespace-nowrap">
                   <span
-                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"> {{ order.status }} </span>
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getColorOfStatus(order.status)"> {{ getTextOfStatus(order.status) }} </span>
                 </td>
                 <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex gap-2">
@@ -128,8 +128,25 @@ export default {
       fetchOrders: "order/fetchOrders"
     }),
     parseDate(date) {
-      console.log('date', date)
-      return DateTime.fromISO(date).toFormat('d.M.yy HH:mm')
+      return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
+    },
+    getTextOfStatus(status) {
+      switch (status) {
+        case 'processing': return 'В обработке'
+        case 'work': return 'В работе'
+        case 'delivered': return 'Доставлен'
+        case 'undelivered': return 'Не доставлен'
+        default: return status
+      }
+    },
+    getColorOfStatus(status) {
+      switch (status) {
+        case 'processing': return 'bg-gray-100 text-gray-800'
+        case 'work': return 'bg-indigo-100 text-indigo-800'
+        case 'delivered': return 'bg-green-100 text-green-800'
+        case 'undelivered': return 'bg-red-100 text-red-800'
+        default: return status
+      }
     }
   },
 

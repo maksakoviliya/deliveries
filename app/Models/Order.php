@@ -20,4 +20,9 @@ class Order extends Model
     {
         return $this->belongsTo(Recipient::class);
     }
+
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
 }

@@ -7,7 +7,7 @@
     <div
         class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
-                    :to="{name: 'clients', params: {id: 'create'}, query: $route.query}">
+                    :to="{name: $route.name, params: {id: 'create'}, query: $route.query}">
         <template v-slot:icon>
           <PlusIcon class="-ml-1 mr-2 h-4 w-4"></PlusIcon>
         </template>
@@ -131,7 +131,10 @@
 
     <ClientForm :key="$route.params.id"/>
 
-    <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm"/>
+    <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm">
+      <template v-slot:title>Удаление пользователя!</template>
+      <template v-slot:description>Вы действительно хотите безвозвратно удалить пользователя?</template>
+    </DeleteConfirmation>
 
   </div>
 </template>
@@ -162,7 +165,7 @@ export default {
   data() {
     return {
       showDeleteConfirmation: false,
-      deletingClient: null
+      deletingItem: null
     }
   },
 
@@ -177,16 +180,15 @@ export default {
       fetchClients: "client/fetchClients"
     }),
     showModalDeleteForm(client) {
-      this.deletingClient = client
+      this.deletingItem = client
       this.showDeleteConfirmation = true
     },
     handleCloseDeleteForm() {
-      this.deletingClient = null
+      this.deletingItem = null
       this.showDeleteConfirmation = false
     },
     handleDelete() {
-      console.log('asd')
-      ApiService.removeClient(this.deletingClient.id).then(async (res) => {
+      ApiService.removeClient(this.deletingItem.id).then(async () => {
         this.$notify({
           type: 'warning',
           title: 'Данные клиентов обновлены'

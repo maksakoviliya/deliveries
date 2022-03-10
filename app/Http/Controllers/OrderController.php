@@ -17,6 +17,11 @@ class OrderController extends Controller
         return OrderResource::collection($orders->orderBy('created_at', 'desc')->paginate(10));
     }
 
+    public function allOrders(Request $request)
+    {
+        return OrderResource::collection(Order::orderBy('created_at', 'desc')->paginate(10));
+    }
+
 
     public function store(Request $request)
     {

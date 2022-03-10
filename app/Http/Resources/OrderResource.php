@@ -2,7 +2,9 @@
 
 namespace App\Http\Resources;
 
+use App\Models\User;
 use Illuminate\Http\Resources\Json\JsonResource;
+use Illuminate\Support\Facades\Auth;
 
 class OrderResource extends JsonResource
 {
@@ -14,6 +16,7 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
+        $recipient = [];
         if ($this->recipient) {
             $recipient = [
                 'recipient_id' => $this->recipient->id,
@@ -22,9 +25,15 @@ class OrderResource extends JsonResource
                 'phone' => $this->recipient->phone,
                 'product_name' => $this->recipient->product_name,
             ];
-        } else {
-            $recipient = [];
         }
+
+        $client = [];
+        if (Auth::user()->role_id == User::ROLE_ADMIN) {
+            $client = [
+                'client' => new UserResource($this->client)
+            ];
+        }
+
         return array_merge([
             'id' => $this->id,
             'delivery_interval' => [
@@ -42,6 +51,6 @@ class OrderResource extends JsonResource
             'comment' => $this->comment,
             'assessed_value' => $this->assessed_value,
 
-        ], $recipient);
+        ], $recipient, $client);
     }
 }

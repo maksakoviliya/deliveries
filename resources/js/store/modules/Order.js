@@ -6,6 +6,7 @@ export const namespaced = true;
 export const state = {
     orders: [],
     recipients: [],
+    allOrders: []
 };
 
 export const getters = {
@@ -15,6 +16,9 @@ export const getters = {
     orders: (state) => {
         return state.orders;
     },
+    allOrders: (state) => {
+        return state.allOrders;
+    },
 }
 
 export const mutations = {
@@ -23,6 +27,9 @@ export const mutations = {
     },
     SET_RECIPIENTS(state, recipients) {
         state.recipients = recipients
+    },
+    SET_ALL_ORDERS(state, allOrders) {
+        state.allOrders = allOrders
     },
 }
 
@@ -57,6 +64,19 @@ export const actions = {
         try {
             let response = await ApiService.fetchOrders(params);
             commit("SET_ORDERS", response.data.data);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
+    async fetchAllOrders({commit}, params = {}) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.fetchAllOrders(params);
+            commit("SET_ALL_ORDERS", response.data.data);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });
