@@ -47,6 +47,19 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
+    async fetchRecipientsForUser({commit}, id) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.fetchRecipientsForUser(id);
+            commit("SET_RECIPIENTS", response.data.data);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
     async fetchOrder({commit}, id) {
         commit("SET_LOADING", true, { root: true });
         try {

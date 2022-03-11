@@ -31,11 +31,13 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // Recipients
     Route::get('/recipients', [RecipientController::class, 'index'])->name('recipients.index');
+    Route::get('/recipientsForUser/{user}', [RecipientController::class, 'recipientsForUser'])->name('recipients.forUser');
 
     // Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
+    Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
 
     Route::middleware(['admin'])->group(function() {

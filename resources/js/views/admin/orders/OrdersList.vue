@@ -112,7 +112,7 @@
       </div>
     </div>
 
-<!--    <ClientForm :key="$route.params.id"/>-->
+    <OrderForm :key="$route.params.id"/>
 
     <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm">
       <template v-slot:title>Удаление заказа!</template>
@@ -129,6 +129,7 @@ import {PencilAltIcon, TrashIcon} from "@heroicons/vue/outline";
 import DeleteConfirmation from "../../../components/orders/DeleteConfirmation";
 import ApiService from "../../../services/ApiService";
 import {getError} from "../../../utils/helpers";
+import OrderForm from "./OrderForm";
 
 export default {
   name: "OrdersList",
@@ -137,6 +138,7 @@ export default {
     PencilAltIcon,
     TrashIcon,
     DeleteConfirmation,
+    OrderForm
   },
 
   computed: {

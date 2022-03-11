@@ -475,7 +475,6 @@ export default {
         ...data.tarif,
         'company_phone': data.company ? data.company.phone : null
       }
-      console.log('client', this.client)
     }
   }
 }

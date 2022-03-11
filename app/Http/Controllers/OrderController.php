@@ -68,6 +68,51 @@ class OrderController extends Controller
         return new OrderResource($order);
     }
 
+    public function update(Order $order, Request $request)
+    {
+        $request->validate([
+            "recipient_id" => "nullable",
+            "type" => "required|in:foot,car",
+            "delivery_interval" => "required|array",
+            "assessed_value" => "nullable",
+            "cod" => "nullable|boolean",
+            "payment_type" => "required|in:cash,card",
+            "price" => "required",
+            "comment" => "nullable",
+            "weight" => "nullable",
+        ]);
+
+        $recipient_data = [
+            'name' => $request->input('name'),
+            'phone' => $request->input('phone'),
+            'address' => $request->input('address'),
+            'product_name' => $request->input('product_name'),
+            'user_id' => $order->user_id,
+        ];
+
+        if ($order->recipient) {
+            $order->recipient->update($recipient_data);
+            $recipient = $order->recipient;
+        } else {
+            $recipient = Recipient::create($recipient_data);
+        }
+
+
+        $order->update([
+            'type' => $request->input('type'),
+            'recipient_id' => $recipient->id,
+            'delivery_from' => Carbon::parse($request->input('delivery_interval')[0]),
+            'delivery_to' => Carbon::parse($request->input('delivery_interval')[1]),
+            'assessed_value' => $request->input('assessed_value'),
+            'weight' => $request->input('weight'),
+            'price' => $request->input('price'),
+            'cod' => $request->input('cod') ? $request->input('cod') : false,
+            'payment_type' => $request->input('payment_type'),
+            'comment' => $request->input('comment'),
+        ]);
+        return new OrderResource($order);
+    }
+
     public function destroy(Order $order)
     {
         if (Auth::user()->role_id == User::ROLE_ADMIN || $order->status == 'processing') {

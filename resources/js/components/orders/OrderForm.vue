@@ -66,7 +66,7 @@
                                label="Комментарий"
                                placeholder="Комментарий"/>
 
-                  <input name="price" v-model="cost">
+                  <input name="price" class="hidden" v-model="cost">
                 </div>
               </div>
             </div>
