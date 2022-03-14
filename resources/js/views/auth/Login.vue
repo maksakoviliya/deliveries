@@ -8,10 +8,10 @@
           class="flex flex-col gap-3 mt-4"
       >
         <CommonInput
-            name="email"
-            type="email"
-            label="E-mail"
-            placeholder="Ваш Email"
+            name="phone"
+            type="text"
+            label="Телефон"
+            placeholder="Ваш телефон"
         />
         <CommonInput
             name="password"
@@ -29,6 +29,7 @@
 <script>
 import {Form} from "vee-validate";
 import * as Yup from "yup";
+import "yup-phone";
 import CommonInput from "../../components/common/CommonInput";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
@@ -70,7 +71,7 @@ export default {
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
-      email: Yup.string().email().required(),
+      phone: Yup.string().required().phone(),
       password: Yup.string().min(6).required(),
     });
 

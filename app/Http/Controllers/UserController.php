@@ -34,7 +34,6 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => 'required|email|unique:users,email',
             'phone' => 'required|unique:users,phone',
             'password' => 'min:6|confirmed',
 
@@ -44,7 +43,6 @@ class UserController extends Controller
 
         $user_data = [
             'name' => $request->input('name'),
-            'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ];
 
@@ -110,11 +108,6 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'email' => [
-                'required',
-                'email',
-                Rule::unique('users')->ignore($user->id),
-            ],
             'phone' => 'required',
             'password' => 'min:6|confirmed',
 
@@ -123,7 +116,6 @@ class UserController extends Controller
         ]);
         $user_data = [
             'name' => $request->input('name'),
-            'email' => $request->input('email'),
             'phone' => $request->input('phone'),
         ];
 

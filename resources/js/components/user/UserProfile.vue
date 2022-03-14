@@ -62,8 +62,7 @@ export default {
   data() {
     const schema = yup.object({
       name: yup.string().required(),
-      email: yup.string().required().email(),
-      phone: yup.string().nullable(true).phone(),
+      // phone: yup.string().nullable(true).phone(),
       password: yup.string().test(
           'empty-or-6-characters-check',
           'Password must be at least 6 characters',
@@ -87,13 +86,6 @@ export default {
           placeholder: "Ваше имя",
           type: "text"
         },
-        // {
-        //   key: 'email',
-        //   label: 'Email',
-        //   disabled: true,
-        //   placeholder: "Ваш Email",
-        //   type: "text"
-        // },
         {
           key: 'phone',
           label: 'Телефон',

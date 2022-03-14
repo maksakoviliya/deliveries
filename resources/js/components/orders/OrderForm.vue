@@ -47,7 +47,7 @@
                 </div>
                 <div class="flex flex-col gap-2">
                   <CommonDatepicker name="delivery_interval" label="Дата доставки" @change="handleChangeDate" />
-                  <CommonSelect name="type"
+                  <CustomSelect name="type"
                                 label="Тип доставки"
                                 @change="handleChangeType"
                                 :options="types"/>
@@ -101,6 +101,7 @@ import CommonDatepicker from "../common/CommonDatepicker";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import CommonCheckbox from "../common/CommonCheckbox";
+import CustomSelect from "../common/CustomSelect";
 const { DateTime } = require("luxon");
 
 const order = {
@@ -134,6 +135,7 @@ export default {
     CommonSelect,
     CommonInput,
     CommonDatepicker,
+    CustomSelect
   },
 
   data() {
@@ -202,8 +204,8 @@ export default {
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    handleChangeType(event) {
-      this.deliveryType = event.target.value
+    handleChangeType(value) {
+      this.deliveryType = value
     },
     handleChangeDate(val) {
       let isToday = DateTime.fromJSDate(val[0]) <= DateTime.now() &&  DateTime.now() < DateTime.fromJSDate(val[1])

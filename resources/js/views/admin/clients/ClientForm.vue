@@ -316,12 +316,6 @@ export default {
         type: "text"
       },
       {
-        key: 'email',
-        label: 'Email',
-        placeholder: "Ваш Email",
-        type: "text"
-      },
-      {
         key: 'phone',
         label: 'Телефон',
         placeholder: "Ваш телефон",
@@ -368,7 +362,6 @@ export default {
     ];
     const schema = yup.object({
       name: yup.string().required(),
-      email: yup.string().required().email(),
       phone: yup.string().nullable(true).phone(),
       password: yup.string().test(
           'empty-or-6-characters-check',

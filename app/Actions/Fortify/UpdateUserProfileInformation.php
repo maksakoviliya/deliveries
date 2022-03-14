@@ -22,47 +22,21 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
         Validator::make($input, [
             'name' => ['required', 'string', 'max:255'],
 
-            'phone' => ['required', 'alpha_num', 'max:255'],
-
-            'email' => [
+            'phone' => [
                 'required',
-                'string',
-                'email',
                 'max:255',
-                Rule::unique('users')->ignore($user->id),
+                Rule::unique('users')->ignore($user->id)
             ],
 
             'password' => ['nullable', 'min:6', 'confirmed']
         ])->validateWithBag('updateProfileInformation');
-        if ($input['email'] !== $user->email &&
-            $user instanceof MustVerifyEmail) {
-            $this->updateVerifiedUser($user, $input);
-        } else {
-            $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
-                'phone' => $this->formatPhone($input['phone'])
-            ])->save();
-        }
-        $this->updatePassword($user, $input['password']);
-    }
 
-    /**
-     * Update the given verified user's profile information.
-     *
-     * @param mixed $user
-     * @param array $input
-     * @return void
-     */
-    protected function updateVerifiedUser(mixed $user, array $input)
-    {
         $user->forceFill([
             'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
+            'phone' => $this->formatPhone($input['phone'])
         ])->save();
 
-        $user->sendEmailVerificationNotification();
+        $this->updatePassword($user, $input['password']);
     }
 
     /**

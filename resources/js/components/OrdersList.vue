@@ -70,7 +70,17 @@
                   <div class="text-xs text-gray-500">{{ order.payment_type === 'card' ? 'Карта' : 'Наличные' }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.courier ? order.courier.name : 'Не назначен' }}</div>
+                  <div class="text-xs text-gray-500">
+                    <div class="text-xs text-gray-500 w-[120px]" v-if="order.courier">
+                      <div class="text-sm font-medium text-gray-900">
+                        {{ order.courier.name }}
+                      </div>
+                      <div class="text-sm text-gray-500">
+                        {{ order.courier.phone }}
+                      </div>
+                    </div>
+                    <span v-else>Не назначен</span>
+                  </div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ order.price ? `${order.price}₽` : '' }}</div>

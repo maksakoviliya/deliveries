@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
     {
         User::factory(9)->create();
         User::factory(1)->create([
-            'email' => 'admin@admin.admin',
+            'name' => 'Admin Admin',
+            'phone' => '9999999999',
             'role_id' => 1
         ]);
         Order::factory(12)->create();

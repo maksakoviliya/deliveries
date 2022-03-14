@@ -27,9 +27,9 @@
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Имя
                 </th>
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Контакты
-                </th>
+<!--                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
+<!--                  Контакты-->
+<!--                </th>-->
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Компания
                 </th>
@@ -49,13 +49,13 @@
                 <td class="px-6 py-2 whitespace-nowrap">
                   {{ client.id }}
                 </td>
-                <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ client.name }}</div>
-                </td>
+<!--                <td class="px-6 py-2">-->
+<!--                  <div class="text-xs text-gray-500">{{ client.name }}</div>-->
+<!--                </td>-->
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">
                     <div class="text-sm font-medium text-gray-900">
-                      {{ client.email }}
+                      {{ client.name }}
                     </div>
                     <div class="text-sm text-gray-500">
                       {{ client.phone }}

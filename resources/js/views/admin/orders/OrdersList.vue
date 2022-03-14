@@ -55,7 +55,7 @@
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">
                     <div class="text-sm font-medium text-gray-900">
-                      {{ order.client.email }}
+                      {{ order.client.name }}
                     </div>
                     <div class="text-sm text-gray-500">
                       {{ order.client.phone }}
