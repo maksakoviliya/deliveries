@@ -4,7 +4,7 @@
   >
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <vSelect :name="name"
-             :id="name" :label="labelKey" :clearable="false" class="w-[170px]" :model-value="options.find(item => item[valueKey] === value)" :options="options"
+             :id="name" :label="labelKey" :clearable="false" :class="selectClass" :model-value="options.find(item => item[valueKey] === value)" :options="options"
              @option:selected="handleValueChange"/>
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
        v-show="errorMessage || meta.valid">
@@ -60,6 +60,9 @@ export default {
     valueKey: {
       type: String,
       default: 'value'
+    },
+    selectClass: {
+      type: String,
     }
   },
 

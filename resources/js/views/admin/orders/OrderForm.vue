@@ -23,7 +23,7 @@
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900 flex items-center gap-2">
                 <h2>Заказа №{{ `${order.id} от ${parseDate(order.created_at)}` }}</h2>
-                <OrderStatus :order="order" :show-form="false" />
+                <OrderStatus :order="order" :show-form="false"/>
               </DialogTitle>
               <div class="grid md:grid-cols-2 gap-4 mt-4 ">
                 <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
@@ -49,6 +49,9 @@
                                placeholder="Наименование товара"/>
                 </div>
                 <div class="flex flex-col gap-2">
+                  <CommonSelect label="Статус" name="status" :options="statuses"/>
+                  <CustomSelect name="courier_id" label="Курьер" :value="order.courier_id ? order.courier_id : null"
+                                :options="couriers" label-key="name" value-key="id"/>
                   <CommonDatepicker name="delivery_interval" label="Дата доставки" @change="handleChangeDate"/>
                   <CommonSelect name="type"
                                 label="Тип доставки"
@@ -68,8 +71,6 @@
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
-                  <CommonSelect label="Статус" name="status" :options="statuses" />
-
                   <input name="price" class="hidden" v-model="cost">
                 </div>
               </div>
@@ -107,6 +108,7 @@ import CommonDatepicker from "../../../components/common/CommonDatepicker";
 import ApiService from "../../../services/ApiService";
 import {omit, pick} from "lodash";
 import OrderStatus from "./OrderStatus";
+import CustomSelect from "../../../components/common/CustomSelect";
 
 const {DateTime} = require("luxon");
 
@@ -124,12 +126,14 @@ const order = {
   comment: null,
   weight: null,
   status: 'processing',
+  courier_id: null
 }
 
 export default {
   name: "OrderForm",
 
   components: {
+    CustomSelect,
     CommonCheckbox,
     Dialog,
     Form,
@@ -142,7 +146,7 @@ export default {
     CommonSelect,
     CommonInput,
     CommonDatepicker,
-    OrderStatus
+    OrderStatus,
   },
 
   data() {
@@ -156,6 +160,7 @@ export default {
       weight: yup.number().required(),
       cod: yup.boolean(),
       status: yup.string().required(),
+      courier_id: yup.number().nullable(true),
     });
 
     return {
@@ -199,7 +204,7 @@ export default {
         {
           key: 'delivered',
           value: 'delivered',
-          label:  'Доставлен'
+          label: 'Доставлен'
         },
         {
           key: 'undelivered',
@@ -215,6 +220,7 @@ export default {
   computed: {
     ...mapGetters({
       recipients: "order/recipients",
+      couriers: "courier/couriers",
       user: 'auth/authUser'
     }),
     open() {
@@ -299,7 +305,8 @@ export default {
             this.order = {
               ...omit(res, ['client']),
               ...pick(res.client, ['tarif']),
-              client_id: res.client.id
+              client_id: res.client.id,
+              courier_id: res.courier ? res.courier.id : null
             }
             this.todayDelivery = this.handleChangeDate(this.order.delivery_interval)
             this.deliveryType = this.order.type

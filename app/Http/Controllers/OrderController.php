@@ -111,6 +111,7 @@ class OrderController extends Controller
             'payment_type' => $request->input('payment_type'),
             'comment' => $request->input('comment'),
             'status' => $request->input('status'),
+            'courier_id' => $request->input('courier_id'),
         ]);
         return new OrderResource($order);
     }

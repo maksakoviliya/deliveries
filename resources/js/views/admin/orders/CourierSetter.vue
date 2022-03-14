@@ -11,7 +11,7 @@
       <div class="bg-white rounded-lg shadow-lg p-4">
         <Form :initial-values="setInitialCourier(order)" @submit="handleStatusChange" :validation-schema="schema"
               class="flex items-center gap-2">
-          <CustomSelect name="courier_id" :value="order.courier ? order.courier.id : null" :options="couriers" label-key="name" value-key="id" />
+          <CustomSelect name="courier_id" select-class="w-[170px]" :value="order.courier ? order.courier.id : null" :options="couriers" label-key="name" value-key="id" />
           <input name="order_id" class="hidden" v-model="order.id">
           <CommonButton>
             <CheckIcon class="w-4 h-4" />
