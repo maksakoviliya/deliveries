@@ -10,7 +10,7 @@
         :id="name"
         :disabled="disabled"
         :value="inputValue"
-        @input="handleChange"
+        @input="handleValueChange"
         @blur="handleBlur"
     >
       <option v-for="option in options" :key="option[key]" :value="option[valueKey]">{{ option[labelKey] }}</option>
@@ -65,7 +65,7 @@ export default {
       default: 'value'
     }
   },
-  setup(props) {
+  setup(props, {emit}) {
     // we don't provide any rules here because we are using form-level validation
     // https://vee-validate.logaretm.com/v4/guide/validation#form-level-validation
     const {
@@ -78,8 +78,13 @@ export default {
       initialValue: props.value,
     });
 
+    const handleValueChange = (val) => {
+      emit('change', val.target.value)
+      handleChange(val.target.value)
+    }
+
     return {
-      handleChange,
+      handleValueChange,
       handleBlur,
       errorMessage,
       inputValue,

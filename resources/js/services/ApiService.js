@@ -95,6 +95,12 @@ export default {
     removeOrder(id) {
         return authClient.delete(`/orders/${id}`);
     },
+    setOrderStatus(id, params) {
+        return authClient.post(`/setOrderStatus/${id}`, params);
+    },
+    setOrderCourier(id, params) {
+        return authClient.post(`/setOrderCourier/${id}`, params);
+    },
 
     // Clients
     getClients() {

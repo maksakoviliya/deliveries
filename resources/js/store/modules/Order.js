@@ -98,4 +98,28 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
+    async setOrderStatus({commit}, params) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.setOrderStatus(params.order_id , params);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
+    async setOrderCourier({commit}, params) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.setOrderCourier(params.order_id , params);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
 }

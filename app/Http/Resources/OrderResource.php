@@ -42,7 +42,7 @@ class OrderResource extends JsonResource
             ],
             'cod' => (bool) $this->cod,
             'payment_type' => $this->payment_type,
-            'courier' => $this->courier_id,
+            'courier' => new CourierResource($this->courier),
             'price' => $this->price,
             'act_id' => $this->act_id,
             'status' => $this->status,
@@ -50,6 +50,7 @@ class OrderResource extends JsonResource
             'weight' => $this->weight,
             'comment' => $this->comment,
             'assessed_value' => $this->assessed_value,
+            'created_at' => $this->created_at,
 
         ], $recipient, $client);
     }

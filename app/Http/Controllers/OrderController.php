@@ -80,6 +80,7 @@ class OrderController extends Controller
             "price" => "required",
             "comment" => "nullable",
             "weight" => "nullable",
+            "status" => "required|in:processing,work,delivered,undelivered"
         ]);
 
         $recipient_data = [
@@ -109,6 +110,7 @@ class OrderController extends Controller
             'cod' => $request->input('cod') ? $request->input('cod') : false,
             'payment_type' => $request->input('payment_type'),
             'comment' => $request->input('comment'),
+            'status' => $request->input('status'),
         ]);
         return new OrderResource($order);
     }
@@ -119,5 +121,23 @@ class OrderController extends Controller
             return $order->delete();
         }
         abort(403);
+    }
+
+    public function setOrderStatus(Request $request, Order $order)
+    {
+        $order->update([
+            'status' => $request->input('status')
+        ]);
+
+        return new OrderResource($order);
+    }
+
+    public function setOrderCourier(Request $request, Order $order)
+    {
+        $order->update([
+            'courier_id' => $request->input('courier_id')
+        ]);
+
+        return new OrderResource($order);
     }
 }

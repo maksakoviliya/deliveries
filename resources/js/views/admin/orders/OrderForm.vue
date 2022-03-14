@@ -21,7 +21,10 @@
               :initial-values="order"
               class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-              <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900"> Форма заказа</DialogTitle>
+              <DialogTitle as="h3" class="text-lg leading-6 font-medium text-gray-900 flex items-center gap-2">
+                <h2>Заказа №{{ `${order.id} от ${parseDate(order.created_at)}` }}</h2>
+                <OrderStatus :order="order" :show-form="false" />
+              </DialogTitle>
               <div class="grid md:grid-cols-2 gap-4 mt-4 ">
                 <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
                   <h4 class="font-medium"> Получатель: </h4>
@@ -65,6 +68,7 @@
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
+                  <CommonSelect label="Статус" name="status" :options="statuses" />
 
                   <input name="price" class="hidden" v-model="cost">
                 </div>
@@ -73,7 +77,7 @@
             <div
                 class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center gap-2">
               <CommonButton type="submit" color="success">
-                Оформить заказ
+                Изменить заказ
               </CommonButton>
               <CommonButton type="button" color="outline-gray" @click="handleClose">
                 Отменить
@@ -102,6 +106,7 @@ import CommonInput from "../../../components/common/CommonInput";
 import CommonDatepicker from "../../../components/common/CommonDatepicker";
 import ApiService from "../../../services/ApiService";
 import {omit, pick} from "lodash";
+import OrderStatus from "./OrderStatus";
 
 const {DateTime} = require("luxon");
 
@@ -118,6 +123,7 @@ const order = {
   payment_type: 'card',
   comment: null,
   weight: null,
+  status: 'processing',
 }
 
 export default {
@@ -136,6 +142,7 @@ export default {
     CommonSelect,
     CommonInput,
     CommonDatepicker,
+    OrderStatus
   },
 
   data() {
@@ -147,7 +154,8 @@ export default {
       assessed_value: yup.string().required(),
       delivery_interval: yup.array(),
       weight: yup.number().required(),
-      cod: yup.boolean()
+      cod: yup.boolean(),
+      status: yup.string().required(),
     });
 
     return {
@@ -177,6 +185,28 @@ export default {
           label: 'Безналичный',
         },
       ],
+      statuses: [
+        {
+          key: 'processing',
+          value: 'processing',
+          label: 'В обработке'
+        },
+        {
+          key: 'work',
+          value: 'work',
+          label: 'В работе'
+        },
+        {
+          key: 'delivered',
+          value: 'delivered',
+          label:  'Доставлен'
+        },
+        {
+          key: 'undelivered',
+          value: 'undelivered',
+          label: 'Не доставлен'
+        }
+      ],
       todayDelivery: false,
       deliveryType: 'foot',
     }
@@ -201,7 +231,8 @@ export default {
     ...mapActions({
       fetchRecipientsForUser: "order/fetchRecipientsForUser",
       fetchOrder: "order/fetchOrder",
-      fetchOrders: "order/fetchOrders"
+      fetchOrders: "order/fetchOrders",
+      fetchAllOrders: "order/fetchAllOrders",
     }),
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
@@ -222,9 +253,9 @@ export default {
             console.log('res', res)
             this.$notify({
               type: 'success',
-              title: 'Заказ создан'
+              title: 'Заказ обновлен'
             })
-            await this.fetchOrders()
+            await this.fetchAllOrders()
             this.handleClose()
             this.$emit('close')
           })
@@ -280,7 +311,10 @@ export default {
           .catch(e => {
             console.log('e', e)
           })
-    }
+    },
+    parseDate(date) {
+      return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
+    },
   },
 
   async mounted() {

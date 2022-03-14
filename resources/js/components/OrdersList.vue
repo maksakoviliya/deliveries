@@ -67,10 +67,10 @@
                   <div class="text-xs text-gray-500">{{ order.cod ? 'Да' : 'Нет' }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.payment_type === 'card' ? 'Карта' : 'Безнал' }}</div>
+                  <div class="text-xs text-gray-500">{{ order.payment_type === 'card' ? 'Карта' : 'Наличные' }}</div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ order.courier_id ? 'courier' : 'Не назначен' }}</div>
+                  <div class="text-xs text-gray-500">{{ order.courier ? order.courier.name : 'Не назначен' }}</div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ order.price ? `${order.price}₽` : '' }}</div>
