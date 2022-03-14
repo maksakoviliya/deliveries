@@ -454,6 +454,10 @@ Ensure the default browser behavior of the `hidden` attribute.
   left: 0px;
   right: 0px;
 }
+.inset-y-0 {
+  top: 0px;
+  bottom: 0px;
+}
 .top-0 {
   top: 0px;
 }
@@ -462,6 +466,18 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .top-full {
   top: 100%;
+}
+.left-48 {
+  left: 12rem;
+}
+.left-52 {
+  left: 13rem;
+}
+.left-44 {
+  left: 11rem;
+}
+.left-0 {
+  left: 0px;
 }
 .z-10 {
   z-index: 10;
@@ -548,6 +564,9 @@ Ensure the default browser behavior of the `hidden` attribute.
 .mb-6 {
   margin-bottom: 1.5rem;
 }
+.ml-48 {
+  margin-left: 12rem;
+}
 .block {
   display: block;
 }
@@ -601,6 +620,12 @@ Ensure the default browser behavior of the `hidden` attribute.
 }
 .h-\[40vh\] {
   height: 40vh;
+}
+.h-\[60vh\] {
+  height: 60vh;
+}
+.h-\[80vh\] {
+  height: 80vh;
 }
 .max-h-screen {
   max-height: 100vh;
@@ -976,6 +1001,14 @@ Ensure the default browser behavior of the `hidden` attribute.
 .px-12 {
   padding-left: 3rem;
   padding-right: 3rem;
+}
+.px-10 {
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+}
+.px-14 {
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
 }
 .pt-8 {
   padding-top: 2rem;
@@ -1502,6 +1535,10 @@ Ensure the default browser behavior of the `hidden` attribute.
     padding: 2rem;
   }
 
+  .sm\:p-4 {
+    padding: 1rem;
+  }
+
   .sm\:px-6 {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
@@ -1510,6 +1547,21 @@ Ensure the default browser behavior of the `hidden` attribute.
   .sm\:px-0 {
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  .sm\:px-4 {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .sm\:py-8 {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  .sm\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
 
   .sm\:pt-0 {

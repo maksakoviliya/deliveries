@@ -87,16 +87,17 @@ export default {
           placeholder: "Ваше имя",
           type: "text"
         },
-        {
-          key: 'email',
-          label: 'Email',
-          disabled: true,
-          placeholder: "Ваш Email",
-          type: "text"
-        },
+        // {
+        //   key: 'email',
+        //   label: 'Email',
+        //   disabled: true,
+        //   placeholder: "Ваш Email",
+        //   type: "text"
+        // },
         {
           key: 'phone',
           label: 'Телефон',
+          disabled: true,
           placeholder: "Ваш телефон",
           type: "text"
         },
