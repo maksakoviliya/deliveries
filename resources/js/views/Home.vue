@@ -2,16 +2,13 @@
 <template>
   <div>
     <Navbar />
-
-    <OrdersList class="max-w-5xl mx-auto mt-10">
-
-    </OrdersList>
+    <OrdersList class="max-w-6xl mx-auto px-10 mt-10" />
   </div>
 </template>
 
 <script>
 import {Popover} from '@headlessui/vue'
-import OrdersList from "../components/OrdersList";
+import OrdersList from "../components/orders/OrdersList";
 import Navbar from "../components/common/Navbar";
 
 export default {

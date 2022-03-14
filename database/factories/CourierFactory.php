@@ -18,7 +18,7 @@ class CourierFactory extends Factory
     {
         return [
             'name' => $this->faker->name(),
-            'phone' => $this->faker->randomNumber(10),
+            'phone' => $this->faker->randomNumber(9),
             'comment' => $this->faker->boolean() ? $this->faker->text() : null
         ];
     }

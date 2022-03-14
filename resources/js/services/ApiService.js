@@ -135,4 +135,15 @@ export default {
     updateCourier(id, params) {
         return authClient.post(`/couriers/${id}`, params);
     },
+
+    // Acts
+    fetchActs(params = {}) {
+        return authClient.get('/acts', params)
+    },
+    createAct(params) {
+        return authClient.post('/acts', params)
+    },
+    removeAct(id) {
+        return authClient.delete(`/acts/${id}`);
+    },
 };

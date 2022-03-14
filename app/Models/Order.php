@@ -30,4 +30,9 @@ class Order extends Model
     {
         return $this->belongsTo(Courier::class);
     }
+
+    public function act()
+    {
+        return $this->belongsTo(Act::class);
+    }
 }

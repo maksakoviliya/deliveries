@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Act extends Model
 {
     use HasFactory;
+
+    protected $guarded = [
+        'id',
+        'created_at'
+    ];
+
+    public function orders()
+    {
+        return $this->hasMany(Order::class);
+    }
 }

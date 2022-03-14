@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ActController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\CourierController;
@@ -39,6 +40,11 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
     Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+
+    // Acts
+    Route::get('/acts', [ActController::class, 'index'])->name('acts.index');
+    Route::post('/acts', [ActController::class, 'store'])->name('acts.store');
+    Route::delete('/acts/{act}', [ActController::class, 'destroy'])->name('acts.destroy');
 
     Route::middleware(['admin'])->group(function() {
         // Clients

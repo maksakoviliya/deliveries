@@ -6,7 +6,8 @@ export const namespaced = true;
 export const state = {
     orders: [],
     recipients: [],
-    allOrders: []
+    allOrders: [],
+    selectedOrders: []
 };
 
 export const getters = {
@@ -19,6 +20,9 @@ export const getters = {
     allOrders: (state) => {
         return state.allOrders;
     },
+    selectedOrders: (state) => {
+        return state.selectedOrders;
+    },
 }
 
 export const mutations = {
@@ -30,6 +34,9 @@ export const mutations = {
     },
     SET_ALL_ORDERS(state, allOrders) {
         state.allOrders = allOrders
+    },
+    SET_SELECTED_ORDERS(state, selectedOrders) {
+        state.selectedOrders = selectedOrders
     },
 }
 
@@ -122,4 +129,14 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
+    selectOrder({commit, state}, order) {
+        let selected = state.selectedOrders
+        let index = selected.findIndex(item => item.id === order.id)
+        if (index >= 0) {
+            selected.splice(index, 1)
+        } else {
+            selected.push(order)
+        }
+        commit('SET_SELECTED_ORDERS', selected)
+    }
 }

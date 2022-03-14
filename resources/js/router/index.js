@@ -37,7 +37,7 @@ const routes = [
     path: "/acts/:id?",
     name: "acts",
     meta: { middleware: [auth, notAdmin] },
-    component: () => import(/* webpackChunkName: "home" */ "../views/Home"),
+    component: () => import(/* webpackChunkName: "home" */ "../views/Acts"),
   },
   {
     path: "/profile",

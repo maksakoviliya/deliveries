@@ -3,6 +3,7 @@ import * as auth from "./modules/Auth"
 import * as order from "./modules/Order"
 import * as client from "./modules/Client"
 import * as courier from "./modules/Courier"
+import * as act from "./modules/Act"
 
 export default createStore({
     state: {
@@ -22,6 +23,7 @@ export default createStore({
         auth,
         order,
         client,
-        courier
+        courier,
+        act
     }
 });
