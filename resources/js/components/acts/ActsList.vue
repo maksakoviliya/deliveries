@@ -52,10 +52,10 @@
                 </td>
                 <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex gap-2 justify-end">
-<!--                    <router-link :to="{name: $route.name, params: { id: act.id }, query: $route.query}"-->
-<!--                                 class="text-indigo-600 hover:text-indigo-900">-->
-<!--                      <RefreshIcon class="w-4 h-4"/>-->
-<!--                    </router-link>-->
+                    <button @click="handlePrint(act)"
+                                 class="text-indigo-600 hover:text-indigo-900">
+                      <PrinterIcon class="w-4 h-4"/>
+                    </button>
                     <button @click="showModalDeleteForm(act)"
                             class="text-red-600 hover:text-red-900">
                       <TrashIcon class="w-4 h-4"/>
@@ -95,7 +95,7 @@
 <script>
 import ActsSearch from "./ActsSearch";
 import CommonButton from "../common/CommonButton";
-import {PlusIcon, RefreshIcon, TrashIcon} from "@heroicons/vue/outline";
+import {PlusIcon, PrinterIcon, RefreshIcon, TrashIcon} from "@heroicons/vue/outline";
 import {mapActions, mapGetters} from "vuex";
 import DeleteConfirmation from "../orders/DeleteConfirmation";
 import ApiService from "../../services/ApiService";
@@ -110,7 +110,8 @@ export default {
     PlusIcon,
     RefreshIcon,
     TrashIcon,
-    DeleteConfirmation
+    DeleteConfirmation,
+    PrinterIcon
   },
 
   computed: {
@@ -157,6 +158,9 @@ export default {
             actions.setErrors(errors);
           });
     },
+    handlePrint(act) {
+      console.log('act', act)
+    }
   },
 
   async mounted() {

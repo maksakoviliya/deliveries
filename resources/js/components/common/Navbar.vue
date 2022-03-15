@@ -23,7 +23,7 @@
 
         </PopoverGroup>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0 gap-3">
-          <router-link :to="{name: 'dashboard'}" class="flex items-center font-medium hover:text-gray-900 text-gray-500 gap-2" v-if="user.isAdmin">
+          <router-link :to="{name: 'dashboard'}" class="flex items-center font-medium hover:text-gray-900 text-gray-500 gap-2" v-if="user && user.isAdmin">
             <IdentificationIcon class="w-5 h-5" />
             Админ панель
           </router-link>

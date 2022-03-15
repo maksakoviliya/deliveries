@@ -9,6 +9,7 @@ export default function notAdmin({ to, next, store }) {
         });
     }
     else {
-        next({ name: "dashboard" })
+        next({ name: "clients" })
+        // next({ name: "dashboard" })
     }
 }

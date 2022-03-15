@@ -50,20 +50,15 @@ export const actions = {
         commit("SET_LOADING", true, { root: true });
         try {
             let response = null;
-            console.log('start')
-            console.log('data', data)
             if (getters.company) {
                 response = await ApiService.updateCompany(data);
             } else {
                 response = await ApiService.createCompany(data);
             }
-            console.log('finish')
-            console.log('response', response)
             commit("SET_COMPANY", response.data.data);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });
-            console.log('errr herer')
             throw error
         } finally {
             commit("SET_LOADING", false, { root: true });
