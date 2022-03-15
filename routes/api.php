@@ -45,6 +45,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/acts', [ActController::class, 'index'])->name('acts.index');
     Route::post('/acts', [ActController::class, 'store'])->name('acts.store');
     Route::delete('/acts/{act}', [ActController::class, 'destroy'])->name('acts.destroy');
+    Route::get('/acts/download/{act}', [ActController::class, 'download'])->name('acts.download');
 
     Route::middleware(['admin'])->group(function() {
         // Clients

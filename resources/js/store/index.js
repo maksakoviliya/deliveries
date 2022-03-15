@@ -7,12 +7,12 @@ import * as act from "./modules/Act"
 
 export default createStore({
     state: {
-        loading: false,
+        load: false,
         error: null
     },
     mutations: {
         SET_LOADING(state, loading) {
-            state.loading = loading;
+            state.load = loading;
         },
         SET_ERROR(state, error) {
             state.error = error;

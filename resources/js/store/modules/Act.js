@@ -44,5 +44,16 @@ export const actions = {
         } finally {
             commit("SET_LOADING", false, { root: true });
         }
+    },
+    async downloadAct({commit}, id) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            return await ApiService.downloadAct(id);
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
     }
 }

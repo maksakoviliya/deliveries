@@ -3681,6 +3681,9 @@ textarea.form-control.is-invalid {
 .ml-48 {
   margin-left: 12rem;
 }
+.mr-3 {
+  margin-right: 0.75rem;
+}
 .block {
   display: block;
 }
@@ -3804,6 +3807,9 @@ textarea.form-control.is-invalid {
 .flex-shrink-0 {
   flex-shrink: 0;
 }
+.border-collapse {
+  border-collapse: collapse;
+}
 .origin-top-right {
   transform-origin: top right;
 }
@@ -3839,6 +3845,22 @@ textarea.form-control.is-invalid {
 }
 .transform {
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+@-webkit-keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes spin {
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+.animate-spin {
+  -webkit-animation: spin 1s linear infinite;
+          animation: spin 1s linear infinite;
 }
 .cursor-pointer {
   cursor: pointer;
@@ -4319,6 +4341,12 @@ textarea.form-control.is-invalid {
 }
 .opacity-100 {
   opacity: 1;
+}
+.opacity-25 {
+  opacity: 0.25;
+}
+.opacity-75 {
+  opacity: 0.75;
 }
 .shadow {
   --tw-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);

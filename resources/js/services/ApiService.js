@@ -146,4 +146,9 @@ export default {
     removeAct(id) {
         return authClient.delete(`/acts/${id}`);
     },
+    downloadAct(id) {
+        return authClient.get(`/acts/download/${id}`, {
+            responseType: 'blob'
+        });
+    },
 };
