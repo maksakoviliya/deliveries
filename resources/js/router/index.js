@@ -78,6 +78,12 @@ const routes = [
         name: "couriers",
         meta: { middleware: [auth, admin] },
         component: () => import(/* webpackChunkName: "home" */ "../views/admin/couriers/CouriersList"),
+      },
+      {
+        path: "/dashboard/acts",
+        name: "allActs",
+        meta: { middleware: [auth, admin] },
+        component: () => import(/* webpackChunkName: "home" */ "../views/admin/acts/ActsList"),
       }
     ]
   },

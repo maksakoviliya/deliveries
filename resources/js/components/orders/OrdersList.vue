@@ -61,7 +61,7 @@
           <tr v-for="order in orders" :key="order.id">
             <td class="px-3 py-2 whitespace-nowrap">
               <input
-                  v-if="!order.act_id"
+                  v-if="!order.act_id && order.status !== 'processing'"
                   class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
                   type="checkbox"
                   :value="order.id"
@@ -70,7 +70,7 @@
               >
             </td>
             <td class="px-3 py-2 whitespace-nowrap">
-              {{ order.id }}
+              <span class="text-gray-400">#</span>{{ order.id }}
             </td>
             <td class="px-3 py-2">
               <div class="text-xs text-gray-500">
@@ -100,7 +100,22 @@
               <div class="text-xs text-gray-500">{{ order.price ? `${order.price}₽` : '' }}</div>
             </td>
             <td class="px-3 py-2">
-              <div class="text-xs text-gray-500">{{ order.act_id }}</div>
+              <div class="text-xs text-gray-500 flex items-center" v-if="order.act_id">
+                <span class="text-gray-400">#</span>
+                {{ order.act_id }}
+                <span class="w-1 block"></span>
+                <button @click="handlePrint(order.act_id)"
+                        v-if="!loading"
+                        class="text-indigo-600 hover:text-indigo-900">
+                  <DownloadIcon class="w-4 h-4"/>
+                </button>
+                <svg class="animate-spin h-4 w-4 text-indigo-600" v-else xmlns="http://www.w3.org/2000/svg"
+                     fill="none" viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path class="opacity-75" fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+              </div>
             </td>
             <td class="px-3 py-2 whitespace-nowrap">
                   <span
@@ -111,7 +126,7 @@
               <div class="flex gap-2">
                 <router-link :to="{name: $route.name, params: { id: order.id }, query: $route.query}"
                              class="text-indigo-600 hover:text-indigo-900">
-                  <RefreshIcon class="w-4 h-4"/>
+                  <DocumentDuplicateIcon class="w-4 h-4"/>
                 </router-link>
                 <button @click="showModalDeleteForm(order)" v-if="order.status === 'processing'"
                         class="text-red-600 hover:text-red-900">
@@ -151,7 +166,7 @@
 <script>
 import OrdersSearch from "./OrdersSearch";
 import CommonButton from "../common/CommonButton";
-import {PlusIcon, RefreshIcon, TrashIcon} from "@heroicons/vue/outline";
+import {PlusIcon, DocumentDuplicateIcon, TrashIcon, DownloadIcon} from "@heroicons/vue/outline";
 import OrderForm from "./OrderForm";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import DeleteConfirmation from "./DeleteConfirmation";
@@ -167,16 +182,18 @@ export default {
     CommonButton,
     PlusIcon,
     OrderForm,
-    RefreshIcon,
+    DocumentDuplicateIcon,
     TrashIcon,
     DeleteConfirmation,
-    OrdersSelectedActions
+    OrdersSelectedActions,
+    DownloadIcon
   },
 
   methods: {
     ...mapActions({
       fetchOrders: "order/fetchOrders",
-      selectOrder: "order/selectOrder"
+      selectOrder: "order/selectOrder",
+      downloadAct: "act/downloadAct"
     }),
     parseDate(date) {
       return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
@@ -235,10 +252,26 @@ export default {
             actions.setErrors(errors);
           });
     },
+    async handlePrint(act_id) {
+      this.loading = true
+      this.downloadAct(act_id).then((res) => {
+        let fileURL = window.URL.createObjectURL(new Blob([res.data]));
+        let fileLink = document.createElement('a');
+
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', res.headers['content-disposition'].split('filename=')[1].split('"')[1]);
+        document.body.appendChild(fileLink);
+
+        fileLink.click();
+      }).finally(() => {
+        this.loading = false
+      })
+    }
   },
 
   data() {
     return {
+      loading: false,
       showDeleteConfirmation: false,
       deletingItem: null,
     }

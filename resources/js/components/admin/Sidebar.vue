@@ -15,7 +15,7 @@
 
 <script>
 import LogoLink from "../common/LogoLink";
-import {AtSymbolIcon, ChartSquareBarIcon, LightningBoltIcon, UserIcon} from "@heroicons/vue/outline";
+import {AtSymbolIcon, ChartSquareBarIcon, DocumentTextIcon, LightningBoltIcon, UserIcon} from "@heroicons/vue/outline";
 
 export default {
   name: "Sidebar",
@@ -25,7 +25,8 @@ export default {
     UserIcon,
     LightningBoltIcon,
     AtSymbolIcon,
-    ChartSquareBarIcon
+    ChartSquareBarIcon,
+    DocumentTextIcon
   },
 
   data() {
@@ -54,6 +55,12 @@ export default {
           label: 'Курьеры',
           icon: 'AtSymbolIcon',
           to: {name: 'couriers'}
+        },
+        {
+          id: 4,
+          label: 'Акты',
+          icon: 'DocumentTextIcon',
+          to: {name: 'allActs'}
         }
       ]
     }

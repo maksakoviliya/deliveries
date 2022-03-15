@@ -12,11 +12,11 @@
             <MenuIcon class="h-6 w-6" aria-hidden="true"/>
           </PopoverButton>
         </div>
-        <PopoverGroup as="nav" class="hidden md:flex mr-auto space-x-10">
-          <router-link :to="{name: 'home'}" class="text-base font-medium text-gray-500 hover:text-gray-900"
+        <PopoverGroup as="nav" class="hidden md:flex mr-auto space-x-10 text-gray-500">
+          <router-link :to="{name: 'home'}" class="text-base font-medium hover:text-gray-900"
                        active-class="text-gray-900"> Заказы
           </router-link>
-          <router-link :to="{name: 'acts'}" class="text-base font-medium text-gray-500 hover:text-gray-900"
+          <router-link :to="{name: 'acts'}" class="text-base font-medium hover:text-gray-900"
                        active-class="text-gray-900"> Акты
           </router-link>
           <!--          <a href="#" class="text-base font-medium text-gray-500 hover:text-gray-900"> Docs </a>-->

@@ -62,12 +62,20 @@
                                placeholder="Оценочная стоимость"/>
                   <CommonCheckbox name="cod"
                                   label="Наложенный платеж"/>
+                  <CommonInput name="cod_price"
+                               v-show="values.cod"
+                               label="Сумма для оплаты"
+                               placeholder="Сумма для оплаты"/>
                   <CommonSelect name="payment_type"
                                 label="Тип оплаты"
                                 :options="payment_types"/>
+                  <CommonInput name="quantity"
+                               type="number"
+                               label="Количество (шт)"
+                               placeholder="Количество единиц товара"/>
                   <CommonInput name="weight"
-                               label="Вес (кг)"
-                               placeholder="Вес"/>
+                               label="Общий вес (кг)"
+                               placeholder="Общий вес"/>
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
@@ -122,8 +130,10 @@ const order = {
   delivery_interval: null,
   assessed_value: null,
   cod: false,
+  cod_price: null,
   payment_type: 'card',
   comment: null,
+  quantity: null,
   weight: null,
   status: 'processing',
   courier_id: null
@@ -158,9 +168,15 @@ export default {
       assessed_value: yup.string().required(),
       delivery_interval: yup.array(),
       weight: yup.number().required(),
+      quantity: yup.number().required().min(0),
       cod: yup.boolean(),
       status: yup.string().required(),
       courier_id: yup.number().nullable(true),
+      cod_price: yup.number().when('cod', {
+        is: (val) => val,
+        then: (schema) => schema.required(),
+        otherwise: (schema) => schema.nullable(true),
+      }),
     });
 
     return {
@@ -290,7 +306,6 @@ export default {
         address,
         product_name,
       })
-
       // this.$refs.myForm.setValues({
       //   recipient_id: id,
       //   name: name,
@@ -316,7 +331,10 @@ export default {
             }
           })
           .catch(e => {
-            console.log('e', e)
+            this.$notify({
+              type: 'error',
+              text: 'Возникла ошибка!'
+            })
           })
     },
     parseDate(date) {

@@ -32,10 +32,12 @@ class OrderController extends Controller
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
+            "cod_price" => "required_with:cod",
             "payment_type" => "required|in:cash,card",
             "price" => "required",
             "comment" => "nullable",
-            "weight" => "nullable",
+            "weight" => "required",
+            "quantity" => "required|alpha_num|min:0",
         ]);
 
         $recipient = Recipient::updateOrCreate([
@@ -55,10 +57,12 @@ class OrderController extends Controller
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
             'price' => $request->input('price'),
+            'cod_price' => $request->input('cod_price'),
             'cod' => $request->input('cod') ? $request->input('cod') : false,
             'payment_type' => $request->input('payment_type'),
             'user_id' => Auth::user()->id,
             'comment' => $request->input('comment'),
+            'quantity' => $request->input('quantity'),
         ]);
         return new OrderResource($order);
     }
@@ -76,11 +80,13 @@ class OrderController extends Controller
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
+            "cod_price" => "required_with:cod",
             "payment_type" => "required|in:cash,card",
             "price" => "required",
             "comment" => "nullable",
             "weight" => "nullable",
-            "status" => "required|in:processing,work,delivered,undelivered"
+            "status" => "required|in:processing,work,delivered,undelivered",
+            "quantity" => "required|alpha_num|min:0",
         ]);
 
         $recipient_data = [
@@ -108,10 +114,12 @@ class OrderController extends Controller
             'weight' => $request->input('weight'),
             'price' => $request->input('price'),
             'cod' => $request->input('cod') ? $request->input('cod') : false,
+            'cod_price' => $request->input('cod_price'),
             'payment_type' => $request->input('payment_type'),
             'comment' => $request->input('comment'),
             'status' => $request->input('status'),
             'courier_id' => $request->input('courier_id'),
+            'quantity' => $request->input('quantity'),
         ]);
         return new OrderResource($order);
     }
@@ -137,6 +145,15 @@ class OrderController extends Controller
     {
         $order->update([
             'courier_id' => $request->input('courier_id')
+        ]);
+
+        return new OrderResource($order);
+    }
+
+    public function setOrderPayment(Request $request, Order $order)
+    {
+        $order->update([
+            'payment' => $request->input('payment')
         ]);
 
         return new OrderResource($order);

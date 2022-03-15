@@ -91,9 +91,13 @@ export default {
           type: 'success',
           text: 'Статус заказа обновлен'
         })
-        console.log('this.$refs', this.$refs)
         this.$refs[`${values.order_id}_popover`].click()
         this.fetchAllOrders()
+      }).catch(() => {
+        this.$notify({
+          type: 'error',
+          text: 'Произошла ошибка!'
+        })
       })
     },
     getTextOfStatus(status) {

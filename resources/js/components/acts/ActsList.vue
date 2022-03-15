@@ -26,6 +26,9 @@
                   ID
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Дата
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Сумма
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -38,7 +41,12 @@
               <tbody class="bg-white divide-y divide-gray-200">
               <tr v-for="act in acts" :key="act.id">
                 <td class="px-6 py-2 whitespace-nowrap">
-                  {{ act.id }}
+                  <span class="text-gray-400">#</span>{{ act.id }}
+                </td>
+                <td class="px-6 py-2">
+                  <div class="text-xs text-gray-500">
+                    {{ parseDate(act.created_at, 'dd.MM.yy') }}
+                  </div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">
@@ -52,10 +60,10 @@
                 </td>
                 <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex gap-2 justify-end">
-                    <button @click="handlePrint(act)"
+                    <button @click="handlePrint(act.id)"
                             v-if="!loading"
                             class="text-indigo-600 hover:text-indigo-900">
-                      <PrinterIcon class="w-4 h-4"/>
+                      <DownloadIcon class="w-4 h-4"/>
                     </button>
                     <svg class="animate-spin h-4 w-4 text-indigo-600" v-else xmlns="http://www.w3.org/2000/svg"
                          fill="none" viewBox="0 0 24 24">
@@ -102,11 +110,12 @@
 <script>
 import ActsSearch from "./ActsSearch";
 import CommonButton from "../common/CommonButton";
-import {PlusIcon, PrinterIcon, RefreshIcon, TrashIcon} from "@heroicons/vue/outline";
+import {PlusIcon, DownloadIcon, RefreshIcon, TrashIcon} from "@heroicons/vue/outline";
 import {mapActions, mapGetters} from "vuex";
 import DeleteConfirmation from "../orders/DeleteConfirmation";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
+import {DateTime} from "luxon";
 
 export default {
   name: "ActsList",
@@ -118,7 +127,7 @@ export default {
     RefreshIcon,
     TrashIcon,
     DeleteConfirmation,
-    PrinterIcon,
+    DownloadIcon,
   },
 
   computed: {
@@ -140,6 +149,9 @@ export default {
       fetchActs: "act/fetchActs",
       downloadAct: "act/downloadAct"
     }),
+    parseDate(date, format = 'dd.MM.yy HH:mm') {
+      return DateTime.fromISO(date).toFormat(format)
+    },
     showModalDeleteForm(client) {
       this.deletingItem = client
       this.showDeleteConfirmation = true
@@ -167,12 +179,9 @@ export default {
             actions.setErrors(errors);
           });
     },
-    async handlePrint(act) {
-      console.log('act', act)
+    async handlePrint(act_id) {
       this.loading = true
-      this.downloadAct(act.id).then((res) => {
-        console.log('res', res)
-        console.log('res.headers[\'content-disposition\']', res.headers['content-disposition'].split('filename=')[1].split('"')[1])
+      this.downloadAct(act_id).then((res) => {
         let fileURL = window.URL.createObjectURL(new Blob([res.data]));
         let fileLink = document.createElement('a');
 

@@ -101,6 +101,9 @@ export default {
     setOrderCourier(id, params) {
         return authClient.post(`/setOrderCourier/${id}`, params);
     },
+    setOrderPayment(id, params) {
+        return authClient.post(`/setOrderPayment/${id}`, params);
+    },
 
     // Clients
     getClients() {

@@ -3,7 +3,7 @@
     <button
         type="button"
         :ref="`${order.id}_courier_popover`"
-        class="text-xs text-gray-500">
+        class="text-xs text-gray-500 hover:underline">
       {{ order.courier ? order.courier.name : 'Не назначен' }}
     </button>
 

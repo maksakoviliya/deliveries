@@ -56,12 +56,20 @@
                                placeholder="Оценочная стоимость"/>
                   <CommonCheckbox name="cod"
                                   label="Наложенный платеж"/>
+                  <CommonInput name="cod_price"
+                               v-show="values.cod"
+                               label="Сумма для оплаты"
+                               placeholder="Сумма для оплаты"/>
                   <CommonSelect name="payment_type"
                                 label="Тип оплаты"
                                 :options="payment_types"/>
+                  <CommonInput name="quantity"
+                               type="number"
+                               label="Количество (шт)"
+                               placeholder="Количество единиц товара"/>
                   <CommonInput name="weight"
-                               label="Вес (кг)"
-                               placeholder="Вес"/>
+                               label="Общий вес (кг)"
+                               placeholder="Общий вес"/>
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
@@ -114,6 +122,8 @@ const order = {
   delivery_interval: null,
   assessed_value: null,
   cod: false,
+  cod_price: null,
+  quantity: 1,
   payment_type: 'card',
   comment: null,
   weight: null,
@@ -145,9 +155,15 @@ export default {
       address: yup.string().required(),
       product_name: yup.string().required(),
       assessed_value: yup.string().required(),
-      delivery_interval: yup.array(),
+      delivery_interval: yup.array().required(),
       weight: yup.number().required(),
-      cod: yup.boolean()
+      quantity: yup.number().required().min(0),
+      cod: yup.boolean(),
+      cod_price: yup.number().when('cod', {
+        is: (val) => val,
+        then: (schema) => schema.required(),
+        otherwise: (schema) => schema.nullable(true),
+      }),
     });
 
     return {
@@ -215,7 +231,6 @@ export default {
      values.price = this.cost
       ApiService.createOrder(values)
           .then(async (res) => {
-            console.log('res', res)
             this.$notify({
               type: 'success',
               title: 'Заказ создан'
@@ -261,10 +276,13 @@ export default {
     async setOrder(id) {
       this.fetchOrder(id)
           .then(res => {
-            this.order = res
+            this.order = {...this.order, ...res}
           })
           .catch(e => {
-            console.log('e', e)
+            this.$notify({
+              type: 'error',
+              title: 'Возникла ошибка!',
+            })
           })
     }
   },

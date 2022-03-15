@@ -59,6 +59,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/allOrders', [OrderController::class, 'allOrders'])->name('orders.all');
         Route::post('/setOrderStatus/{order}', [OrderController::class, 'setOrderStatus'])->name('orders.setOrderStatus');
         Route::post('/setOrderCourier/{order}', [OrderController::class, 'setOrderCourier'])->name('orders.setOrderCourier');
+        Route::post('/setOrderPayment/{order}', [OrderController::class, 'setOrderPayment'])->name('orders.setOrderPayment');
 
         // Couriers
         Route::get('/couriers', [CourierController::class, 'index'])->name('couriers.index');

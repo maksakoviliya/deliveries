@@ -23,7 +23,9 @@ return new class extends Migration
             $table->float('assessed_value');
             $table->float('weight');
             $table->float('price');
+            $table->integer('quantity');
             $table->boolean('cod')->default(false);
+            $table->float('cod_price')->nullable();
             $table->enum('payment_type', ['cash', 'card']);
             $table->text('comment')->nullable();
             $table->dateTime('delivered_at')->nullable();
