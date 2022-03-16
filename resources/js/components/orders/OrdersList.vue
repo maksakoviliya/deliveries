@@ -152,6 +152,8 @@
       </div>
     </div>
 
+    <OrderAnalytics class="mt-5" />
+
     <OrderForm :key="$route.params.id"/>
 
     <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm">
@@ -174,6 +176,7 @@ import DeleteConfirmation from "./DeleteConfirmation";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import OrdersSelectedActions from "./OrdersSelectedActions";
+import OrderAnalytics from "./OrderAnalytics";
 
 const {DateTime} = require("luxon");
 
@@ -187,7 +190,8 @@ export default {
     TrashIcon,
     DeleteConfirmation,
     OrdersSelectedActions,
-    DownloadIcon
+    DownloadIcon,
+    OrderAnalytics
   },
 
   methods: {
