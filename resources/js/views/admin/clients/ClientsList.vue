@@ -25,14 +25,14 @@
                   ID
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Компания
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Имя
                 </th>
 <!--                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
 <!--                  Контакты-->
 <!--                </th>-->
-                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Компания
-                </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Заказы
                 </th>
@@ -53,6 +53,9 @@
 <!--                  <div class="text-xs text-gray-500">{{ client.name }}</div>-->
 <!--                </td>-->
                 <td class="px-6 py-2">
+                  <div class="text-xs text-gray-500">{{ client.company ? client.company.title : '' }}</div>
+                </td>
+                <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">
                     <div class="text-sm font-medium text-gray-900">
                       {{ client.name }}
@@ -61,9 +64,6 @@
                       {{ client.phone }}
                     </div>
                   </div>
-                </td>
-                <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">{{ client.company ? client.company.title : '' }}</div>
                 </td>
                 <td class="px-6 py-2">
                   <div class="text-xs text-gray-500">{{ client.orders_count }}</div>

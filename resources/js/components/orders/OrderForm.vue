@@ -115,6 +115,7 @@ import {LogoutIcon} from "@heroicons/vue/outline";
 import CommonButton from "../common/CommonButton";
 import {Form} from "vee-validate";
 import * as yup from "yup";
+import "yup-phone";
 import {mapActions, mapGetters} from "vuex";
 import CommonSelect from "../common/CommonSelect";
 import CommonInput from "../common/CommonInput";
@@ -170,7 +171,7 @@ export default {
   data() {
     const schema = yup.object({
       name: yup.string().required(),
-      phone: yup.string().required(),
+      phone: yup.string().required().phone(),
       address: yup.string().required(),
       product_name: yup.string().required(),
       assessed_value: yup.string().required(),

@@ -19,9 +19,15 @@
               <div class="text-gray-700 text-sm">
                 Выбрано заказов: <span class="text-gray-900 font-semibold">{{ selectedOrders.length }}</span>
               </div>
-              <CommonButton type="button" color="primary" @click="handleSubmit">
-                Сформировать АПП
-              </CommonButton>
+
+              <div class="flex gap-2 items-center">
+                <CommonButton type="button" color="primary" @click="handleGenerateAct" v-if="actions.includes('act')">
+                  Сформировать АПП
+                </CommonButton>
+                <CommonButton type="button" color="primary" @click="handlePay" v-if="actions.includes('pay')">
+                  Оплатить
+                </CommonButton>
+              </div>
 
             </div>
           </div>
@@ -50,6 +56,12 @@ export default {
   props: {
     open: {
       required: true
+    },
+    actions: {
+      type: Array,
+      default: () => {
+        return ['act']
+      }
     }
   },
 
@@ -66,14 +78,27 @@ export default {
     ...mapActions({
       createAct: "act/createAct",
       fetchOrders: "order/fetchOrders",
+      ordersPay: "order/ordersPay",
     }),
-    handleSubmit() {
+    handleGenerateAct() {
       this.createAct({
         acts: this.selectedOrders.map(item => item.id)
       }).then(() => {
         this.$notify({
           type: 'success',
           text: 'Акт приема-передачи учпешно создан'
+        })
+        this.setSelectedOrders([])
+        this.fetchOrders()
+      })
+    },
+    handlePay() {
+      this.ordersPay({
+        orders: this.selectedOrders.map(item => item.id)
+      }).then(() => {
+        this.$notify({
+          type: 'success',
+          text: 'Выбранные заказы оплачены'
         })
         this.setSelectedOrders([])
         this.fetchOrders()

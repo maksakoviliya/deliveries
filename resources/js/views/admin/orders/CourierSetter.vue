@@ -67,7 +67,7 @@ export default {
   methods: {
     ...mapActions({
       setOrderCourier: "order/setOrderCourier",
-      fetchAllOrders: "order/fetchAllOrders",
+      fetchOrders: "order/fetchOrders",
     }),
     setInitialCourier(order) {
       return {
@@ -82,7 +82,7 @@ export default {
           text: 'Данные заказа обновлены'
         })
         this.$refs[`${values.order_id}_courier_popover`].click()
-        this.fetchAllOrders()
+        this.fetchOrders()
       })
     },
   }

@@ -272,7 +272,6 @@ export default {
       fetchRecipientsForUser: "order/fetchRecipientsForUser",
       fetchOrder: "order/fetchOrder",
       fetchOrders: "order/fetchOrders",
-      fetchAllOrders: "order/fetchAllOrders",
     }),
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
@@ -295,7 +294,7 @@ export default {
               type: 'success',
               title: 'Заказ обновлен'
             })
-            await this.fetchAllOrders()
+            await this.fetchOrders()
             this.handleClose()
             this.$emit('close')
           })

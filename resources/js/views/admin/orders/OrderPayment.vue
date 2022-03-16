@@ -74,7 +74,7 @@ export default {
   methods: {
     ...mapActions({
       setOrderPayment: "order/setOrderPayment",
-      fetchAllOrders: "order/fetchAllOrders",
+      fetchOrders: "order/fetchOrders",
     }),
     async handlePaymentChange(values) {
       this.setOrderPayment(values).then(() => {
@@ -83,7 +83,7 @@ export default {
           text: 'Статус заказа обновлен'
         })
         this.$refs[`${values.order_id}_popover`].click()
-        this.fetchAllOrders()
+        this.fetchOrders()
       }).catch(() => {
         this.$notify({
           type: 'error',

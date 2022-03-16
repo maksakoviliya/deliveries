@@ -13,7 +13,8 @@
   <!--        type="text"-->
   <!--        placeholder="Поиск по заказам"-->
   <!--    />-->
-  <CustomSelect :multiple="true" name="statuses" class="w-40" :value="$route.query.status" @change="handleStatusesChange" :options="statuses"/>
+<!--  <CustomSelect :multiple="true" name="statuses" placeholder="Статус заказа" class="w-40" :value="$route.query.status"-->
+<!--                @change="handleStatusesChange" :options="statuses"/>-->
 
   <!--    <CommonButton>-->
   <!--      <template v-slot:icon>-->

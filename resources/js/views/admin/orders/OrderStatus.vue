@@ -83,7 +83,7 @@ export default {
   methods: {
     ...mapActions({
       setOrderStatus: "order/setOrderStatus",
-      fetchAllOrders: "order/fetchAllOrders",
+      fetchOrders: "order/fetchOrders",
     }),
     async handleStatusChange(values) {
       this.setOrderStatus(values).then(() => {
@@ -92,7 +92,7 @@ export default {
           text: 'Статус заказа обновлен'
         })
         this.$refs[`${values.order_id}_popover`].click()
-        this.fetchAllOrders()
+        this.fetchOrders()
       }).catch(() => {
         this.$notify({
           type: 'error',

@@ -76,17 +76,17 @@
                 </td>
                 <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
                   <div class="flex gap-2 justify-end">
-                    <button @click="handlePrint(act.id)"
-                            v-if="!loading"
-                            class="text-indigo-600 hover:text-indigo-900">
-                      <DownloadIcon class="w-4 h-4"/>
-                    </button>
-                    <svg class="animate-spin h-4 w-4 text-indigo-600" v-else xmlns="http://www.w3.org/2000/svg"
+                    <svg class="animate-spin h-4 w-4 text-indigo-600" v-if="loading && loadingItem && loadingItem === act.id" xmlns="http://www.w3.org/2000/svg"
                          fill="none" viewBox="0 0 24 24">
                       <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
                       <path class="opacity-75" fill="currentColor"
                             d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
+                    <button @click="handlePrint(act.id)"
+                            v-else
+                            class="text-indigo-600 hover:text-indigo-900">
+                      <DownloadIcon class="w-4 h-4"/>
+                    </button>
                     <button @click="showModalDeleteForm(act)"
                             class="text-red-600 hover:text-red-900">
                       <TrashIcon class="w-4 h-4"/>
@@ -155,6 +155,7 @@ export default {
   data() {
     return {
       loading: false,
+      loadingItem: null,
       showDeleteConfirmation: false,
       deletingItem: null,
     }
@@ -196,6 +197,7 @@ export default {
     },
     async handlePrint(act_id) {
       this.loading = true
+      this.loadingItem = act_id
       this.downloadAct(act_id).then((res) => {
         let fileURL = window.URL.createObjectURL(new Blob([res.data]));
         let fileLink = document.createElement('a');
@@ -215,6 +217,7 @@ export default {
           })
           .finally(() => {
             this.loading = false
+            this.loadingItem = null
           })
     }
   },

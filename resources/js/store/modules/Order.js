@@ -7,7 +7,6 @@ export const namespaced = true;
 export const state = {
     orders: [],
     recipients: [],
-    allOrders: [],
     selectedOrders: []
 };
 
@@ -17,9 +16,6 @@ export const getters = {
     },
     orders: (state) => {
         return state.orders;
-    },
-    allOrders: (state) => {
-        return state.allOrders;
     },
     selectedOrders: (state) => {
         return state.selectedOrders;
@@ -32,9 +28,6 @@ export const mutations = {
     },
     SET_RECIPIENTS(state, recipients) {
         state.recipients = recipients
-    },
-    SET_ALL_ORDERS(state, allOrders) {
-        state.allOrders = allOrders
     },
     SET_SELECTED_ORDERS(state, selectedOrders) {
         state.selectedOrders = selectedOrders
@@ -94,19 +87,6 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
-    async fetchAllOrders({commit}, params = {}) {
-        commit("SET_LOADING", true, { root: true });
-        try {
-            let response = await ApiService.fetchAllOrders(params);
-            commit("SET_ALL_ORDERS", response.data.data);
-            return response.data.data;
-        } catch (error) {
-            commit("SET_ERROR", getError(error), { root: true });
-            throw error
-        } finally {
-            commit("SET_LOADING", false, { root: true });
-        }
-    },
     async setOrderStatus({commit}, params) {
         commit("SET_LOADING", true, { root: true });
         try {
@@ -123,6 +103,18 @@ export const actions = {
         commit("SET_LOADING", true, { root: true });
         try {
             let response = await ApiService.setOrderPayment(params.order_id , params);
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
+    },
+    async ordersPay({commit}, params) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            let response = await ApiService.ordersPay(params);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });

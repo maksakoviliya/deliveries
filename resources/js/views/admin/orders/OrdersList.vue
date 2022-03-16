@@ -1,6 +1,8 @@
 <template>
   <div class="py-8 px-12 w-full h-full">
 
+    <OrdersSelectedActions :open="!!selectedOrders.length" :actions="['pay']"/>
+
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список заказов</h1>
     </div>
@@ -14,6 +16,8 @@
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
             <tr>
+              <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              </th>
               <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 ID
               </th>
@@ -52,6 +56,16 @@
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
             <tr v-for="order in orders" :key="order.id">
+              <td class="px-3 py-2 whitespace-nowrap">
+                <input
+                    v-if="order.payment !== 'payed'"
+                    class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="checkbox"
+                    :value="order.id"
+                    :checked="selectedOrders.findIndex(item => item.id === order.id) >= 0"
+                    @input="selectOrder(order)"
+                >
+              </td>
               <td class="px-3 py-2 whitespace-nowrap">
                 <span class="text-gray-400">#</span>{{ order.id }}
               </td>
@@ -162,6 +176,7 @@ import CommonButton from "../../../components/common/CommonButton";
 import OrderStatus from "./OrderStatus";
 import CourierSetter from "./CourierSetter";
 import OrderPayment from "./OrderPayment";
+import OrdersSelectedActions from "../../../components/orders/OrdersSelectedActions";
 
 export default {
   name: "OrdersList",
@@ -178,12 +193,14 @@ export default {
     OrderStatus,
     CourierSetter,
     OrderPayment,
-    DownloadIcon
+    DownloadIcon,
+    OrdersSelectedActions
   },
 
   computed: {
     ...mapGetters({
-      orders: "order/allOrders"
+      orders: "order/orders",
+      selectedOrders: "order/selectedOrders"
     })
   },
 
@@ -197,8 +214,9 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchAllOrders: "order/fetchAllOrders",
+      fetchOrders: "order/fetchOrders",
       fetchCouriers: "courier/fetchCouriers",
+      selectOrder: "order/selectOrder",
       downloadAct: "act/downloadAct"
     }),
     parseDate(date) {
@@ -222,7 +240,7 @@ export default {
           title: 'Данные заказов обновлены'
         })
         this.handleCloseDeleteForm()
-        await this.fetchAllOrders()
+        await this.fetchOrders()
       })
           .catch((error) => {
             this.$notify({
@@ -251,7 +269,7 @@ export default {
   },
 
   async mounted() {
-    await this.fetchAllOrders()
+    await this.fetchOrders()
     await this.fetchCouriers()
   }
 }

@@ -14,15 +14,14 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = Order::where('user_id', Auth::user()->id)->filter($request->query());
-        return OrderResource::collection($orders->orderBy('created_at', 'desc')->paginate(10));
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            $orders = Order::orderBy('created_at', 'desc')->filter($request->query());
+        } else {
+            $orders = Order::where('user_id', Auth::user()->id)->filter($request->query());
+        }
+        return OrderResource::collection($orders->paginate(10));
     }
-
-    public function allOrders(Request $request)
-    {
-        return OrderResource::collection(Order::orderBy('created_at', 'desc')->paginate(10));
-    }
-
 
     public function store(Request $request)
     {
@@ -33,7 +32,7 @@ class OrderController extends Controller
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
-            "cod_price" => "required_with:cod",
+            "cod_price" => "required_if:cod,true",
             "payment_type" => "required|in:cash,card",
             "price" => "required",
             "comment" => "nullable",
@@ -82,7 +81,7 @@ class OrderController extends Controller
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
-            "cod_price" => "required_with:cod",
+            "cod_price" => "required_if:cod,true",
             "payment_type" => "required|in:cash,card",
             "price" => "required",
             "comment" => "nullable",
@@ -159,5 +158,18 @@ class OrderController extends Controller
         ]);
 
         return new OrderResource($order);
+    }
+
+    public function ordersPay(Request $request)
+    {
+        $request->validate([
+            'orders' => 'required'
+        ]);
+
+        Order::whereIn('id', $request->input('orders'))->update([
+            'payment' => 'payed'
+        ]);
+
+        return response()->json(['success']);
     }
 }

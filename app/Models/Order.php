@@ -38,7 +38,6 @@ class Order extends Model
 
     public function scopeFilter($query, $request_data)
     {
-
         if (!$request_data) {
             return $query;
         }

@@ -92,9 +92,6 @@ export default {
         return authClient.post(`/orders/${id}`, payload);
     },
 
-    fetchAllOrders(params) {
-        return authClient.get("/allOrders", params);
-    },
     removeOrder(id) {
         return authClient.delete(`/orders/${id}`);
     },
@@ -106,6 +103,9 @@ export default {
     },
     setOrderPayment(id, params) {
         return authClient.post(`/setOrderPayment/${id}`, params);
+    },
+    ordersPay(params) {
+        return authClient.post('/ordersPay', params);
     },
 
     // Clients
