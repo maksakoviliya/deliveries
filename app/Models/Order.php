@@ -12,8 +12,8 @@ class Order extends Model
     protected $guarded = ['id', 'created_at'];
 
     protected $casts = [
-        'delivery_from' => 'datetime',
-        'delivery_to' => 'datetime'
+        'delivery_date' => 'date',
+        'delivery_interval' => 'array'
     ];
 
     public function recipient()
@@ -34,5 +34,17 @@ class Order extends Model
     public function act()
     {
         return $this->belongsTo(Act::class);
+    }
+
+    public function scopeFilter($query, $request_data)
+    {
+
+        if (!$request_data) {
+            return $query;
+        }
+        if ($request_data['status']) {
+            $query->whereIn('status', $request_data['status']);
+        }
+        return $query;
     }
 }

@@ -1,5 +1,6 @@
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
+import router from '../../router'
 
 export const namespaced = true;
 
@@ -79,10 +80,11 @@ export const actions = {
             commit("SET_LOADING", false, { root: true });
         }
     },
-    async fetchOrders({commit}, params = {}) {
+    async fetchOrders({commit}) {
+        // console.log('router.currentRoute', )
         commit("SET_LOADING", true, { root: true });
         try {
-            let response = await ApiService.fetchOrders(params);
+            let response = await ApiService.fetchOrders(router.currentRoute.value.query);
             commit("SET_ORDERS", response.data.data);
             return response.data.data;
         } catch (error) {

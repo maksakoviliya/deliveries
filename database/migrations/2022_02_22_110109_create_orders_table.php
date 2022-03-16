@@ -18,8 +18,8 @@ return new class extends Migration
             $table->uuid()->nullable();
             $table->enum('type', ['car', 'foot']);
             $table->unsignedBigInteger('recipient_id')->nullable();
-            $table->dateTime('delivery_from');
-            $table->dateTime('delivery_to');
+            $table->date('delivery_date');
+            $table->json('delivery_interval');
             $table->float('assessed_value');
             $table->float('weight');
             $table->float('price');

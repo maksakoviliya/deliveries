@@ -4,8 +4,10 @@
   >
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <vSelect :name="name"
-             :id="name" :label="labelKey" :clearable="false" :class="selectClass" :model-value="options.find(item => item[valueKey] === value)" :options="options"
-             @option:selected="handleValueChange"/>
+             :multiple="multiple"
+             :id="name" :label="labelKey" :clearable="false" :class="selectClass"
+             :model-value="multiple ? options.filter(item => value.includes(item[valueKey])) : options.find(item => item[valueKey] === value)" :options="options"
+             @option:selected="handleValueChange" @option:deselected="handleValueChange"/>
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
        v-show="errorMessage || meta.valid">
       {{ errorMessage || successMessage }}
@@ -27,12 +29,15 @@ export default {
 
   props: {
     value: {
-      type: [String, Number],
+      type: [String, Number, Array],
       default: "",
     },
     name: {
       type: String,
       required: true,
+    },
+    multiple: {
+      default: false
     },
     label: {
       type: String,
@@ -81,8 +86,9 @@ export default {
     });
 
     const handleValueChange = (val) => {
-      emit('change', val[props.valueKey])
-      handleChange(val[props.valueKey])
+      let result = props.multiple ? val.map(item => item[props.valueKey]) : val[props.valueKey]
+      emit('change', result)
+      handleChange(result)
     }
     return {
       handleValueChange,

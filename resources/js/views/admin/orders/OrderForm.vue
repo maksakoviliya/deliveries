@@ -17,7 +17,7 @@
           <Form
               @submit="onSubmit"
               :validation-schema="schema"
-              v-slot="{ values, setValues }"
+              v-slot="{ values, setFieldValue }"
               :initial-values="order"
               class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-3xl sm:w-full">
             <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
@@ -33,7 +33,7 @@
                                 label="Выберите из ваших получателей или введите вручную"
                                 label-key="name"
                                 value-key="id"
-                                @input="handleSelectRecipient(setValues)"
+                                @input="handleSelectRecipient(setFieldValue)"
                                 :options="recipients"/>
                   <CommonInput name="name"
                                label="ФИО или наименование ИП/ООО"
@@ -52,9 +52,21 @@
                   <CommonSelect label="Статус" name="status" :options="statuses"/>
                   <CustomSelect name="courier_id" label="Курьер" :value="order.courier_id ? order.courier_id : null"
                                 :options="couriers" label-key="name" value-key="id"/>
-                  <CommonDatepicker name="delivery_interval" label="Дата доставки" @change="handleChangeDate"/>
-                  <CommonSelect name="type"
+                  <CommonDatepicker name="delivery_date" @change="handleChangeDate">
+                    <template v-slot:label>
+                      <div class="flex items-center gap-2 mb-1">
+                        <label for="delivery_date" class="block text-sm font-medium">Дата доставки</label>
+                        <button type="button" class="text-xs px-2 py-0.5 rounded-full block"
+                                :class="todayDelivery === 'today' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                                @click="setToday(setFieldValue)">Сегодня
+                        </button>
+                      </div>
+                    </template>
+                  </CommonDatepicker>
+                  <RangeTimeSlider name="delivery_interval" :value="values.delivery_interval" label="Время доставки"/>
+                  <CustomSelect name="type"
                                 label="Тип доставки"
+                                :value="values.type"
                                 @change="handleChangeType"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
@@ -117,6 +129,7 @@ import ApiService from "../../../services/ApiService";
 import {omit, pick} from "lodash";
 import OrderStatus from "./OrderStatus";
 import CustomSelect from "../../../components/common/CustomSelect";
+import RangeTimeSlider from "../../../components/common/RangeTimeSlider";
 
 const {DateTime} = require("luxon");
 
@@ -127,7 +140,10 @@ const order = {
   phone: null,
   product_name: null,
   type: 'foot',
-  delivery_interval: null,
+  delivery_date: DateTime.now(),
+  delivery_interval: [
+    9, 18
+  ],
   assessed_value: null,
   cod: false,
   cod_price: null,
@@ -157,6 +173,7 @@ export default {
     CommonInput,
     CommonDatepicker,
     OrderStatus,
+    RangeTimeSlider,
   },
 
   data() {
@@ -166,7 +183,8 @@ export default {
       address: yup.string().required(),
       product_name: yup.string().required(),
       assessed_value: yup.string().required(),
-      delivery_interval: yup.array(),
+      delivery_date: yup.string().required(),
+      delivery_interval: yup.array().max(2).required(),
       weight: yup.number().required(),
       quantity: yup.number().required().min(0),
       cod: yup.boolean(),
@@ -228,7 +246,7 @@ export default {
           label: 'Не доставлен'
         }
       ],
-      todayDelivery: false,
+      todayDelivery: 'today',
       deliveryType: 'foot',
     }
   },
@@ -264,7 +282,7 @@ export default {
       return this.deliveryType
     },
     handleChangeDate(val) {
-      let isToday = DateTime.fromJSDate(val[0]) <= DateTime.now() && DateTime.now() < DateTime.fromJSDate(val[1])
+      let isToday = DateTime.fromJSDate(val) >= DateTime.now().startOf('day') && DateTime.now().endOf('day') > DateTime.fromJSDate(val)
       this.todayDelivery = isToday ? 'today' : false
       return this.todayDelivery
     },
@@ -290,7 +308,7 @@ export default {
             })
           });
     },
-    handleSelectRecipient(setValues) {
+    handleSelectRecipient(setFieldValue) {
       const {
         id,
         name,
@@ -299,20 +317,11 @@ export default {
         product_name
       } = this.recipients.find(item => parseInt(item.id) === parseInt(event.target.value))
 
-      setValues({
-        id,
-        name,
-        phone,
-        address,
-        product_name,
-      })
-      // this.$refs.myForm.setValues({
-      //   recipient_id: id,
-      //   name: name,
-      //   phone: phone,
-      //   address: address,
-      //   product_name: product_name,
-      // })
+      setFieldValue('recipient_id', id)
+      setFieldValue('name', name)
+      setFieldValue('phone', phone)
+      setFieldValue('address', address)
+      setFieldValue('product_name', product_name)
     },
     async setOrder(id) {
       this.fetchOrder(id)
@@ -340,6 +349,10 @@ export default {
     parseDate(date) {
       return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
     },
+    setToday(setFieldValue) {
+      setFieldValue('delivery_date', DateTime.now())
+      this.handleChangeDate(DateTime.now().toJSDate())
+    }
   },
 
   async mounted() {

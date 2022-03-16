@@ -8,7 +8,7 @@
       <h1 class="text-gray-900 font-semibold text-2xl">Список заказов</h1>
     </div>
     <div
-        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-3 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
+        class="shadow border-b border-gray-200 sm:rounded-lg px-3 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
       <OrdersSearch v-if="orders.length"/>
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
                     v-if="user.tarif"
@@ -32,7 +32,7 @@
               ID
             </th>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Время доставки
+              Интервал доставки
             </th>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Наложенный платеж
@@ -74,7 +74,8 @@
             </td>
             <td class="px-3 py-2">
               <div class="text-xs text-gray-500">
-                {{ `${parseDate(order.delivery_interval[0])} - ${parseDate(order.delivery_interval[1])}` }}
+                {{ parseDate(order.delivery_date) }}
+                <span class="text-gray-400 inline-block transform -translate-y-0.5">{{ parseTime(order.delivery_interval)}}</span>
               </div>
             </td>
             <td class="px-3 py-2">
@@ -196,7 +197,10 @@ export default {
       downloadAct: "act/downloadAct"
     }),
     parseDate(date) {
-      return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
+      return DateTime.fromISO(date).toFormat('dd.MM.yy')
+    },
+    parseTime(interval) {
+      return `${interval[0]}:00 - ${interval[1]}:00`
     },
     getTextOfStatus(status) {
       switch (status) {

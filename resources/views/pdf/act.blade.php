@@ -52,7 +52,7 @@
 <h2 class="text-center">Акт <br> приема-передачи товаров № {{ $act->id }}</h2>
 <p class="text-right">от {{ $date }} г.</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<span
-            class="uppercase">{{ $act->client->company->type }}</span>&nbsp;{{ $act->client->company->title }}, именуемый в
+            class="uppercase">{{ $act->client->company->type == 'ip' ? 'ИП' : 'ООО' }}</span>&nbsp;{{ $act->client->company->title }}, именуемый в
     дальнейшем "Принципиал", в лице {{ $act->client->name }}, с одной
     стороны и ИП Войцехович С.С., именуемый в дальнейшем "Агент", в лице Вайцеховича Сергея Сергеевича, с другой
     стороны, совместно именуемые "Стороны", составили настоящий Акт о нижеследующем:</p>
@@ -74,21 +74,21 @@
         <tr>
             <td>{{ $i + 1 }}</td>
             <td>{{ $order->recipient->product_name }}</td>
-            <td>{{ $order->quantity }}</td>
-            <td>{{ $order->weight }}</td>
-            <td>{{ $order->price }}</td>
+            <td>{{ $order->quantity }} шт.</td>
+            <td>{{ $order->weight }} кг.</td>
+            <td>{{ $order->price }} ₽</td>
             <td>{{ $order->comment }}</td>
-            <td>{{ $order->cod ? $order->cod_price : '-' }}</td>
+            <td>{{ $order->cod ? $order->cod_price . '₽' : '-' }} </td>
         </tr>
     @endforeach
     <tr>
         <td></td>
         <td>Итого:</td>
-        <td>{{ $act->totalQuantity }}</td>
-        <td>{{ $act->totalWeight }}</td>
-        <td>{{ $act->totalPrice }}</td>
+        <td>{{ $act->totalQuantity }} шт.</td>
+        <td>{{ $act->totalWeight }} кг.</td>
+        <td>{{ $act->totalPrice }} ₽</td>
         <td></td>
-        <td>{{ $act->totalCodPrice }}</td>
+        <td>{{ $act->totalCodPrice }} ₽</td>
     </tr>
 </table>
 <p>2. Товар передан в соответствующем количестве и ассортименте.</p>

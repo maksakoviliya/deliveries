@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $orders = Order::where('user_id', Auth::user()->id);
+        $orders = Order::where('user_id', Auth::user()->id)->filter($request->query());
         return OrderResource::collection($orders->orderBy('created_at', 'desc')->paginate(10));
     }
 
@@ -29,6 +29,7 @@ class OrderController extends Controller
         $request->validate([
             "recipient_id" => "nullable",
             "type" => "required|in:foot,car",
+            "delivery_date" => "required",
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
@@ -52,8 +53,8 @@ class OrderController extends Controller
         $order = Order::create([
             'type' => $request->input('type'),
             'recipient_id' => $recipient->id,
-            'delivery_from' => Carbon::parse($request->input('delivery_interval')[0]),
-            'delivery_to' => Carbon::parse($request->input('delivery_interval')[1]),
+            'delivery_date' => $request->input('delivery_date'),
+            'delivery_interval' => $request->input('delivery_interval'),
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
             'price' => $request->input('price'),
@@ -77,6 +78,7 @@ class OrderController extends Controller
         $request->validate([
             "recipient_id" => "nullable",
             "type" => "required|in:foot,car",
+            "delivery_date" => "required",
             "delivery_interval" => "required|array",
             "assessed_value" => "nullable",
             "cod" => "nullable|boolean",
@@ -108,8 +110,8 @@ class OrderController extends Controller
         $order->update([
             'type' => $request->input('type'),
             'recipient_id' => $recipient->id,
-            'delivery_from' => Carbon::parse($request->input('delivery_interval')[0]),
-            'delivery_to' => Carbon::parse($request->input('delivery_interval')[1]),
+            'delivery_date' => $request->input('delivery_date'),
+            'delivery_interval' => $request->input('delivery_interval'),
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
             'price' => $request->input('price'),

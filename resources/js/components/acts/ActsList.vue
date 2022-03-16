@@ -205,9 +205,17 @@ export default {
         document.body.appendChild(fileLink);
 
         fileLink.click();
-      }).finally(() => {
-        this.loading = false
       })
+          .catch(e => {
+            this.$notify({
+              type: 'error',
+              title: e?.response?.status ? `Код ошибки ${e.response.status}` : null,
+              text: 'Произошла ошибка',
+            })
+          })
+          .finally(() => {
+            this.loading = false
+          })
     }
   },
 

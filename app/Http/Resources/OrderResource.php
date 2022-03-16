@@ -36,10 +36,8 @@ class OrderResource extends JsonResource
 
         return array_merge([
             'id' => $this->id,
-            'delivery_interval' => [
-                $this->delivery_from,
-                $this->delivery_to,
-            ],
+            'delivery_date' => $this->delivery_date,
+            'delivery_interval' => $this->delivery_interval,
             'cod' => (bool) $this->cod,
             'cod_price' => $this->cod_price,
             'payment_type' => $this->payment_type,

@@ -2,16 +2,17 @@
   <div
       class="w-full relative datepicker"
   >
-    <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
-    <!--    <Datepicker :id="name" :name="name" v-model="date" :class="{ 'border-red-400': !!errorMessage }"></Datepicker>-->
+    <slot name="label">
+      <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
+    </slot>
 
     <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" @update:modelValue="handleValueChange"
-                format="dd.MM.yyyy HH:mm"
-                :range="range" teleport=".datepicker" position="left" :auto-position="false"
+                :format="format" :auto-apply="autoApply" locale="ru" :month-change-on-scroll="false"
+                :range="range" teleport=".datepicker" position="left" :auto-position="false" :enable-time-picker="enableTimePicker"
                 :start-time="[{ hours: '9', minutes: '00' }, { hours: '18', minutes: '00' }]"
                 :alt-position="((el) => {
       return {
-        top: '100%', left: 0, transform: 0
+        top: '120%', left: 0, transform: 0
       }
     })"></Datepicker>
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
@@ -34,9 +35,21 @@ export default {
       type: String,
       default: "text",
     },
-    range: {
+    autoApply: {
       type: Boolean,
       default: true
+    },
+    enableTimePicker: {
+      type: Boolean,
+      default: false
+    },
+    range: {
+      type: Boolean,
+      default: false
+    },
+    format: {
+      type: String,
+      default: "dd.MM.yyyy"
     },
     value: {
       type: String,
