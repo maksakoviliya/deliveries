@@ -20,10 +20,44 @@ class Act extends Model
         return $this->hasMany(Order::class);
     }
 
-//    public function name(): Attribute
-//    {
-//        return new Attribute(
-//            get: fn ($value) => strtoupper($value),
-//        );
-//    }
+    public function client()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function totalPrice(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                return $this->orders()->sum('price');
+            }
+        );
+    }
+
+    public function totalWeight(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                return $this->orders()->sum('weight');
+            }
+        );
+    }
+
+    public function totalQuantity(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                return $this->orders()->sum('quantity');
+            }
+        );
+    }
+
+    public function totalCodPrice(): Attribute
+    {
+        return new Attribute(
+            get: function() {
+                return $this->orders()->sum('cod_price');
+            }
+        );
+    }
 }

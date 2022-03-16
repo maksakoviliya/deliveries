@@ -10,7 +10,7 @@
     </div>
     <div class="flex flex-col mt-5">
       <div class="mt-5">
-        <div v-if="orders.length" class="shadow overflow-auto border-b border-gray-200 sm:rounded-lg">
+        <div v-if="acts && acts.length" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
             <tr>
@@ -18,77 +18,82 @@
                 ID
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Пользователь
-              </th>
-              <!--                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
-              <!--                  Время доставки-->
-              <!--                </th>-->
-              <!--                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
-              <!--                  Наложенный платеж-->
-              <!--                </th>-->
-              <!--                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
-              <!--                  Тип оплаты-->
-              <!--                </th>-->
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Курьер
+                Контрагент
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Стоимость доставки
+                Дата
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                АПП
+                Сумма
               </th>
               <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Статус
+                Количество
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Вес
+              </th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                Заказы
               </th>
               <th scope="col" class="relative px-6 py-3">
-                <span class="sr-only">Edit</span>
               </th>
             </tr>
             </thead>
             <tbody class="bg-white divide-y divide-gray-200">
-            <tr v-for="order in orders" :key="order.id">
+            <tr v-for="act in acts" :key="act.id">
               <td class="px-6 py-2 whitespace-nowrap">
-                {{ order.id }}
+                <span class="text-gray-400">#</span>{{ act.id }}
               </td>
-              <td class="px-6 py-2">
+              <td class="px-4 py-2">
                 <div class="text-xs text-gray-500">
                   <div class="text-sm font-medium text-gray-900">
-                    {{ order.client.name }}
+                    {{ act.client.name }}
                   </div>
                   <div class="text-sm text-gray-500">
-                    {{ order.client.phone }}
+                    {{ act.client.phone }}
                   </div>
                 </div>
               </td>
-              <!--                <td class="px-6 py-2">-->
-              <!--                  <div class="text-xs text-gray-500">{{ `${parseDate(order.delivery_interval[0])} - ${parseDate(order.delivery_interval[1])}`  }}</div>-->
-              <!--                </td>-->
-              <!--                <td class="px-6 py-2">-->
-              <!--                  <div class="text-xs text-gray-500">{{ order.cod ? 'Да' : 'Нет'  }}</div>-->
-              <!--                </td>-->
-              <!--                <td class="px-6 py-2">-->
-              <!--                  <div class="text-xs text-gray-500">{{ order.payment_type === 'card' ? 'Карта' : 'Безнал'  }}</div>-->
-              <!--                </td>-->
               <td class="px-6 py-2">
-<!--                <CourierSetter :order="order"/>-->
+                <div class="text-xs text-gray-500">
+                  {{ parseDate(act.created_at, 'dd.MM.yy') }}
+                </div>
               </td>
               <td class="px-6 py-2">
-                <div class="text-xs text-gray-500">{{ order.price ? `${order.price}₽` : '' }}</div>
+                <div class="text-xs text-gray-500" v-if="act.totalPrice">
+                  {{ act.totalPrice }}₽
+                </div>
               </td>
               <td class="px-6 py-2">
-                <div class="text-xs text-gray-500">{{ order.act_id }}</div>
+                <div class="text-xs text-gray-500" v-if="act.totalQuantity">
+                  {{ act.totalQuantity }} шт.
+                </div>
               </td>
-              <td class="px-6 py-2 whitespace-nowrap">
-<!--                <OrderStatus :order="order"/>-->
+              <td class="px-6 py-2">
+                <div class="text-xs text-gray-500" v-if="act.totalWeight">
+                  {{ act.totalWeight }} кг.
+                </div>
+              </td>
+              <td class="px-6 py-2">
+                <div class="text-xs text-gray-500">
+                  {{ act.orders_count }}
+                </div>
               </td>
               <td class="px-6 py-2 whitespace-nowrap text-right text-sm font-medium">
-                <div class="flex gap-2">
-                  <router-link :to="{name: $route.name, params: { id: order.id }, query: $route.query}"
-                               class="text-indigo-600 hover:text-indigo-900">
-                    <PencilAltIcon class="w-4 h-4"/>
-                  </router-link>
-                  <button @click="showModalDeleteForm(order)" class="text-red-600 hover:text-red-900">
+                <div class="flex gap-2 justify-end">
+                  <button @click="handlePrint(act.id)"
+                          v-if="!loading"
+                          class="text-indigo-600 hover:text-indigo-900">
+                    <DownloadIcon class="w-4 h-4"/>
+                  </button>
+                  <svg class="animate-spin h-4 w-4 text-indigo-600" v-else xmlns="http://www.w3.org/2000/svg"
+                       fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                  </svg>
+                  <button @click="showModalDeleteForm(act)"
+                          class="text-red-600 hover:text-red-900">
                     <TrashIcon class="w-4 h-4"/>
                   </button>
                 </div>
@@ -106,7 +111,7 @@
           </table>
         </div>
         <div class="text-3xl my-16 font-semibold text-gray-300 text-center" v-else>
-          Заказов пока нет
+          Актов приема-передачи пока нет
         </div>
       </div>
     </div>
@@ -126,7 +131,7 @@
 <script>
 import {mapActions, mapGetters} from "vuex";
 import {DateTime} from "luxon";
-import {CheckIcon, PencilAltIcon, TrashIcon} from "@heroicons/vue/outline";
+import {CheckIcon, DownloadIcon, PencilAltIcon, TrashIcon} from "@heroicons/vue/outline";
 import DeleteConfirmation from "../../../components/orders/DeleteConfirmation";
 import ApiService from "../../../services/ApiService";
 import {getError} from "../../../utils/helpers";
@@ -145,16 +150,18 @@ export default {
     Form,
     CheckIcon,
     CommonButton,
+    DownloadIcon
   },
 
   computed: {
     ...mapGetters({
-      orders: "order/allOrders"
+      acts: "act/acts"
     })
   },
 
   data() {
     return {
+      loading: false,
       showDeleteConfirmation: false,
       deletingItem: null,
     }
@@ -162,8 +169,8 @@ export default {
 
   methods: {
     ...mapActions({
-      fetchAllOrders: "order/fetchAllOrders",
-      fetchCouriers: "courier/fetchCouriers"
+      fetchActs: "act/fetchActs",
+      downloadAct: "act/downloadAct"
     }),
     parseDate(date) {
       return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
@@ -194,11 +201,25 @@ export default {
             actions.setErrors(errors);
           });
     },
+    async handlePrint(act_id) {
+      this.loading = true
+      this.downloadAct(act_id).then((res) => {
+        let fileURL = window.URL.createObjectURL(new Blob([res.data]));
+        let fileLink = document.createElement('a');
+
+        fileLink.href = fileURL;
+        fileLink.setAttribute('download', res.headers['content-disposition'].split('filename=')[1].split('"')[1]);
+        document.body.appendChild(fileLink);
+
+        fileLink.click();
+      }).finally(() => {
+        this.loading = false
+      })
+    }
   },
 
   async mounted() {
-    await this.fetchAllOrders()
-    await this.fetchCouriers()
+    await this.fetchActs()
   }
 }
 </script>

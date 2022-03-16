@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\ActResource;
+use App\Http\Resources\UserResource;
 use App\Models\Act;
 use App\Models\Order;
 use App\Models\User;
@@ -15,7 +16,13 @@ class ActController extends Controller
 {
     public function index(Request $request)
     {
-        return ActResource::collection(Act::where('user_id', Auth::user()->id)->get());
+        $user = Auth::user();
+        if ($user->isAdmin()) {
+            $acts = Act::all();
+        } else {
+            $acts = Act::where('user_id',$user->id)->get();
+        }
+        return ActResource::collection($acts);
     }
 
     public function store(Request $request)
@@ -49,8 +56,7 @@ class ActController extends Controller
         $data = [
             'title' => 'Акт приема-передачи товаров',
             'date' => Carbon::now()->translatedFormat('\"d\" F Y'),
-            'act' => $act,
-            'client' => Auth::user(),
+            'act' => new ActResource($act),
         ];
 
         $pdf = PDF::loadView('pdf.act', $data);

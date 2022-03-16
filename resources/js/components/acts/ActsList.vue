@@ -32,6 +32,12 @@
                   Сумма
                 </th>
                 <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Количество
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Вес
+                </th>
+                <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Заказы
                 </th>
                 <th scope="col" class="relative px-6 py-3">
@@ -49,8 +55,18 @@
                   </div>
                 </td>
                 <td class="px-6 py-2">
-                  <div class="text-xs text-gray-500">
-                    ss
+                  <div class="text-xs text-gray-500" v-if="act.totalPrice">
+                    {{ act.totalPrice }}₽
+                  </div>
+                </td>
+                <td class="px-6 py-2">
+                  <div class="text-xs text-gray-500" v-if="act.totalQuantity">
+                    {{ act.totalQuantity }} шт.
+                  </div>
+                </td>
+                <td class="px-6 py-2">
+                  <div class="text-xs text-gray-500" v-if="act.totalWeight">
+                    {{ act.totalWeight }} кг.
                   </div>
                 </td>
                 <td class="px-6 py-2">
@@ -161,7 +177,6 @@ export default {
       this.showDeleteConfirmation = false
     },
     handleDelete() {
-      console.log('handel delte')
       ApiService.removeAct(this.deletingItem.id).then(async () => {
         this.$notify({
           type: 'warning',
