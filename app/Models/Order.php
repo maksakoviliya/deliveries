@@ -41,8 +41,11 @@ class Order extends Model
         if (!$request_data) {
             return $query;
         }
-        if ($request_data['status']) {
-            $query->whereIn('status', $request_data['status']);
+        if (isset($request_data['status'])) {
+            $query->whereIn('status', collect($request_data['status']));
+        }
+        if (isset($request_data['cod'])) {
+            $query->where('cod', $request_data['cod'] === 'yes');
         }
         return $query;
     }

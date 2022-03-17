@@ -2,7 +2,7 @@
 <template>
   <div>
     <Navbar />
-    <OrdersList class="max-w-6xl mx-auto px-10 mt-10" />
+    <OrdersList class="max-w-6xl mx-auto px-3 md:px-10 mt-10" />
   </div>
 </template>
 

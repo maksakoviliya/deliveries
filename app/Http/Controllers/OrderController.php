@@ -15,11 +15,11 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        if ($user->isAdmin()) {
-            $orders = Order::orderBy('created_at', 'desc')->filter($request->query());
-        } else {
-            $orders = Order::where('user_id', Auth::user()->id)->filter($request->query());
+        $orders = Order::query();
+        if (!$user->isAdmin()) {
+            $orders = Order::where('user_id', Auth::user()->id);
         }
+        $orders->orderBy('created_at', 'desc')->filter($request->query());
         return OrderResource::collection($orders->paginate(10));
     }
 
@@ -171,5 +171,20 @@ class OrderController extends Controller
         ]);
 
         return response()->json(['success']);
+    }
+
+    public function fetchOrdersAnalytics()
+    {
+        $price = Auth::user()->orders()->sum('price');
+        $payed = Auth::user()->orders()->where('payment', 'payed')->sum('price');
+        $data = [
+            'delivered' => Auth::user()->orders()->where('status', 'delivered')->count(),
+            'undelivered' => Auth::user()->orders()->where('status', 'undelivered')->count(),
+            'price' => $price,
+            'payed' => $payed,
+            'debt' => $price-$payed
+        ];
+
+        return response()->json(['data' => $data]);
     }
 }

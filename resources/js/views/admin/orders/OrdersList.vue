@@ -7,8 +7,8 @@
       <h1 class="text-gray-900 font-semibold text-2xl">Список заказов</h1>
     </div>
     <div
-        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-4 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      Тут будет фильтр
+        class="shadow border-b border-gray-200 sm:rounded-lg px-4 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
+      <OrdersFilter />
     </div>
     <div class="flex flex-col mt-5">
       <div class="mt-5">
@@ -138,7 +138,7 @@
             <tr>
               <th colspan="12" scope="col"
                   class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Тут будет пагинация
+                <Pagination :meta="ordersMeta" @pageChange="fetchOrders" />
               </th>
             </tr>
             </tfoot>
@@ -177,11 +177,14 @@ import OrderStatus from "./OrderStatus";
 import CourierSetter from "./CourierSetter";
 import OrderPayment from "./OrderPayment";
 import OrdersSelectedActions from "../../../components/orders/OrdersSelectedActions";
+import OrdersFilter from "./OrdersFilter";
+import Pagination from "../../../components/common/Pagination";
 
 export default {
   name: "OrdersList",
 
   components: {
+    OrdersFilter,
     PencilAltIcon,
     TrashIcon,
     DeleteConfirmation,
@@ -194,13 +197,15 @@ export default {
     CourierSetter,
     OrderPayment,
     DownloadIcon,
-    OrdersSelectedActions
+    OrdersSelectedActions,
+    Pagination
   },
 
   computed: {
     ...mapGetters({
       orders: "order/orders",
-      selectedOrders: "order/selectedOrders"
+      selectedOrders: "order/selectedOrders",
+      ordersMeta: "order/ordersMeta"
     })
   },
 

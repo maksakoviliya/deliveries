@@ -8,8 +8,8 @@
       <h1 class="text-gray-900 font-semibold text-2xl">Список заказов</h1>
     </div>
     <div
-        class="shadow border-b border-gray-200 sm:rounded-lg px-3 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      <OrdersSearch v-if="orders.length"/>
+        class="shadow border-b border-gray-200 sm:rounded-lg px-3 py-4 bg-white mt-5 flex flex-col md:flex-row gap-4 justify-between items-center">
+      <OrdersSearch />
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
                     v-if="user.tarif"
                     :to="{name: 'home', params: {id: 'create'}, query: $route.query}">
@@ -125,6 +125,10 @@
             </td>
             <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
               <div class="flex gap-2">
+                <router-link :to="{name: $route.name, params: { id: order.id, view: 'view' }, query: $route.query}"
+                             class="text-indigo-600 hover:text-indigo-900">
+                  <EyeIcon class="w-4 h-4"/>
+                </router-link>
                 <router-link :to="{name: $route.name, params: { id: order.id }, query: $route.query}"
                              class="text-indigo-600 hover:text-indigo-900">
                   <DocumentDuplicateIcon class="w-4 h-4"/>
@@ -140,8 +144,8 @@
           <tfoot class="bg-gray-50">
           <tr>
             <th colspan="10" scope="col"
-                class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-              Тут будет пагинация
+                class="px-3 py-3 text-left text-xs font-medium text-gray-500">
+              <Pagination :meta="ordersMeta" @pageChange="fetchOrders" />
             </th>
           </tr>
           </tfoot>
@@ -167,9 +171,9 @@
 </template>
 
 <script>
-import OrdersSearch from "./OrdersSearch";
+import OrdersSearch from "./OrdersFilter";
 import CommonButton from "../common/CommonButton";
-import {PlusIcon, DocumentDuplicateIcon, TrashIcon, DownloadIcon} from "@heroicons/vue/outline";
+import {PlusIcon, DocumentDuplicateIcon, TrashIcon, DownloadIcon, EyeIcon} from "@heroicons/vue/outline";
 import OrderForm from "./OrderForm";
 import {mapActions, mapGetters, mapMutations} from "vuex";
 import DeleteConfirmation from "./DeleteConfirmation";
@@ -177,11 +181,13 @@ import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import OrdersSelectedActions from "./OrdersSelectedActions";
 import OrderAnalytics from "./OrderAnalytics";
+import Pagination from "../common/Pagination";
 
 const {DateTime} = require("luxon");
 
 export default {
   components: {
+    Pagination,
     OrdersSearch,
     CommonButton,
     PlusIcon,
@@ -191,7 +197,8 @@ export default {
     DeleteConfirmation,
     OrdersSelectedActions,
     DownloadIcon,
-    OrderAnalytics
+    OrderAnalytics,
+    EyeIcon,
   },
 
   methods: {
@@ -291,6 +298,7 @@ export default {
   computed: {
     ...mapGetters({
       orders: "order/orders",
+      ordersMeta: "order/ordersMeta",
       user: "auth/authUser",
       selectedOrders: "order/selectedOrders"
     }),

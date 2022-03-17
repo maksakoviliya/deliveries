@@ -28,62 +28,77 @@
                   <CommonSelect name="recipient_id"
                                 key="id"
                                 label="Выберите из ваших получателей или введите вручную"
+                                :disabled="viewMode"
                                 label-key="name"
                                 value-key="id"
                                 @input="handleSelectRecipient(setFieldValue)"
                                 :options="recipients"/>
                   <CommonInput name="name"
                                label="ФИО или наименование ИП/ООО"
+                               :disabled="viewMode"
                                placeholder="ФИО или наименование ИП/ООО"/>
                   <CommonInput name="phone"
                                label="Телефон"
+                               :disabled="viewMode"
                                placeholder="Телефон"/>
                   <CommonInput name="address"
                                label="Адрес доставки"
+                               :disabled="viewMode"
                                placeholder="Адрес доставки"/>
                   <CommonInput name="product_name"
                                label="Наименование товара"
+                               :disabled="viewMode"
                                placeholder="Наименование товара"/>
                 </div>
                 <div class="flex flex-col gap-2">
-                  <CommonDatepicker name="delivery_date" @change="handleChangeDate">
+                  <CommonDatepicker name="delivery_date" :disabled="viewMode"
+                                    @change="handleChangeDate">
                     <template v-slot:label>
                       <div class="flex items-center gap-2 mb-1">
                         <label for="delivery_date" class="block text-sm font-medium">Дата доставки</label>
-                        <button type="button" class="text-xs px-2 py-0.5 rounded-full block"
+                        <button type="button" class="text-xs px-2 py-0.5 rounded-full block" v-if="!viewMode"
                                 :class="todayDelivery === 'today' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
                                 @click="setToday(setFieldValue)">Сегодня
                         </button>
                       </div>
                     </template>
                   </CommonDatepicker>
-                  <RangeTimeSlider name="delivery_interval" label="Время доставки"/>
+                  <RangeTimeSlider name="delivery_interval" :disabled="viewMode"
+                                   :value="values.delivery_interval" label="Время доставки"/>
                   <CustomSelect name="type"
                                 label="Тип доставки"
+                                :disabled="viewMode"
                                 :value="values.type"
                                 @change="handleChangeType"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
                                label="Оценочная стоимость"
+                               :disabled="viewMode"
                                placeholder="Оценочная стоимость"/>
                   <CommonCheckbox name="cod"
+                                  :disabled="viewMode"
                                   label="Наложенный платеж"/>
                   <CommonInput name="cod_price"
                                v-show="values.cod"
                                label="Сумма для оплаты"
+                               :disabled="viewMode"
                                placeholder="Сумма для оплаты"/>
                   <CommonSelect name="payment_type"
                                 label="Тип оплаты"
+                                :disabled="viewMode"
                                 :options="payment_types"/>
                   <CommonInput name="quantity"
                                type="number"
                                label="Количество (шт)"
+                               :disabled="viewMode"
                                placeholder="Количество единиц товара"/>
                   <CommonInput name="weight"
                                label="Общий вес (кг)"
+                               :disabled="viewMode"
                                placeholder="Общий вес"/>
                   <CommonInput name="comment"
                                label="Комментарий"
+                               :disabled="viewMode"
                                placeholder="Комментарий"/>
 
                   <input name="price" class="hidden" v-model="cost">
@@ -92,7 +107,7 @@
             </div>
             <div
                 class="bg-gray-50 border-t border-gray-200 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse items-center gap-2">
-              <CommonButton type="submit" color="success">
+              <CommonButton type="submit" color="success" v-if="!$route.params.view">
                 Оформить заказ
               </CommonButton>
               <CommonButton type="button" color="outline-gray" @click="handleClose">
@@ -229,6 +244,9 @@ export default {
     },
     cost() {
       return this.user.tarif[this.deliveryType + (this.todayDelivery ? `_${this.todayDelivery}` : '')]
+    },
+    viewMode() {
+      return this.$route.params.view === 'view'
     }
   },
 
@@ -256,8 +274,8 @@ export default {
               type: 'success',
               title: 'Заказ создан'
             })
+            await this.handleClose()
             await this.fetchOrders()
-            this.handleClose()
             this.$emit('close')
           })
           .catch((error) => {

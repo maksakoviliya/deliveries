@@ -32,7 +32,7 @@ export default {
       default: "text",
     },
     value: {
-      type: String,
+      type: [String, Number],
       default: "",
     },
     disabled: {
@@ -59,6 +59,13 @@ export default {
       required: false
     }
   },
+
+  watch: {
+    value(val) {
+      this.inputValue = this.value
+    }
+  },
+
   setup(props) {
     // we don't provide any rules here because we are using form-level validation
     // https://vee-validate.logaretm.com/v4/guide/validation#form-level-validation

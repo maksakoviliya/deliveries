@@ -5,7 +5,9 @@
 </template>
 
 <script>
+import {mapActions} from "vuex";
+
 export default {
-  name: "Analytics"
+  name: "Analytics",
 }
 </script>

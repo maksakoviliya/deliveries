@@ -5,7 +5,7 @@
 
     <Field v-slot="{ field }"  :name="name" type="checkbox" :value="true">
       <label :for="name" class="block text-sm font-medium" v-if="label">
-        <input type="checkbox" :id="name" :name="name" v-bind="field" :value="true" />
+        <input type="checkbox" :id="name" :name="name" :disabled="disabled" v-bind="field" :value="true" />
         {{ label }}
       </label>
     </Field>
@@ -29,6 +29,10 @@ export default {
     label: {
       type: String,
       required: false,
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
   },
 

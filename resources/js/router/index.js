@@ -28,7 +28,7 @@ const routes = [
     redirect: { name: 'home' }
   },
   {
-    path: "/orders/:id?",
+    path: "/orders/:id?/:view?",
     name: "home",
     meta: { middleware: [auth, notAdmin] },
     component: () => import(/* webpackChunkName: "home" */ "../views/Home"),

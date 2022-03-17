@@ -5,9 +5,9 @@
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <vSelect :name="name"
              :multiple="multiple"
-             :id="name" :label="labelKey" :clearable="false" :class="selectClass" :placeholder="placeholder"
+             :id="name" :label="labelKey" :clearable="false" :class="selectClass" :placeholder="placeholder" :disabled="disabled"
              :model-value="multiple ? options.filter(item => value.includes(item[valueKey])) : options.find(item => item[valueKey] === value)" :options="options"
-             @option:selected="handleValueChange" @option:deselected="handleValueChange"/>
+             @update:modelValue="handleValueChange"/>
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
        v-show="errorMessage || meta.valid">
       {{ errorMessage || successMessage }}

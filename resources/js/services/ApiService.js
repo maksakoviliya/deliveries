@@ -91,6 +91,9 @@ export default {
         console.log('orderId', id)
         return authClient.post(`/orders/${id}`, payload);
     },
+    fetchOrdersAnalytics() {
+        return authClient.get('/ordersAnalytics');
+    },
 
     removeOrder(id) {
         return authClient.delete(`/orders/${id}`);

@@ -6,7 +6,7 @@
       <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     </slot>
 
-    <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" @update:modelValue="handleValueChange"
+    <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" :disabled="disabled" @update:modelValue="handleValueChange"
                 :format="format" :auto-apply="autoApply" locale="ru" :month-change-on-scroll="false"
                 :range="range" teleport=".datepicker" position="left" :auto-position="false" :enable-time-picker="enableTimePicker"
                 :start-time="[{ hours: '9', minutes: '00' }, { hours: '18', minutes: '00' }]"
@@ -38,6 +38,10 @@ export default {
     autoApply: {
       type: Boolean,
       default: true
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
     enableTimePicker: {
       type: Boolean,

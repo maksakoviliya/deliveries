@@ -7,7 +7,8 @@ export const namespaced = true;
 export const state = {
     orders: [],
     recipients: [],
-    selectedOrders: []
+    selectedOrders: [],
+    ordersMeta: {},
 };
 
 export const getters = {
@@ -20,6 +21,9 @@ export const getters = {
     selectedOrders: (state) => {
         return state.selectedOrders;
     },
+    ordersMeta: (state) => {
+        return state.ordersMeta;
+    },
 }
 
 export const mutations = {
@@ -31,6 +35,9 @@ export const mutations = {
     },
     SET_SELECTED_ORDERS(state, selectedOrders) {
         state.selectedOrders = selectedOrders
+    },
+    SET_ORDERS_META(state, ordersMeta) {
+        state.ordersMeta = ordersMeta
     },
 }
 
@@ -79,6 +86,7 @@ export const actions = {
         try {
             let response = await ApiService.fetchOrders(router.currentRoute.value.query);
             commit("SET_ORDERS", response.data.data);
+            commit("SET_ORDERS_META", response.data.meta);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });
@@ -144,5 +152,18 @@ export const actions = {
             selected.push(order)
         }
         commit('SET_SELECTED_ORDERS', selected)
+    },
+    async fetchOrdersAnalytics({commit}) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            console.log('asd')
+            let response = await ApiService.fetchOrdersAnalytics();
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+            throw error
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
     }
 }

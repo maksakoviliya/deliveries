@@ -40,6 +40,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/orders', [OrderController::class, 'store'])->name('orders.create');
     Route::post('/orders/{order}', [OrderController::class, 'update'])->name('orders.update');
     Route::delete('/orders/{order}', [OrderController::class, 'destroy'])->name('orders.destroy');
+    Route::get('/ordersAnalytics', [OrderController::class, 'fetchOrdersAnalytics'])->name('orders.fetchOrdersAnalytics');
 
     // Acts
     Route::get('/acts', [ActController::class, 'index'])->name('acts.index');

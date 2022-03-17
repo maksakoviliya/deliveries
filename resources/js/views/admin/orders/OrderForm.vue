@@ -91,7 +91,7 @@
                   <CommonInput name="comment"
                                label="Комментарий"
                                placeholder="Комментарий"/>
-                  <input name="price" class="hidden" v-model="cost">
+                  <CommonInput name="price" :value="price" label="Стоимость доставки" />
                 </div>
               </div>
             </div>
@@ -103,9 +103,9 @@
               <CommonButton type="button" color="outline-gray" @click="handleClose">
                 Отменить
               </CommonButton>
-              <div class="mr-auto">
-                <b>Стоимость доставки</b>: {{ cost }}₽
-              </div>
+<!--              <div class="mr-auto">-->
+<!--                <b>Стоимость доставки</b>: {{ price }}₽-->
+<!--              </div>-->
             </div>
           </Form>
         </TransitionChild>
@@ -152,7 +152,8 @@ const order = {
   quantity: null,
   weight: null,
   status: 'processing',
-  courier_id: null
+  courier_id: null,
+  price: null
 }
 
 export default {
@@ -189,6 +190,7 @@ export default {
       quantity: yup.number().required().min(0),
       cod: yup.boolean(),
       status: yup.string().required(),
+      price: yup.string().required(),
       courier_id: yup.number().nullable(true),
       cod_price: yup.number().when('cod', {
         is: (val) => val,
@@ -260,7 +262,7 @@ export default {
     open() {
       return !!this.$route.params.id
     },
-    cost() {
+    price() {
       if (this.order.tarif) {
         return this.order.tarif[this.deliveryType + (this.todayDelivery ? `_${this.todayDelivery}` : '')]
       }
@@ -276,8 +278,8 @@ export default {
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    handleChangeType(event) {
-      this.deliveryType = event.target.value
+    handleChangeType(value) {
+      this.deliveryType = value
       return this.deliveryType
     },
     handleChangeDate(val) {
@@ -286,7 +288,6 @@ export default {
       return this.todayDelivery
     },
     onSubmit(values, actions) {
-      values.price = this.cost
       ApiService.updateOrder(this.$route.params.id, values)
           .then(async (res) => {
             console.log('res', res)
@@ -339,8 +340,12 @@ export default {
             }
           })
           .catch(e => {
+            if (e.response.status === 404) {
+              this.$router.push({name: this.$route.name, query: this.$route.query})
+            }
             this.$notify({
               type: 'error',
+              title: `Ошибка ${e.response.status}`,
               text: 'Возникла ошибка!'
             })
           })

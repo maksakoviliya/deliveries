@@ -4,7 +4,7 @@
   >
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
 
-    <Slider :model-value="value" :min="min" :max="max" :id="name" class="mt-10" :format="format" :merge="2" @change="handleValueChange" />
+    <Slider :model-value="value" :min="min" :max="max" :disabled="disabled" :id="name" class="mt-10" :format="format" :merge="2" @change="handleValueChange" />
 
         <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
            v-show="errorMessage || meta.valid">
@@ -56,6 +56,10 @@ export default {
     successMessage: {
       type: String,
       default: "",
+    },
+    disabled: {
+      type: Boolean,
+      default: false
     },
   },
 
