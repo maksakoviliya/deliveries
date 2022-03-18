@@ -104,7 +104,7 @@
             <tr>
               <th colspan="9" scope="col"
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                Тут будет пагинация
+                <Pagination :meta="actsMeta" @pageChange="fetchActs" />
               </th>
             </tr>
             </tfoot>
@@ -138,6 +138,7 @@ import {getError} from "../../../utils/helpers";
 import CommonSelect from "../../../components/common/CommonSelect";
 import {Form} from "vee-validate";
 import CommonButton from "../../../components/common/CommonButton";
+import Pagination from "../../../components/common/Pagination";
 
 export default {
   name: "ActsList",
@@ -150,12 +151,14 @@ export default {
     Form,
     CheckIcon,
     CommonButton,
-    DownloadIcon
+    DownloadIcon,
+    Pagination
   },
 
   computed: {
     ...mapGetters({
-      acts: "act/acts"
+      acts: "act/acts",
+      actsMeta: "act/actsMeta"
     })
   },
 

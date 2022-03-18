@@ -21,7 +21,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return UserResource::collection(User::where('role_id', User::ROLE_CLIENT)->orderBy('created_at', 'desc')->paginate(20));
+        return UserResource::collection(User::where('role_id', User::ROLE_CLIENT)->orderBy('created_at', 'desc')->get());
+    }
+
+    public function allClients()
+    {
+        return UserResource::collection(User::orderBy('created_at', 'desc')->get());
     }
 
     /**

@@ -175,14 +175,23 @@ class OrderController extends Controller
 
     public function fetchOrdersAnalytics()
     {
-        $price = Auth::user()->orders()->sum('price');
-        $payed = Auth::user()->orders()->where('payment', 'payed')->sum('price');
+        if (!Auth::user()->isAdmin()) {
+            $delivered = Auth::user()->orders()->where('status', 'delivered')->count();
+            $undelivered = Auth::user()->orders()->where('status', 'undelivered')->count();
+            $price = Auth::user()->orders()->sum('price');
+            $payed = Auth::user()->orders()->where('payment', 'payed')->sum('price');
+        } else {
+            $delivered = Order::where('status', 'delivered')->count();
+            $undelivered = Order::where('status', 'undelivered')->count();
+            $price = Order::sum('price');
+            $payed = Order::where('payment', 'payed')->sum('price');
+        }
         $data = [
-            'delivered' => Auth::user()->orders()->where('status', 'delivered')->count(),
-            'undelivered' => Auth::user()->orders()->where('status', 'undelivered')->count(),
-            'price' => $price,
-            'payed' => $payed,
-            'debt' => $price-$payed
+            'delivered' => round($delivered, 2),
+            'undelivered' => round($undelivered, 2),
+            'price' => round($price, 2),
+            'payed' => round($payed, 2),
+            'debt' => round($price-$payed, 2),
         ];
 
         return response()->json(['data' => $data]);

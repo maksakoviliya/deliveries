@@ -115,6 +115,9 @@ export default {
     getClients() {
         return authClient.get("/clients");
     },
+    fetchAllClients() {
+        return authClient.get("/allClients");
+    },
     getClient(id) {
         return authClient.get(`/clients/${id}`);
     },

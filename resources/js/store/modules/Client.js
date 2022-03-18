@@ -42,5 +42,16 @@ export const actions = {
         } finally {
             commit("SET_LOADING", false, { root: true });
         }
+    },
+    async fetchAllClients({commit}) {
+        commit("SET_LOADING", true, { root: true });
+        try {
+            const response = await ApiService.fetchAllClients();
+            return response.data.data;
+        } catch (error) {
+            commit("SET_ERROR", getError(error), { root: true });
+        } finally {
+            commit("SET_LOADING", false, { root: true });
+        }
     }
 }

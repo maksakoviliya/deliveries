@@ -1,6 +1,7 @@
 <template>
-  <div class="flex flex-col items-center justify-center min-h-screen bg-zinc-200">
-    <div class="mx-auto max-w-sm w-full p-10 rounded-lg bg-white shadow-md">
+  <div class="flex flex-col items-center justify-center h-screen max-h-screen overflow-y-auto bg-zinc-200 px-4">
+    <LogoLink />
+    <div class="mx-auto mt-5 max-w-sm w-full p-10 rounded-lg bg-white shadow-md">
       <h1 class="font-bold text-lg">Вход</h1>
       <Form
           @submit="onSubmit"
@@ -35,6 +36,8 @@ import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import {useStore} from "vuex";
 import {useRouter} from "vue-router";
+import LogoLink from "../../components/common/LogoLink";
+import * as yup from "yup";
 
 export default {
   name: "App",
@@ -42,6 +45,7 @@ export default {
   components: {
     CommonInput,
     Form,
+    LogoLink
   },
 
   setup() {
@@ -71,7 +75,7 @@ export default {
     // Using yup to generate a validation schema
     // https://vee-validate.logaretm.com/v4/guide/validation#validation-schemas-with-yup
     const schema = Yup.object().shape({
-      phone: Yup.string().required().phone(),
+      phone: yup.string().required().length(11).matches(/^7\d+$/, 'Не верный формат номера'),
       password: Yup.string().min(6).required(),
     });
 

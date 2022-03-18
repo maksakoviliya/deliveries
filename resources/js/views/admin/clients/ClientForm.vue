@@ -360,9 +360,12 @@ export default {
         type: "text"
       },
     ];
+    yup.addMethod(yup.string, 'integer', function () {
+      return this.matches(/^\d+$/, 'The field should have digits only')
+    })
     const schema = yup.object({
       name: yup.string().required(),
-      phone: yup.string().nullable(true).phone(),
+      phone: yup.string().required().length(11).matches(/^7\d+$/, 'Не верный формат номера'),
       password: yup.string().test(
           'empty-or-6-characters-check',
           'Password must be at least 6 characters',

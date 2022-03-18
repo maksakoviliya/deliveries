@@ -186,7 +186,7 @@ export default {
   data() {
     const schema = yup.object({
       name: yup.string().required(),
-      phone: yup.string().required().phone(),
+      phone: yup.string().required().length(11).matches(/^7\d+$/, 'Не верный формат номера'),
       address: yup.string().required(),
       product_name: yup.string().required(),
       assessed_value: yup.string().required(),

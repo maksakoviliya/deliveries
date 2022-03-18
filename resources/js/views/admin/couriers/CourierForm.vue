@@ -112,7 +112,7 @@ export default {
     ];
     const schema = yup.object({
       name: yup.string().required(),
-      phone: yup.string().nullable(true).phone(),
+      phone: yup.string().required().length(11).matches(/^7\d+$/, 'Не верный формат номера'),
       comment: yup.string().nullable(true),
     });
 

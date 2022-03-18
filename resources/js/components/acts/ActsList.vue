@@ -99,7 +99,7 @@
               <tr>
                 <th colspan="9" scope="col"
                     class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Тут будет пагинация
+                  <Pagination :meta="actsMeta" @pageChange="fetchActs" />
                 </th>
               </tr>
               </tfoot>
@@ -132,6 +132,7 @@ import DeleteConfirmation from "../orders/DeleteConfirmation";
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
 import {DateTime} from "luxon";
+import Pagination from "../common/Pagination";
 
 export default {
   name: "ActsList",
@@ -144,11 +145,13 @@ export default {
     TrashIcon,
     DeleteConfirmation,
     DownloadIcon,
+    Pagination
   },
 
   computed: {
     ...mapGetters({
-      acts: "act/acts"
+      acts: "act/acts",
+      actsMeta: "act/actsMeta"
     })
   },
 

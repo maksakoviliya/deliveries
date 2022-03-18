@@ -72,13 +72,13 @@
                 </td>
               </tr>
               </tbody>
-              <tfoot class="bg-gray-50">
-              <tr>
-                <th colspan="9" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Тут будет пагинация
-                </th>
-              </tr>
-              </tfoot>
+<!--              <tfoot class="bg-gray-50">-->
+<!--              <tr>-->
+<!--                <th colspan="9" scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">-->
+<!--                  Тут будет пагинация-->
+<!--                </th>-->
+<!--              </tr>-->
+<!--              </tfoot>-->
             </table>
           </div>
           <div class="text-3xl my-16 font-semibold text-gray-300 text-center" v-else>

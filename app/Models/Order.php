@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -12,7 +13,7 @@ class Order extends Model
     protected $guarded = ['id', 'created_at'];
 
     protected $casts = [
-        'delivery_date' => 'date',
+        'delivery_date' => 'datetime:d.m.Y',
         'delivery_interval' => 'array'
     ];
 
@@ -41,11 +42,18 @@ class Order extends Model
         if (!$request_data) {
             return $query;
         }
+        if (isset($request_data['client'])) {
+            $query->whereIn('user_id', collect($request_data['client']));
+        }
         if (isset($request_data['status'])) {
             $query->whereIn('status', collect($request_data['status']));
         }
-        if (isset($request_data['cod'])) {
-            $query->where('cod', $request_data['cod'] === 'yes');
+        if (isset($request_data['payment'])) {
+            $query->where('payment', $request_data['payment']);
+        }
+        if (isset($request_data['delivery_date']) && is_array($request_data['delivery_date'])) {
+            $query->whereDate('delivery_date', '>=', Carbon::parse($request_data['delivery_date'][0]))
+                ->whereDate('delivery_date', '<=', Carbon::parse($request_data['delivery_date'][1]));
         }
         return $query;
     }

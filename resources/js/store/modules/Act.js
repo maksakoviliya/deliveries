@@ -5,17 +5,24 @@ export const namespaced = true;
 
 export const state = {
     acts: [],
+    actsMeta: {}
 };
 
 export const getters = {
     acts: (state) => {
         return state.acts;
     },
+    actsMeta: (state) => {
+        return state.actsMeta;
+    },
 }
 
 export const mutations = {
     SET_ACTS(state, acts) {
         state.acts = acts
+    },
+    SET_ACTS_META(state, actsMeta) {
+        state.actsMeta = actsMeta
     },
 }
 
@@ -25,6 +32,7 @@ export const actions = {
         try {
             let response = await ApiService.fetchActs();
             commit("SET_ACTS", response.data.data)
+            commit("SET_ACTS_META", response.data.meta);
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });

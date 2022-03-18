@@ -1,6 +1,6 @@
 <template>
   <div
-      class="w-full relative datepicker"
+      class="relative datepicker"
   >
     <slot name="label">
       <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
@@ -56,7 +56,7 @@ export default {
       default: "dd.MM.yyyy"
     },
     value: {
-      type: String,
+      type: [String, Array],
       default: "",
     },
     name: {
@@ -93,6 +93,7 @@ export default {
     });
 
     const handleValueChange = (val) => {
+      console.log('vval', val)
       emit('change', val)
       handleChange(val)
     }
@@ -107,11 +108,5 @@ export default {
   },
 
   components: {Datepicker},
-
-  data() {
-    return {
-      date: null,
-    };
-  }
 }
 </script>

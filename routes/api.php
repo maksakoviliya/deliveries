@@ -51,6 +51,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::middleware(['admin'])->group(function() {
         // Clients
         Route::get('/clients', [UserController::class, 'index'])->name('clients.index');
+        Route::get('/allClients', [UserController::class, 'allClients'])->name('clients.allClients');
         Route::get('/clients/{user}', [UserController::class, 'show'])->name('clients.show');
         Route::post('/clients', [UserController::class, 'store'])->name('clients.store');
         Route::post('/clients/{user}', [UserController::class, 'update'])->name('clients.update');

@@ -150,6 +150,8 @@
       </div>
     </div>
 
+    <OrderAnalytics class="mt-5" />
+
     <OrderForm :key="$route.params.id"/>
 
     <DeleteConfirmation :open="showDeleteConfirmation" @submit="handleDelete" @close="handleCloseDeleteForm">
@@ -179,6 +181,7 @@ import OrderPayment from "./OrderPayment";
 import OrdersSelectedActions from "../../../components/orders/OrdersSelectedActions";
 import OrdersFilter from "./OrdersFilter";
 import Pagination from "../../../components/common/Pagination";
+import OrderAnalytics from "../../../components/orders/OrderAnalytics";
 
 export default {
   name: "OrdersList",
@@ -198,7 +201,8 @@ export default {
     OrderPayment,
     DownloadIcon,
     OrdersSelectedActions,
-    Pagination
+    Pagination,
+    OrderAnalytics
   },
 
   computed: {

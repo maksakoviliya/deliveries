@@ -56,7 +56,7 @@ export default {
     const schema = yup.object({
       name: yup.string().required(),
       email: yup.string().required().email(),
-      phone: yup.string().nullable(true).phone(),
+      phone: yup.string().required().length(11).matches(/^7\d+$/, 'Не верный формат номера'),
       password: yup.string().test(
           'empty-or-6-characters-check',
           'Password must be at least 6 characters',

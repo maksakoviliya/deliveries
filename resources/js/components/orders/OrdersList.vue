@@ -49,6 +49,9 @@
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               АПП
             </th>
+            <th scope="col" class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Оплата
+            </th>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Статус
             </th>
@@ -121,6 +124,11 @@
             <td class="px-3 py-2 whitespace-nowrap">
                   <span
                       class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
+                      :class="getColorOfPayment(order.payment)"> {{ getTextOfPayment(order.payment) }} </span>
+            </td>
+            <td class="px-3 py-2 whitespace-nowrap">
+                  <span
+                      class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full"
                       :class="getColorOfStatus(order.status)"> {{ getTextOfStatus(order.status) }} </span>
             </td>
             <td class="px-3 py-2 whitespace-nowrap text-right text-sm font-medium">
@@ -143,7 +151,7 @@
           </tbody>
           <tfoot class="bg-gray-50">
           <tr>
-            <th colspan="10" scope="col"
+            <th colspan="11" scope="col"
                 class="px-3 py-3 text-left text-xs font-medium text-gray-500">
               <Pagination :meta="ordersMeta" @pageChange="fetchOrders" />
             </th>
@@ -283,7 +291,21 @@ export default {
         this.loading = false
         this.loadingItem = null
       })
-    }
+    },
+    getTextOfPayment(status) {
+      switch (status) {
+        case 'pending': return 'Ожидает'
+        case 'payed': return 'Оплачен'
+        default: return status
+      }
+    },
+    getColorOfPayment(status) {
+      switch (status) {
+        case 'pending': return 'bg-gray-100 text-gray-800'
+        case 'payed': return 'bg-green-100 text-green-800'
+        default: return status
+      }
+    },
   },
 
   data() {

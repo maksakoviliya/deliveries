@@ -52,7 +52,7 @@
 <h2 class="text-center">Акт <br> приема-передачи товаров № {{ $act->id }}</h2>
 <p class="text-right">от {{ $date }} г.</p>
 <p>&nbsp;&nbsp;&nbsp;&nbsp;<span
-            class="uppercase">{{ $act->client->company->type == 'ip' ? 'ИП' : 'ООО' }}</span>&nbsp;{{ $act->client->company->title }}, именуемый в
+            class="uppercase">{{ $act->client->company->type == 'ip' ? '' : 'ООО' }}</span>&nbsp;{{ $act->client->company->title }}, именуемый в
     дальнейшем "Принципиал", в лице {{ $act->client->name }}, с одной
     стороны и ИП Войцехович С.С., именуемый в дальнейшем "Агент", в лице Вайцеховича Сергея Сергеевича, с другой
     стороны, совместно именуемые "Стороны", составили настоящий Акт о нижеследующем:</p>

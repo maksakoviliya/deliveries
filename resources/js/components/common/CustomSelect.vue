@@ -4,10 +4,10 @@
   >
     <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
     <vSelect :name="name"
-             :multiple="multiple"
-             :id="name" :label="labelKey" :clearable="false" :class="selectClass" :placeholder="placeholder" :disabled="disabled"
-             :model-value="multiple ? options.filter(item => value.includes(item[valueKey])) : options.find(item => item[valueKey] === value)" :options="options"
-             @update:modelValue="handleValueChange"/>
+             :multiple="multiple" :searchable="searchable"
+             :id="name" :label="labelKey" :clearable="clearable" :class="selectClass" :placeholder="placeholder" :disabled="disabled"
+             :model-value="multiple ? options.filter(item => value.includes(item[valueKey].toString())) : options.find(item => item[valueKey] == value)" :options="options"
+             @update:modelValue="handleValueChange" />
     <p class="absolute top-full leading-tight w-full overflow-ellipsis text-red-400 text-xs font-medium"
        v-show="errorMessage || meta.valid">
       {{ errorMessage || successMessage }}
@@ -38,6 +38,12 @@ export default {
     },
     multiple: {
       default: false
+    },
+    clearable: {
+      default: false
+    },
+    searchable: {
+      default: true
     },
     label: {
       type: String,
@@ -89,7 +95,10 @@ export default {
     });
 
     const handleValueChange = (val) => {
-      let result = props.multiple ? val.map(item => item[props.valueKey]) : val[props.valueKey]
+      let result = val
+      if (val) {
+        result = props.multiple ? val.map(item => item[props.valueKey]) : val[props.valueKey]
+      }
       emit('change', result)
       handleChange(result)
     }
@@ -103,3 +112,9 @@ export default {
   },
 };
 </script>
+
+<style>
+:root {
+  --vs-search-input-placeholder-color: #cecece;
+}
+</style>
