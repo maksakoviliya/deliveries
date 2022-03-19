@@ -53,7 +53,7 @@ class OrderController extends Controller
         $order = Order::create([
             'type' => $request->input('type'),
             'recipient_id' => $recipient->id,
-            'delivery_date' => $request->input('delivery_date'),
+            'delivery_date' => Carbon::parse($request->input('delivery_date')),
             'delivery_interval' => $request->input('delivery_interval'),
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
