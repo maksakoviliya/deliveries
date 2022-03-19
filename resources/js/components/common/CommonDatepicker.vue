@@ -1,6 +1,6 @@
 <template>
   <div
-      class="relative datepicker"
+      class="relative datepicker-top"
   >
     <slot name="label">
       <label :for="name" class="block text-sm font-medium" v-if="label">{{ label }}</label>
@@ -8,8 +8,7 @@
 
     <Datepicker :id="name" :name="name" :model-value="inputValue" :minDate="minDate" :disabled="disabled" @update:modelValue="handleValueChange"
                 :format="format" :auto-apply="autoApply" locale="ru" :month-change-on-scroll="false"
-                :range="range" teleport=".datepicker" position="left" :auto-position="false" :enable-time-picker="enableTimePicker"
-                :start-time="[{ hours: '9', minutes: '00' }, { hours: '18', minutes: '00' }]"
+                :range="range" teleport=".datepicker-top" position="left" :auto-position="false" :enable-time-picker="enableTimePicker"
                 :alt-position="((el) => {
       return {
         top: '120%', left: 0, transform: 0
