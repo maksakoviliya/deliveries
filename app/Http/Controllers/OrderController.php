@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\CourierAppointed;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Recipient;
@@ -147,6 +148,9 @@ class OrderController extends Controller
         $order->update([
             'courier_id' => $request->input('courier_id')
         ]);
+
+        // TODO: Сделать queueable
+        CourierAppointed::dispatch($order);
 
         return new OrderResource($order);
     }
