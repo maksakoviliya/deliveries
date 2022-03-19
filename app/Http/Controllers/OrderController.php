@@ -17,11 +17,11 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         if (!$user->isAdmin()) {
-            $orders = Order::where('user_id', Auth::user()->id);
+            $orders = Order::where('user_id', Auth::user()->id)->filter($request->query())->paginate(10);
         } else {
-            $orders = Order::orderBy('created_at', 'desc')->filter($request->query());
+            $orders = Order::orderBy('created_at', 'desc')->filter($request->query())->paginate(10);
         }
-        return OrderResource::collection($orders->paginate(10));
+        return OrderResource::collection($orders);
     }
 
     public function store(Request $request)
