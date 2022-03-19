@@ -16,11 +16,11 @@ class OrderController extends Controller
     public function index(Request $request)
     {
         $user = Auth::user();
-        $orders = Order::query();
         if (!$user->isAdmin()) {
             $orders = Order::where('user_id', Auth::user()->id);
+        } else {
+            $orders = Order::orderBy('created_at', 'desc')->filter($request->query());
         }
-        $orders->orderBy('created_at', 'desc')->filter($request->query());
         return OrderResource::collection($orders->paginate(10));
     }
 
