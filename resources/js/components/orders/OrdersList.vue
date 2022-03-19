@@ -331,8 +331,8 @@ export default {
     },
   },
 
-  async mounted() {
-    await this.fetchOrders(this.filter)
+  mounted() {
+    this.fetchOrders(this.filter)
   }
 
 }

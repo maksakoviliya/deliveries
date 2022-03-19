@@ -277,9 +277,9 @@ export default {
     }
   },
 
-  async mounted() {
-    await this.fetchOrders()
-    await this.fetchCouriers()
+  mounted() {
+    this.fetchOrders()
+    this.fetchCouriers()
   }
 }
 </script>
