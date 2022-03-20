@@ -8,7 +8,7 @@
     </div>
     <div
         class="shadow border-b border-gray-200 sm:rounded-lg px-4 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-<!--      <OrdersFilter />-->
+      <OrdersFilter />
     </div>
     <div class="flex flex-col mt-5">
       <div class="mt-5">

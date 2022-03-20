@@ -152,13 +152,13 @@ export default {
   },
 
   async mounted() {
-    // this.clients = await this.fetchAllClients()
-    // this.clients = this.clients.map(item => {
-    //   return {
-    //     label: item.name,
-    //     value: item.id
-    //   }
-    // })
+    this.clients = await this.fetchAllClients()
+    this.clients = this.clients.map(item => {
+      return {
+        label: item.name,
+        value: item.id
+      }
+    })
   }
 }
 </script>
