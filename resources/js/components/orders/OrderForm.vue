@@ -49,15 +49,35 @@
                                label="Наименование товара"
                                :disabled="viewMode"
                                placeholder="Наименование товара"/>
+                  <h4 class="text-sm font-medium text-gray-600 mt-4">Ваш тариф:</h4>
+                  <dl v-if="user.tarif" class="text-gray-500 text-sm">
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>Пешком сеогдня:</dt>
+                      <dd>{{ user.tarif.foot_today }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>Пешком:</dt>
+                      <dd>{{ user.tarif.foot }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>На авто сегодня:</dt>
+                      <dd>{{ user.tarif.car_today }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>На авто:</dt>
+                      <dd>{{ user.tarif.car }}₽</dd>
+                    </div>
+                  </dl>
                 </div>
                 <div class="flex flex-col gap-2">
                   <CommonDatepicker name="delivery_date" :disabled="viewMode"
-                                    @change="handleChangeDate">
+                                    @change="handleChangeDate($event, setFieldValue)">
                     <template v-slot:label>
                       <div class="flex items-center gap-2 mb-1">
                         <label for="delivery_date" class="block text-sm font-medium">Дата доставки</label>
+                        <input type="checkbox" :value="true" class="hidden" v-model="values.today" name="today">
                         <button type="button" class="text-xs px-2 py-0.5 rounded-full block" v-if="!viewMode"
-                                :class="todayDelivery === 'today' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                                :class="values.today ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
                                 @click="setToday(setFieldValue)">Сегодня
                         </button>
                       </div>
@@ -69,7 +89,7 @@
                                 label="Тип доставки"
                                 :disabled="viewMode"
                                 :value="values.type"
-                                @change="handleChangeType"
+                                @change="handleChangeType($event, setFieldValue)"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
                                label="Оценочная стоимость"
@@ -114,7 +134,7 @@
                 Отменить
               </CommonButton>
               <div class="mr-auto">
-                <b>Стоимость доставки</b>: {{ cost }}₽
+                <b> Итоговая стоимость доставки</b>: {{ cost }}₽
               </div>
             </div>
           </Form>
@@ -150,6 +170,7 @@ const order = {
   phone: null,
   product_name: null,
   type: 'foot',
+  today: true,
   delivery_date: DateTime.now(),
   delivery_interval: [
     9, 18
@@ -194,7 +215,7 @@ export default {
       delivery_interval: yup.array().max(2).required(),
       weight: yup.number().required(),
       quantity: yup.number().required().min(0),
-      cod: yup.boolean(),
+      // today: yup.boolean(),
       cod_price: yup.number().when('cod', {
         is: (val) => val,
         then: (schema) => schema.required(),
@@ -259,12 +280,15 @@ export default {
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    handleChangeType(value) {
+    handleChangeType(value, setFieldValue) {
       this.deliveryType = value
+      setFieldValue('price', this.cost)
     },
-    handleChangeDate(val) {
-      let isToday = DateTime.fromJSDate(val) >= DateTime.now().startOf('day') && DateTime.now().endOf('day') > DateTime.fromJSDate(val)
+    handleChangeDate(value, setFieldValue) {
+      let isToday = DateTime.fromJSDate(value) >= DateTime.now().startOf('day') && DateTime.now().endOf('day') > DateTime.fromJSDate(value)
       this.todayDelivery = isToday ? 'today' : false
+      setFieldValue('today', isToday)
+      setFieldValue('price', this.cost)
     },
     onSubmit(values, actions) {
       values.price = this.cost
@@ -315,8 +339,10 @@ export default {
           })
     },
     setToday(setFieldValue) {
+      this.todayDelivery = 'today'
       setFieldValue('delivery_date', DateTime.now())
-      this.handleChangeDate(DateTime.now().toJSDate())
+      setFieldValue('today', true)
+      setFieldValue('price', this.cost)
     }
   },
 

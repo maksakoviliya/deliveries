@@ -75,7 +75,7 @@ export default {
       default: "",
     },
     minDate: {
-      default: new Date()
+      default: new Date(new Date(new Date().setHours(0, 0, 0, 0)).toString().split('GMT')[0] + ' UTC').toISOString()
     }
   },
   setup(props, {emit}) {
@@ -92,7 +92,6 @@ export default {
     });
 
     const handleValueChange = (val) => {
-      console.log('vval', val)
       emit('change', val)
       handleChange(val)
     }

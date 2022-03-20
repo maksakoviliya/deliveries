@@ -3609,6 +3609,10 @@ textarea.form-control.is-invalid {
   margin-top: 4rem;
   margin-bottom: 4rem;
 }
+.my-3 {
+  margin-top: 0.75rem;
+  margin-bottom: 0.75rem;
+}
 .ml-1 {
   margin-left: 0.25rem;
 }

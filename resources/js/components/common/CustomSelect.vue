@@ -99,7 +99,6 @@ export default {
       if (val) {
         result = props.multiple ? val.map(item => item[props.valueKey]) : val[props.valueKey]
       }
-      console.log('result', result)
       emit('change', result)
       handleChange(result)
     }

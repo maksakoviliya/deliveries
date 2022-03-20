@@ -14,7 +14,8 @@ class Order extends Model
 
     protected $casts = [
         'delivery_date' => 'datetime:d.m.Y',
-        'delivery_interval' => 'array'
+        'delivery_interval' => 'array',
+        'today' => 'boolean'
     ];
 
     public function recipient()

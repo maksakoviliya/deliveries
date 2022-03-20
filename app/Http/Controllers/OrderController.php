@@ -18,14 +18,17 @@ class OrderController extends Controller
     {
         $user = $request->user();
         if (!$user->isAdmin()) {
-            $orders = Order::with('courier')->where('user_id', $user->id)->filter($request->query())->paginate(20);
+            $orders = Order::with('courier')
+                ->orderBy('created_at', 'desc')
+                ->where('user_id', $user->id)
+                ->filter($request->query())
+                ->paginate(20);
         } else {
             $orders = Order::with(['courier', 'client', 'client.company', 'client.company.tarif'])
                 ->orderBy('created_at', 'desc')
                 ->filter($request->query())
                 ->paginate(20);
         }
-//        return OrderResource::collection($orders);
         return new OrderCollection($orders);
     }
 
@@ -41,6 +44,7 @@ class OrderController extends Controller
             "cod_price" => "required_if:cod,true",
             "payment_type" => "required|in:cash,card",
             "price" => "required",
+            "today" => "boolean",
             "comment" => "nullable",
             "weight" => "required",
             "quantity" => "required|alpha_num|min:0",
@@ -63,6 +67,7 @@ class OrderController extends Controller
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
             'price' => $request->input('price'),
+            'today' => $request->input('today'),
             'cod_price' => $request->input('cod_price'),
             'cod' => $request->input('cod') ? $request->input('cod') : false,
             'payment_type' => $request->input('payment_type'),
@@ -91,6 +96,7 @@ class OrderController extends Controller
             "payment_type" => "required|in:cash,card",
             "price" => "required",
             "comment" => "nullable",
+            "today" => "boolean",
             "weight" => "nullable",
             "status" => "required|in:processing,work,delivered,undelivered",
             "quantity" => "required|alpha_num|min:0",
@@ -115,7 +121,7 @@ class OrderController extends Controller
         $order->update([
             'type' => $request->input('type'),
             'recipient_id' => $recipient->id,
-            'delivery_date' => $request->input('delivery_date'),
+            'delivery_date' => Carbon::parse($request->input('delivery_date')),
             'delivery_interval' => $request->input('delivery_interval'),
             'assessed_value' => $request->input('assessed_value'),
             'weight' => $request->input('weight'),
@@ -123,6 +129,7 @@ class OrderController extends Controller
             'cod' => $request->input('cod') ? $request->input('cod') : false,
             'cod_price' => $request->input('cod_price'),
             'payment_type' => $request->input('payment_type'),
+            'today' => $request->input('today'),
             'comment' => $request->input('comment'),
             'status' => $request->input('status'),
             'courier_id' => $request->input('courier_id'),

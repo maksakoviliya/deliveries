@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('type', ['car', 'foot']);
             $table->unsignedBigInteger('recipient_id')->nullable();
             $table->date('delivery_date');
+            $table->boolean('today')->default(false);
             $table->json('delivery_interval');
             $table->float('assessed_value');
             $table->float('weight');

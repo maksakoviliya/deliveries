@@ -164,7 +164,7 @@
       </div>
     </div>
 
-    <OrderAnalytics class="mt-5" />
+    <OrderAnalytics v-if="orders.length" class="mt-5" />
 
     <OrderForm :key="$route.params.id"/>
 

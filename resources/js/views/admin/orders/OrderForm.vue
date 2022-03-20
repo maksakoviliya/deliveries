@@ -47,17 +47,38 @@
                   <CommonInput name="product_name"
                                label="Наименование товара"
                                placeholder="Наименование товара"/>
+
+                  <h4 class="text-sm font-medium text-gray-600 mt-4">Тариф:</h4>
+                  <dl v-if="order.tarif" class="text-gray-500 text-sm">
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>Пешком сеогдня:</dt>
+                      <dd>{{ order.tarif.foot_today }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>Пешком:</dt>
+                      <dd>{{ order.tarif.foot }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>На авто сегодня:</dt>
+                      <dd>{{ order.tarif.car_today }}₽</dd>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3">
+                      <dt>На авто:</dt>
+                      <dd>{{ order.tarif.car }}₽</dd>
+                    </div>
+                  </dl>
                 </div>
                 <div class="flex flex-col gap-2">
                   <CommonSelect label="Статус" name="status" :options="statuses"/>
                   <CustomSelect name="courier_id" label="Курьер" :value="order.courier_id ? order.courier_id : null"
                                 :options="couriers" label-key="name" value-key="id"/>
-                  <CommonDatepicker name="delivery_date" @change="handleChangeDate">
+                  <CommonDatepicker name="delivery_date" @change="handleChangeDate($event, setFieldValue)">
                     <template v-slot:label>
                       <div class="flex items-center gap-2 mb-1">
                         <label for="delivery_date" class="block text-sm font-medium">Дата доставки</label>
+                        <input type="checkbox" class="hidden" :value="true" v-model="values.today" name="today">
                         <button type="button" class="text-xs px-2 py-0.5 rounded-full block"
-                                :class="todayDelivery === 'today' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
+                                :class="values.today ? 'bg-primary text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'"
                                 @click="setToday(setFieldValue)">Сегодня
                         </button>
                       </div>
@@ -67,7 +88,7 @@
                   <CustomSelect name="type"
                                 label="Тип доставки"
                                 :value="values.type"
-                                @change="handleChangeType"
+                                @change="handleChangeType($event, setFieldValue)"
                                 :options="types"/>
                   <CommonInput name="assessed_value"
                                label="Оценочная стоимость"
@@ -151,6 +172,7 @@ const order = {
   comment: null,
   quantity: null,
   weight: null,
+  today: false,
   status: 'processing',
   courier_id: null,
   price: null
@@ -189,6 +211,7 @@ export default {
       weight: yup.number().required(),
       quantity: yup.number().required().min(0),
       cod: yup.boolean(),
+      today: yup.string(),
       status: yup.string().required(),
       price: yup.string().required(),
       courier_id: yup.number().nullable(true),
@@ -278,19 +301,19 @@ export default {
     handleClose() {
       this.$router.push({name: this.$route.name, query: this.$route.query, params: {id: null}})
     },
-    handleChangeType(value) {
+    handleChangeType(value, setFieldValue) {
       this.deliveryType = value
-      return this.deliveryType
+      setFieldValue('price', this.cost)
     },
-    handleChangeDate(val) {
-      let isToday = DateTime.fromJSDate(val) >= DateTime.now().startOf('day') && DateTime.now().endOf('day') > DateTime.fromJSDate(val)
+    handleChangeDate(value, setFieldValue) {
+      let isToday = DateTime.fromJSDate(value) >= DateTime.now().startOf('day') && DateTime.now().endOf('day') > DateTime.fromJSDate(value)
       this.todayDelivery = isToday ? 'today' : false
-      return this.todayDelivery
+      setFieldValue('today', isToday)
+      setFieldValue('price', this.cost)
     },
     onSubmit(values, actions) {
       ApiService.updateOrder(this.$route.params.id, values)
           .then(async (res) => {
-            console.log('res', res)
             this.$notify({
               type: 'success',
               title: 'Заказ обновлен'
@@ -330,9 +353,10 @@ export default {
               ...omit(res, ['client']),
               ...pick(res.client, ['tarif']),
               client_id: res.client.id,
-              courier_id: res.courier ? res.courier.id : null
+              courier_id: res.courier ? res.courier.id : null,
             }
-            this.todayDelivery = this.handleChangeDate(this.order.delivery_interval)
+
+            this.todayDelivery = this.order.today
             this.deliveryType = this.order.type
 
             if (this.order.client_id) {
@@ -340,12 +364,12 @@ export default {
             }
           })
           .catch(e => {
-            if (e.response.status === 404) {
+            if (e.response && e.response.status === 404) {
               this.$router.push({name: this.$route.name, query: this.$route.query})
             }
             this.$notify({
               type: 'error',
-              title: `Ошибка ${e.response.status}`,
+              title: `Ошибка ${e.response ? e.response.status : e}`,
               text: 'Возникла ошибка!'
             })
           })
@@ -354,8 +378,10 @@ export default {
       return DateTime.fromISO(date).toFormat('dd.MM.yy HH:mm')
     },
     setToday(setFieldValue) {
+      this.todayDelivery = 'today'
       setFieldValue('delivery_date', DateTime.now())
-      this.handleChangeDate(DateTime.now().toJSDate())
+      setFieldValue('today', true)
+      setFieldValue('price', this.cost)
     }
   },
 
