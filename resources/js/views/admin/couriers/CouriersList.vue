@@ -1,12 +1,11 @@
 <template>
-  <div class="py-8 px-12 w-full h-full">
+  <div class="py-8 px-3 md:px-12 w-full h-full">
 
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список курьеров</h1>
     </div>
     <div
         class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      Тут будет фильтр
       <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"
                     :to="{name: $route.name, params: {id: 'create'}, query: $route.query}">
         <template v-slot:icon>

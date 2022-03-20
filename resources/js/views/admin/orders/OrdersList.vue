@@ -1,5 +1,5 @@
 <template>
-  <div class="py-8 px-12 w-full h-full">
+  <div class="py-8 px-3 md:px-12 w-full h-full">
 
     <OrdersSelectedActions :open="!!selectedOrders.length" :actions="['pay']"/>
 

@@ -1,16 +1,16 @@
 <template>
-  <div class="py-8 px-12 w-full h-full">
+  <div class="py-8 px-3 md:px-12 w-full h-full">
 
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список актов приема-передачи</h1>
     </div>
-    <div
-        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      Тут будет фильтр
-    </div>
+<!--    <div-->
+<!--        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">-->
+<!--      Тут будет фильтр-->
+<!--    </div>-->
     <div class="flex flex-col mt-5">
       <div class="mt-5">
-        <div v-if="acts && acts.length" class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+        <div v-if="acts && acts.length" class="shadow overflow-x-auto border-b border-gray-200 sm:rounded-lg">
           <table class="min-w-full divide-y divide-gray-200">
             <thead class="bg-gray-50">
             <tr>
@@ -104,7 +104,7 @@
             <tr>
               <th colspan="9" scope="col"
                   class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <Pagination :meta="actsMeta" @pageChange="fetchActs" />
+                <Pagination v-if="acts && acts.length && actsMeta" :meta="actsMeta" @pageChange="fetchActs" />
               </th>
             </tr>
             </tfoot>

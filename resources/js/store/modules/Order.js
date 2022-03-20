@@ -82,7 +82,7 @@ export const actions = {
     },
     async fetchOrders({commit}) {
         // console.log('router.currentRoute', )
-        commit("SET_LOADING", true, { root: true });
+        // commit("SET_LOADING", true, { root: true });
         try {
             let response = await ApiService.fetchOrders(router.currentRoute.value.query);
             commit("SET_ORDERS", response.data.data);

@@ -1,5 +1,5 @@
 <template>
-  <div class="w-48 h-screen bg-gray-200 shadow flex flex-col items-center p-5 text-gray-700 flex-shrink-0 fixed left-0 inset-y-0">
+  <div class="w-48 h-screen bg-gray-200 shadow hidden md:flex flex-col items-center p-5 text-gray-700 flex-shrink-0 fixed left-0 inset-y-0">
     <LogoLink/>
     <div class="mt-10 mb-6"></div>
     <router-link :to="link.to"

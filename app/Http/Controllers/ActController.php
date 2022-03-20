@@ -18,9 +18,9 @@ class ActController extends Controller
     {
         $user = Auth::user();
         if ($user->isAdmin()) {
-            $acts = Act::all();
+            $acts = Act::paginate(10);
         } else {
-            $acts = Act::where('user_id',$user->id)->get();
+            $acts = Act::where('user_id',$user->id)->paginate(10);
         }
         return ActResource::collection($acts);
     }

@@ -11,7 +11,7 @@ class CourierController extends Controller
 {
     public function index(Request $request)
     {
-        return CourierResource::collection(Courier::orderByDesc('created_at')->get());
+        return CourierResource::collection(Courier::withCount('orders')->orderByDesc('created_at')->get());
     }
 
     public function show(Courier $courier)

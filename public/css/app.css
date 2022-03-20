@@ -3675,6 +3675,9 @@ textarea.form-control.is-invalid {
 .ml-48 {
   margin-left: 12rem;
 }
+.-ml-3 {
+  margin-left: -0.75rem;
+}
 .block {
   display: block;
 }
@@ -3885,6 +3888,9 @@ textarea.form-control.is-invalid {
 }
 .flex-row {
   flex-direction: row;
+}
+.flex-row-reverse {
+  flex-direction: row-reverse;
 }
 .flex-col {
   flex-direction: column;
@@ -4803,6 +4809,22 @@ textarea.form-control.is-invalid {
     right: 0px;
   }
 
+  .md\:left-48 {
+    left: 12rem;
+  }
+
+  .md\:-m-3 {
+    margin: -0.75rem;
+  }
+
+  .md\:ml-48 {
+    margin-left: 12rem;
+  }
+
+  .md\:mt-0 {
+    margin-top: 0px;
+  }
+
   .md\:flex {
     display: flex;
   }
@@ -4813,6 +4835,10 @@ textarea.form-control.is-invalid {
 
   .md\:hidden {
     display: none;
+  }
+
+  .md\:h-\[80vh\] {
+    height: 80vh;
   }
 
   .md\:w-1\/2 {
@@ -4835,10 +4861,18 @@ textarea.form-control.is-invalid {
     justify-content: flex-start;
   }
 
+  .md\:justify-end {
+    justify-content: flex-end;
+  }
+
   .md\:space-x-10 > :not([hidden]) ~ :not([hidden]) {
     --tw-space-x-reverse: 0;
     margin-right: calc(2.5rem * var(--tw-space-x-reverse));
     margin-left: calc(2.5rem * calc(1 - var(--tw-space-x-reverse)));
+  }
+
+  .md\:overflow-auto {
+    overflow: auto;
   }
 
   .md\:border-t-0 {
@@ -4852,6 +4886,16 @@ textarea.form-control.is-invalid {
   .md\:px-10 {
     padding-left: 2.5rem;
     padding-right: 2.5rem;
+  }
+
+  .md\:px-12 {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .md\:px-14 {
+    padding-left: 3.5rem;
+    padding-right: 3.5rem;
   }
 }
 @media (min-width: 1024px) {

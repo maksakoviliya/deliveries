@@ -16,21 +16,13 @@ class CourierResource extends JsonResource
      */
     public function toArray($request)
     {
-        $comment = [];
-        if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $comment = [
-                'comment' => $this->comment,
-                'orders_count' => count($this->orders)
-            ];
-        }
-
-        return array_merge(
-            [
-                'id' => $this->id,
-                'name' => $this->name,
-                'phone' => $this->phone,
-            ],
-            $comment
-        );
+        $is_admin = $request->user()->role_id == User::ROLE_ADMIN;
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'phone' => $this->phone,
+            'comment' => $this->when($is_admin, $this->comment),
+            'orders_count' => $this->when($is_admin, $this->orders_count)
+        ];
     }
 }

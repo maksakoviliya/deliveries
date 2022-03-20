@@ -126,7 +126,7 @@ export default {
     },
     async handleClientChange(val) {
       console.log('val', val)
-      await this.$router.push({name: this.$route.name, query: omit({...this.$route.query, client: val}, ['page'])})
+      this.$router.push({name: this.$route.name, query: omit({...this.$route.query, client: val}, ['page'])})
       await this.fetchOrders()
     },
     async handleDateChange(val) {
@@ -151,7 +151,7 @@ export default {
     },
   },
 
-  async mounted() {
+  async created() {
     this.clients = await this.fetchAllClients()
     this.clients = this.clients.map(item => {
       return {

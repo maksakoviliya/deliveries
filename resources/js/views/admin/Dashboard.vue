@@ -3,7 +3,7 @@
   <Sidebar />
   <div class="h-screen overflow-auto w-full">
     <Navbar />
-    <div class="ml-48 mt-10">
+    <div class="md:ml-48 mt-10">
       <router-view />
     </div>
   </div>

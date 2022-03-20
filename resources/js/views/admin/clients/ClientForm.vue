@@ -19,16 +19,16 @@
               @submit="onSubmit"
               :validation-schema="schema"
               :initial-values="client"
-              class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full"
+              class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-5xl w-full"
               v-slot="{ values }"
           >
-            <div class="flex items-stretch">
+            <div class="flex flex-col md:flex-row items-stretch">
               <div class="flex-1">
                 <div class="px-4 py-5 sm:px-6">
                   <h3 class="text-lg leading-6 font-medium text-gray-900">Профиль пользователя</h3>
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
-                <dl class="h-[80vh] overflow-auto bg-gray-50 ">
+                <dl class="md:h-[80vh] overflow-auto bg-gray-50 ">
                   <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
                        v-for="(field, i) in userFields"
                        :key="field.key">
@@ -51,7 +51,7 @@
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
                 <div>
-                  <dl class="h-[80vh] overflow-auto bg-gray-50 ">
+                  <dl class="md:h-[80vh] md:overflow-auto bg-gray-50 ">
                     <template v-for="(field, i) in companyFields">
 
                       <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
@@ -83,7 +83,7 @@
                   <h3 class="text-lg leading-6 font-medium text-gray-900">Тариф</h3>
                   <!--      <p class="mt-1 max-w-2xl text-sm text-gray-500">Здесь указывается ваша контактная информация.</p>-->
                 </div>
-                <dl class="h-[80vh] overflow-auto bg-gray-50 ">
+                <dl class="md:h-[80vh] overflow-auto bg-gray-50 ">
                   <div class="px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 items-center"
                        v-for="(field, i) in tarifFields"
                        :key="field.key">

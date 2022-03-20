@@ -23,8 +23,10 @@
 
         </PopoverGroup>
         <div class="hidden md:flex items-center justify-end md:flex-1 lg:w-0 gap-3">
-          <router-link :to="{name: 'dashboard'}" class="flex items-center font-medium hover:text-gray-900 text-gray-500 gap-2" v-if="user && user.isAdmin">
-            <IdentificationIcon class="w-5 h-5" />
+          <router-link :to="{name: 'dashboard'}"
+                       class="flex items-center font-medium hover:text-gray-900 text-gray-500 gap-2"
+                       v-if="user && user.isAdmin">
+            <IdentificationIcon class="w-5 h-5"/>
             Админ панель
           </router-link>
           <Popover class="relative" v-slot="{ open }">
@@ -82,10 +84,12 @@
           </div>
           <div class="py-6 px-5 space-y-6">
             <div class="grid grid-cols-2 gap-y-4 gap-x-8 text-center">
-              <router-link :to="{name: 'home'}" class="-m-3 p-3 flex items-center justify-center gap-3 text-sm font-medium rounded-lg hover:bg-gray-50 text-right"
+              <router-link :to="{name: 'home'}"
+                           class="-m-3 p-3 flex items-center justify-center gap-3 text-sm font-medium rounded-lg hover:bg-gray-50 text-right"
                            active-class="text-gray-900"> Заказы
               </router-link>
-              <router-link :to="{name: 'acts'}" class="-m-3 p-3 flex items-center justify-center gap-3 text-sm font-medium rounded-lg hover:bg-gray-50 text-right"
+              <router-link :to="{name: 'acts'}"
+                           class="-m-3 p-3 flex items-center justify-center gap-3 text-sm font-medium rounded-lg hover:bg-gray-50 text-right"
                            active-class="text-gray-900"> Акты
               </router-link>
             </div>

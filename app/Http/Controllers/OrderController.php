@@ -15,11 +15,14 @@ class OrderController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
         if (!$user->isAdmin()) {
-            $orders = Order::with('courier')->where('user_id', Auth::user()->id)->filter($request->query())->paginate(10);
+            $orders = Order::with('courier')->where('user_id', $user->id)->filter($request->query())->paginate(10);
         } else {
-            $orders = Order::with(['courier', 'client', 'client.company'])->orderBy('created_at', 'desc')->filter($request->query())->paginate(10);
+            $orders = Order::with(['courier', 'client', 'client.company'])
+                ->orderBy('created_at', 'desc')
+                ->filter($request->query())
+                ->paginate(10);
         }
         return OrderResource::collection($orders);
     }

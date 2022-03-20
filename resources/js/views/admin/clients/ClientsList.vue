@@ -1,5 +1,5 @@
 <template>
-  <div class="py-8 px-12 w-full h-full">
+  <div class="py-8 px-3 md:px-12 w-full h-full">
 
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список клиентов</h1>

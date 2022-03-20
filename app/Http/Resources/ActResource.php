@@ -15,20 +15,16 @@ class ActResource extends JsonResource
      */
     public function toArray($request)
     {
-        $client = [];
-        if (Auth::user()->isAdmin()) {
-            $client = [
-                'client' => new UserResource($this->client)
-            ];
-        }
-        return array_merge([
+
+        return [
             'id' => $this->id,
             'totalPrice' => $this->totalPrice,
             'totalQuantity' => $this->totalQuantity,
             'totalWeight' => $this->totalWeight,
             'totalCodPrice' => $this->totalCodPrice,
             'orders_count' => count($this->orders),
-            'created_at' => $this->created_at
-        ], $client);
+            'created_at' => $this->created_at,
+            'client' => $this->when($request->user()->isAdmin(), new UserResource($this->client))
+        ];
     }
 }
