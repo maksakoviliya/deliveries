@@ -17,22 +17,15 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         $recipient = [];
-        if ($this->recipient) {
-            $recipient = [
-                'recipient_id' => $this->recipient->id,
-                'name' => $this->recipient->name,
-                'address' => $this->recipient->address,
-                'phone' => $this->recipient->phone,
-                'product_name' => $this->recipient->product_name,
-            ];
-        }
-
-        $client = [];
-        if (Auth::user()->role_id == User::ROLE_ADMIN) {
-            $client = [
-                'client' => new UserResource($this->client)
-            ];
-        }
+//        if ($this->recipient) {
+//            $recipient = [
+//                'recipient_id' => $this->recipient->id,
+//                'name' => $this->recipient->name,
+//                'address' => $this->recipient->address,
+//                'phone' => $this->recipient->phone,
+//                'product_name' => $this->recipient->product_name,
+//            ];
+//        }
 
         return array_merge([
             'id' => $this->id,
@@ -47,12 +40,13 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'payment' => $this->payment,
             'type' => $this->type,
+            'client' => $this->when($request->user()->isAdmin(), 'new UserResource($this->client)'),
             'weight' => $this->weight,
             'quantity' => $this->quantity,
             'comment' => $this->comment,
             'assessed_value' => $this->assessed_value,
             'created_at' => $this->created_at,
 
-        ], $recipient, $client);
+        ], $recipient);
     }
 }

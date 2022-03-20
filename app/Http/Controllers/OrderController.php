@@ -17,9 +17,9 @@ class OrderController extends Controller
     {
         $user = Auth::user();
         if (!$user->isAdmin()) {
-            $orders = Order::where('user_id', Auth::user()->id)->filter($request->query())->paginate(10);
+            $orders = Order::with('courier')->where('user_id', Auth::user()->id)->filter($request->query())->paginate(10);
         } else {
-            $orders = Order::orderBy('created_at', 'desc')->filter($request->query())->paginate(10);
+            $orders = Order::with(['courier', 'client', 'client.company'])->orderBy('created_at', 'desc')->filter($request->query())->paginate(10);
         }
         return OrderResource::collection($orders);
     }
@@ -195,7 +195,7 @@ class OrderController extends Controller
             'undelivered' => round($undelivered, 2),
             'price' => round($price, 2),
             'payed' => round($payed, 2),
-            'debt' => round($price-$payed, 2),
+            'debt' => round($price - $payed, 2),
         ];
 
         return response()->json(['data' => $data]);
