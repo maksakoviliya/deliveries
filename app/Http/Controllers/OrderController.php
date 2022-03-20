@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Events\CourierAppointed;
+use App\Http\Resources\OrderCollection;
 use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Recipient;
@@ -24,7 +25,8 @@ class OrderController extends Controller
                 ->filter($request->query())
                 ->paginate(10);
         }
-        return OrderResource::collection($orders);
+//        return OrderResource::collection($orders);
+        return new OrderCollection($orders);
     }
 
     public function store(Request $request)

@@ -8,7 +8,7 @@
     </div>
     <div
         class="shadow border-b border-gray-200 sm:rounded-lg px-4 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      <OrdersFilter />
+      <OrdersFilter/>
     </div>
     <div class="flex flex-col mt-5">
       <div class="mt-5">
@@ -70,12 +70,15 @@
                 <span class="text-gray-400">#</span>{{ order.id }}
               </td>
               <td class="px-4 py-2">
-                <div class="text-xs text-gray-500">{{ order.client && order.client.company ? order.client.company.title : '' }}</div>
+                <div class="text-xs text-gray-500">
+                  {{ order.client && order.client.company ? order.client.company.title : '' }}
+                </div>
               </td>
               <td class="px-4 py-2">
                 <div class="text-xs text-gray-500">
                   {{ parseDate(order.delivery_date) }}
-                  <span class="text-gray-400 inline-block transform -translate-y-0.5">{{ parseTime(order.delivery_interval)}}</span>
+                  <span
+                      class="text-gray-400 inline-block transform -translate-y-0.5">{{ parseTime(order.delivery_interval) }}</span>
                 </div>
               </td>
               <td class="px-4 py-2">
@@ -131,7 +134,7 @@
             <tr>
               <th colspan="12" scope="col"
                   class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <Pagination :meta="ordersMeta" />
+                <Pagination :meta="ordersMeta"/>
               </th>
             </tr>
             </tfoot>
@@ -143,7 +146,7 @@
       </div>
     </div>
 
-    <OrderAnalytics class="mt-5" />
+    <OrderAnalytics class="mt-5"/>
 
     <OrderForm :key="$route.params.id"/>
 
@@ -200,7 +203,7 @@ export default {
 
   watch: {
     '$route.query.page': {
-      handler: function() {
+      handler: function () {
         console.log('$route.query.page')
         this.fetchOrders()
       },
@@ -212,7 +215,8 @@ export default {
     ...mapGetters({
       orders: "order/orders",
       selectedOrders: "order/selectedOrders",
-      ordersMeta: "order/ordersMeta"
+      ordersMeta: "order/ordersMeta",
+      ordersAnalytics: "order/ordersAnalytics",
     })
   },
 

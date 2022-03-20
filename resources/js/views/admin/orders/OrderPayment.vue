@@ -3,7 +3,7 @@
     <button
         type="button"
         :ref="`${order.id}_popover`"
-        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getColorOfPayment(order.payment)"> {{ getTextOfPayment(order.payment) }}
+        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="colors[order.payment]"> {{ texts[order.payment] }}
     </button>
 
     <template #content v-if="showForm">
@@ -52,6 +52,14 @@ export default {
 
   data() {
     return {
+      colors: {
+        pending: 'bg-gray-100 text-gray-800',
+        payed: 'bg-green-100 text-green-800',
+      },
+      texts: {
+       pending: 'Ожидает',
+       payed: 'Оплачен',
+      },
       payments: [
         {
           key: 'pending',
@@ -90,20 +98,6 @@ export default {
           text: 'Произошла ошибка!'
         })
       })
-    },
-    getTextOfPayment(status) {
-      switch (status) {
-        case 'pending': return 'Ожидает'
-        case 'payed': return 'Оплачен'
-        default: return status
-      }
-    },
-    getColorOfPayment(status) {
-      switch (status) {
-        case 'pending': return 'bg-gray-100 text-gray-800'
-        case 'payed': return 'bg-green-100 text-green-800'
-        default: return status
-      }
     },
     setInitialPayment(order) {
       return {

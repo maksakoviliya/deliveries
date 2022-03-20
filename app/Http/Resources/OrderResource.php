@@ -27,6 +27,19 @@ class OrderResource extends JsonResource
 //            ];
 //        }
 
+//        if (!Auth::user()->isAdmin()) {
+//            $delivered = Auth::user()->orders()->where('status', 'delivered')->count();
+//            $undelivered = Auth::user()->orders()->where('status', 'undelivered')->count();
+//            $price = Auth::user()->orders()->sum('price');
+//            $payed = Auth::user()->orders()->where('payment', 'payed')->sum('price');
+//        } else {
+//            $delivered = Order::where('status', 'delivered')->count();
+//            $undelivered = Order::where('status', 'undelivered')->count();
+//            $price = Order::sum('price');
+//            $payed = Order::where('payment', 'payed')->sum('price');
+//        }
+        $isAdmin = $request->user()->isAdmin();
+
         return array_merge([
             'id' => $this->id,
             'delivery_date' => $this->delivery_date,
@@ -40,13 +53,12 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'payment' => $this->payment,
             'type' => $this->type,
-            'client' => $this->when($request->user()->isAdmin(), new UserResource($this->client)),
+            'client' => $this->when($isAdmin, new UserResource($this->client)),
             'weight' => $this->weight,
             'quantity' => $this->quantity,
             'comment' => $this->comment,
             'assessed_value' => $this->assessed_value,
             'created_at' => $this->created_at,
-
         ], $recipient);
     }
 }

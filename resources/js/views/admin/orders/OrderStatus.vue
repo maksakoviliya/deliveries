@@ -3,7 +3,7 @@
     <button
         type="button"
         :ref="`${order.id}_popover`"
-        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="getColorOfStatus(order.status)"> {{ getTextOfStatus(order.status) }}
+        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full" :class="colors[order.status]"> {{ texts[order.status] }}
     </button>
 
     <template #content v-if="showForm">
@@ -51,6 +51,18 @@ export default {
 
   data() {
     return {
+      colors: {
+        processing: 'bg-gray-100 text-gray-800',
+        work: 'bg-indigo-100 text-indigo-800',
+        delivered: 'bg-green-100 text-green-800',
+        undelivered: 'bg-red-100 text-red-800',
+      },
+      texts: {
+        processing: 'В обработке',
+        work: 'В работе',
+        delivered: 'Доставлен',
+        undelivered: 'Не доставлен',
+      },
       statuses: [
         {
           key: 'processing',
@@ -99,24 +111,6 @@ export default {
           text: 'Произошла ошибка!'
         })
       })
-    },
-    getTextOfStatus(status) {
-      switch (status) {
-        case 'processing': return 'В обработке'
-        case 'work': return 'В работе'
-        case 'delivered': return 'Доставлен'
-        case 'undelivered': return 'Не доставлен'
-        default: return status
-      }
-    },
-    getColorOfStatus(status) {
-      switch (status) {
-        case 'processing': return 'bg-gray-100 text-gray-800'
-        case 'work': return 'bg-indigo-100 text-indigo-800'
-        case 'delivered': return 'bg-green-100 text-green-800'
-        case 'undelivered': return 'bg-red-100 text-red-800'
-        default: return status
-      }
     },
     setInitialStatus(order) {
       return {
