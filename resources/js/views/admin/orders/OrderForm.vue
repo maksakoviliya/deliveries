@@ -325,7 +325,7 @@ export default {
     },
     async setOrder(id) {
       this.fetchOrder(id)
-          .then(async res => {
+          .then(res => {
             this.order = {
               ...omit(res, ['client']),
               ...pick(res.client, ['tarif']),
@@ -336,8 +336,7 @@ export default {
             this.deliveryType = this.order.type
 
             if (this.order.client_id) {
-              let recipients = await this.fetchRecipientsForUser(this.order.client_id)
-              this.order = {...this.order, ...recipients[0]}
+              this.fetchRecipientsForUser(this.order.client_id)
             }
           })
           .catch(e => {

@@ -17,27 +17,16 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         $recipient = [];
-//        if ($this->recipient) {
-//            $recipient = [
-//                'recipient_id' => $this->recipient->id,
-//                'name' => $this->recipient->name,
-//                'address' => $this->recipient->address,
-//                'phone' => $this->recipient->phone,
-//                'product_name' => $this->recipient->product_name,
-//            ];
-//        }
+        if ($this->recipient) {
+            $recipient = [
+                'recipient_id' => $this->recipient->id,
+                'name' => $this->recipient->name,
+                'address' => $this->recipient->address,
+                'phone' => $this->recipient->phone,
+                'product_name' => $this->recipient->product_name,
+            ];
+        }
 
-//        if (!Auth::user()->isAdmin()) {
-//            $delivered = Auth::user()->orders()->where('status', 'delivered')->count();
-//            $undelivered = Auth::user()->orders()->where('status', 'undelivered')->count();
-//            $price = Auth::user()->orders()->sum('price');
-//            $payed = Auth::user()->orders()->where('payment', 'payed')->sum('price');
-//        } else {
-//            $delivered = Order::where('status', 'delivered')->count();
-//            $undelivered = Order::where('status', 'undelivered')->count();
-//            $price = Order::sum('price');
-//            $payed = Order::where('payment', 'payed')->sum('price');
-//        }
         $isAdmin = $request->user()->isAdmin();
 
         return array_merge([
