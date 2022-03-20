@@ -40,7 +40,7 @@ class OrderResource extends JsonResource
             'status' => $this->status,
             'payment' => $this->payment,
             'type' => $this->type,
-            'client' => $this->when($request->user()->isAdmin(), 'new UserResource($this->client)'),
+            'client' => $this->when($request->user()->isAdmin(), new UserResource($this->client)),
             'weight' => $this->weight,
             'quantity' => $this->quantity,
             'comment' => $this->comment,
