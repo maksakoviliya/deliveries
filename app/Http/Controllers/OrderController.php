@@ -18,12 +18,12 @@ class OrderController extends Controller
     {
         $user = $request->user();
         if (!$user->isAdmin()) {
-            $orders = Order::with('courier')->where('user_id', $user->id)->filter($request->query())->paginate(10);
+            $orders = Order::with('courier')->where('user_id', $user->id)->filter($request->query())->paginate(20);
         } else {
             $orders = Order::with(['courier', 'client', 'client.company', 'client.company.tarif'])
                 ->orderBy('created_at', 'desc')
                 ->filter($request->query())
-                ->paginate(10);
+                ->paginate(20);
         }
 //        return OrderResource::collection($orders);
         return new OrderCollection($orders);
