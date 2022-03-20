@@ -76,7 +76,7 @@
             <td>{{ $order->recipient->product_name }}</td>
             <td>{{ $order->quantity }} шт.</td>
             <td>{{ $order->weight }} кг.</td>
-            <td>{{ $order->price }} ₽</td>
+            <td>{{ $order->assessed_value }} ₽</td>
             <td>{{ $order->comment }}</td>
             <td>{{ $order->cod ? $order->cod_price . '₽' : '-' }} </td>
         </tr>

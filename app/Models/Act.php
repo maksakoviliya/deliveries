@@ -29,7 +29,7 @@ class Act extends Model
     {
         return new Attribute(
             get: function() {
-                return $this->orders()->sum('price');
+                return $this->orders()->sum('assessed_value');
             }
         );
     }
