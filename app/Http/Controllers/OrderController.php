@@ -19,7 +19,7 @@ class OrderController extends Controller
         if (!$user->isAdmin()) {
             $orders = Order::with('courier')->where('user_id', $user->id)->filter($request->query())->paginate(10);
         } else {
-            $orders = Order::with(['courier', 'client', 'client.company'])
+            $orders = Order::with(['courier', 'client', 'client.company', 'client.company.tarif'])
                 ->orderBy('created_at', 'desc')
                 ->filter($request->query())
                 ->paginate(10);

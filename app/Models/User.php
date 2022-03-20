@@ -14,6 +14,8 @@ class User extends Authenticatable
     public const ROLE_CLIENT = 0;
     public const ROLE_ADMIN = 1;
 
+    protected $with = ['orders'];
+
     /**
      * The attributes that are mass assignable.
      *

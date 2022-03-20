@@ -131,7 +131,7 @@
             <tr>
               <th colspan="12" scope="col"
                   class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                <Pagination :meta="ordersMeta" @pageChange="fetchOrders" />
+                <Pagination :meta="ordersMeta" />
               </th>
             </tr>
             </tfoot>
@@ -196,6 +196,16 @@ export default {
     OrdersSelectedActions,
     Pagination,
     OrderAnalytics
+  },
+
+  watch: {
+    '$route.query.page': {
+      handler: function() {
+        console.log('$route.query.page')
+        this.fetchOrders()
+      },
+      deep: true,
+    }
   },
 
   computed: {

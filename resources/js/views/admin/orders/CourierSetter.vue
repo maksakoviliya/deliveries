@@ -24,7 +24,7 @@
 
 <script>
 import Popper from "vue3-popper";
-import 'vue-select/dist/vue-select.css';
+// import 'vue-select/dist/vue-select.css';
 import {mapActions, mapGetters} from "vuex";
 import CommonButton from "../../../components/common/CommonButton";
 import {CheckIcon} from "@heroicons/vue/outline";

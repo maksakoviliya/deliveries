@@ -8,6 +8,7 @@
         v-slot="{ values }"
     >
       <CustomSelect :multiple="true" name="cod" placeholder="Фильтр по контрагенту" class="w-52"
+                    label-key="title" value-key="user_id"
                     :value="$route.query.client" 
                     @change="handleClientChange" :options="clients"/>
       <CustomSelect :multiple="true" name="statuses" :searchable="false" placeholder="Фильтр по оплате" :clearable="true" class="w-52"
@@ -125,8 +126,7 @@ export default {
       await this.fetchOrders()
     },
     async handleClientChange(val) {
-      console.log('val', val)
-      this.$router.push({name: this.$route.name, query: omit({...this.$route.query, client: val}, ['page'])})
+      await this.$router.push({name: this.$route.name, query: omit({...this.$route.query, client: val}, ['page'])})
       await this.fetchOrders()
     },
     async handleDateChange(val) {
@@ -151,13 +151,9 @@ export default {
     },
   },
 
-  async created() {
-    this.clients = await this.fetchAllClients()
-    this.clients = this.clients.map(item => {
-      return {
-        label: item.name,
-        value: item.id
-      }
+  async mounted() {
+    this.fetchAllClients().then(res => {
+      this.clients = res
     })
   }
 }

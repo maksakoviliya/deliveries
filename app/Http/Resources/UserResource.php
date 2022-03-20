@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'isAdmin' => $this->isAdmin(),
             'emailVerified' => $this->email_verified_at,
             'orders_count' => $this->orders->count(),
-            'company' => new CompanyResource($this->company),
+            'company' => $this->when('company', new CompanyResource($this->company)),
             'tarif' => $this->company ? new TarifResource($this->company->tarif) : null
         ];
     }

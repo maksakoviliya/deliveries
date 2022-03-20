@@ -26,7 +26,7 @@ class UserController extends Controller
 
     public function allClients()
     {
-        return UserResource::collection(User::orderBy('created_at', 'desc')->get());
+        return Company::all(['id', 'user_id', 'title']);
     }
 
     /**

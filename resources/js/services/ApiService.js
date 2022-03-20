@@ -76,7 +76,7 @@ export default {
         return authClient.get(`/recipientsForUser/${id}`);
     },
     fetchOrders(params = {}) {
-        console.log('params', params)
+        console.log('fetchOrders', params)
         return authClient.get("/orders", {
             params
         });

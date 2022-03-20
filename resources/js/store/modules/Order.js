@@ -16,6 +16,7 @@ export const getters = {
         return state.recipients;
     },
     orders: (state) => {
+        console.log('getter orders' ,state.orders)
         return state.orders;
     },
     selectedOrders: (state) => {
@@ -28,7 +29,9 @@ export const getters = {
 
 export const mutations = {
     SET_ORDERS(state, orders) {
+        console.log('before SET_ORDERS')
         state.orders = orders
+        console.log('after SET_ORDERS')
     },
     SET_RECIPIENTS(state, recipients) {
         state.recipients = recipients
@@ -81,12 +84,15 @@ export const actions = {
         }
     },
     async fetchOrders({commit}) {
-        // console.log('router.currentRoute', )
-        // commit("SET_LOADING", true, { root: true });
+        console.log('router.currentRoute')
+        commit("SET_LOADING", true, { root: true });
         try {
             let response = await ApiService.fetchOrders(router.currentRoute.value.query);
+            console.log('fetched')
             commit("SET_ORDERS", response.data.data);
+            console.log('SET_ORDERS')
             commit("SET_ORDERS_META", response.data.meta);
+            console.log('SET_ORDERS_META')
             return response.data.data;
         } catch (error) {
             commit("SET_ERROR", getError(error), { root: true });
