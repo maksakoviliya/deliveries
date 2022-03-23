@@ -160,6 +160,7 @@ import {getError} from "../../utils/helpers";
 import CommonCheckbox from "../common/CommonCheckbox";
 import CustomSelect from "../common/CustomSelect";
 import RangeTimeSlider from "../common/RangeTimeSlider";
+import {omit} from "lodash";
 
 const {DateTime} = require("luxon");
 
@@ -264,7 +265,11 @@ export default {
       return !!this.$route.params.id
     },
     cost() {
-      return this.user.tarif[this.deliveryType + (this.todayDelivery ? `_${this.todayDelivery}` : '')]
+      if(this.$route.params.id && this.$route.params.id !== 'create') {
+        return this.order.price
+      } else {
+        return this.user.tarif[this.deliveryType + (this.todayDelivery ? `_${this.todayDelivery}` : '')]
+      }
     },
     viewMode() {
       return this.$route.params.view === 'view'
@@ -329,7 +334,7 @@ export default {
     async setOrder(id) {
       this.fetchOrder(id)
           .then(res => {
-            this.order = {...this.order, ...res}
+            this.order = {...this.order, ...omit(res, this.$route.params.view ? [] : ['delivery_date', 'today'])}
           })
           .catch(e => {
             this.$notify({
