@@ -19,7 +19,7 @@
               <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 <input
                     class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
-                    type="checkbox" @input="handleSelectAll" :value="true" :checked="selectedOrders.length === orders.length" ref="selectAll" :indeterminate="selectedOrders.length < orders.length && selectedOrders.length > 0">
+                    type="checkbox" @input="handleSelectAll" :value="true" :checked="selectedOrders.length === orders.filter(item => item.payment !== 'payed').length" ref="selectAll" :indeterminate="selectedOrders.length < orders.filter(item => item.payment !== 'payed').length && selectedOrders.length > 0">
               </th>
               <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 ID
@@ -306,7 +306,7 @@ export default {
     handleSelectAll() {
       console.log('this.$refs.selectAll.checked', this.$refs.selectAll.checked)
       if(this.$refs.selectAll.checked) {
-        this.setSelectedOrders(this.orders)
+        this.setSelectedOrders(this.orders.filter(item => item.payment !== 'payed'))
       } else {
         this.setSelectedOrders([])
       }
