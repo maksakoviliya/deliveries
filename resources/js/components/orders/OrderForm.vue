@@ -25,13 +25,13 @@
               <div class="grid md:grid-cols-2 gap-4 mt-4 ">
                 <div class="bg-gray-50 rounded-lg px-4 py-5 shadow flex flex-col gap-2">
                   <h4 class="font-medium"> Получатель: </h4>
-                  <CommonSelect name="recipient_id"
+                  <CustomSelect name="recipient_id"
                                 key="id"
                                 label="Выберите из ваших получателей или введите вручную"
                                 :disabled="viewMode"
                                 label-key="name"
                                 value-key="id"
-                                @input="handleSelectRecipient(setFieldValue)"
+                                @change="handleSelectRecipient(setFieldValue)"
                                 :options="recipients"/>
                   <CommonInput name="name"
                                label="ФИО или наименование ИП/ООО"
