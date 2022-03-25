@@ -17,6 +17,9 @@
             <thead class="bg-gray-50">
             <tr>
               <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                <input
+                    class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                    type="checkbox" @input="handleSelectAll" :value="true" :checked="selectedOrders.length === orders.length" ref="selectAll" :indeterminate="selectedOrders.length < orders.length && selectedOrders.length > 0">
               </th>
               <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                 ID
@@ -78,7 +81,9 @@
                 <div class="text-xs text-gray-500">
                   {{ parseDate(order.delivery_date) }}
                   <span
-                      class="text-gray-400 inline-block transform -translate-y-0.5">{{ parseTime(order.delivery_interval) }}</span>
+                      class="text-gray-400 inline-block transform -translate-y-0.5">{{
+                      parseTime(order.delivery_interval)
+                    }}</span>
                 </div>
               </td>
               <td class="px-4 py-2">
@@ -161,7 +166,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import {DateTime} from "luxon";
 import {CheckIcon, DownloadIcon, PencilAltIcon, TrashIcon} from "@heroicons/vue/outline";
 import DeleteConfirmation from "../../../components/orders/DeleteConfirmation";
@@ -217,7 +222,20 @@ export default {
       selectedOrders: "order/selectedOrders",
       ordersMeta: "order/ordersMeta",
       ordersAnalytics: "order/ordersAnalytics",
-    })
+    }),
+    // selectAll: {
+    //   get: function () {
+    //     return this.orders ? this.selectedOrders.length === this.orders.length : false;
+    //   },
+    //   set: function (value) {
+    //     console.log('va', value)
+    //     if (value) {
+    //       this.orders.forEach(function (order) {
+    //         selectOrder(order)
+    //       });
+    //     }
+    //   }
+    // }
   },
 
   data() {
@@ -234,6 +252,9 @@ export default {
       fetchCouriers: "courier/fetchCouriers",
       selectOrder: "order/selectOrder",
       downloadAct: "act/downloadAct"
+    }),
+    ...mapMutations({
+      setSelectedOrders: "order/SET_SELECTED_ORDERS"
     }),
     parseDate(date) {
       return DateTime.fromISO(date).toFormat('dd.MM.yy')
@@ -281,6 +302,14 @@ export default {
       }).finally(() => {
         this.loading = false
       })
+    },
+    handleSelectAll() {
+      console.log('this.$refs.selectAll.checked', this.$refs.selectAll.checked)
+      if(this.$refs.selectAll.checked) {
+        this.setSelectedOrders(this.orders)
+      } else {
+        this.setSelectedOrders([])
+      }
     }
   },
 
