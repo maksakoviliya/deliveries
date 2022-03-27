@@ -304,7 +304,6 @@ export default {
       })
     },
     handleSelectAll() {
-      console.log('this.$refs.selectAll.checked', this.$refs.selectAll.checked)
       if(this.$refs.selectAll.checked) {
         this.setSelectedOrders(this.orders.filter(item => item.payment !== 'payed'))
       } else {

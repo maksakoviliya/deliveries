@@ -27,6 +27,10 @@
           <thead class="bg-gray-50">
           <tr>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              <input
+                  v-if="orders.filter(item => !item.act_id).length"
+                  class="form-check-input appearance-none h-4 w-4 border border-gray-300 rounded-sm bg-white checked:bg-blue-600 checked:border-blue-600 focus:outline-none transition duration-200 mt-1 align-top bg-no-repeat bg-center bg-contain float-left mr-2 cursor-pointer"
+                  type="checkbox" @input="handleSelectAll" :value="true" :checked="selectedOrders.length === orders.filter(item => !item.act_id).length" ref="selectAll" :indeterminate="selectedOrders.length < orders.filter(item => !item.act_id).length && selectedOrders.length > 0">
             </th>
             <th scope="col" class="px-3 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               ID
@@ -215,6 +219,9 @@ export default {
       selectOrder: "order/selectOrder",
       downloadAct: "act/downloadAct"
     }),
+    ...mapMutations({
+      setSelectedOrders: "order/SET_SELECTED_ORDERS"
+    }),
     parseDate(date) {
       return DateTime.fromISO(date).toFormat('dd.MM.yy')
     },
@@ -306,6 +313,14 @@ export default {
         default: return status
       }
     },
+    handleSelectAll() {
+      console.log('this.$refs.selectAll.checked', this.$refs.selectAll.checked)
+      if(this.$refs.selectAll.checked) {
+        this.setSelectedOrders(this.orders.filter(item => !item.act_id))
+      } else {
+        this.setSelectedOrders([])
+      }
+    }
   },
 
   data() {
