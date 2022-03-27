@@ -31,7 +31,7 @@
                                 :disabled="viewMode"
                                 label-key="name"
                                 value-key="id"
-                                @change="handleSelectRecipient(setFieldValue)"
+                                @change="handleSelectRecipient($event, setFieldValue)"
                                 :options="recipients"/>
                   <CommonInput name="name"
                                label="ФИО или наименование ИП/ООО"
@@ -316,14 +316,14 @@ export default {
             })
           });
     },
-    handleSelectRecipient(setFieldValue) {
+    handleSelectRecipient(value, setFieldValue) {
       const {
         id,
         name,
         phone,
         address,
         product_name
-      } = this.recipients.find(item => parseInt(item.id) === parseInt(event.target.value))
+      } = this.recipients.find(item => parseInt(item.id) === parseInt(value))
 
       setFieldValue('recipient_id', id)
       setFieldValue('name', name)
