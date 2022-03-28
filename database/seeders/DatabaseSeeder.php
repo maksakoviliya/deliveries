@@ -19,15 +19,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        User::factory(9)->create();
+//        User::factory(9)->create();
         User::factory(1)->create([
             'name' => 'Admin Admin',
             'phone' => '79999999999',
             'role_id' => 1
         ]);
-        Company::factory(5)->hasTarif()->create();
-        Recipient::factory(6)->create();
-        Order::factory(12)->create();
-        Courier::factory(5)->create();
+//        Company::factory(5)->hasTarif()->create();
+//        Recipient::factory(6)->create();
+//        Order::factory(12)->create();
+//        Courier::factory(5)->create();
     }
 }
