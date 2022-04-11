@@ -183,13 +183,13 @@ export default {
       this.showDeleteConfirmation = false
     },
     handleDelete() {
-      ApiService.removeOrder(this.deletingItem.id).then(async () => {
+      ApiService.removeAct(this.deletingItem.id).then(async () => {
         this.$notify({
           type: 'warning',
-          title: 'Данные заказов обновлены'
+          title: 'Данные актов обновлены'
         })
         this.handleCloseDeleteForm()
-        await this.fetchOrders()
+        await this.fetchActs()
       })
           .catch((error) => {
             this.$notify({
@@ -197,7 +197,6 @@ export default {
               title: 'Возникла ошибка!',
             })
             const errors = getError(error)
-            actions.setErrors(errors);
           });
     },
     async handlePrint(act_id) {
