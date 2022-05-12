@@ -32,8 +32,8 @@ class OrderCreated extends Notification
             // Optional recipient user id.
             ->to(config('services.telegram-bot-api.chat-id'))
             // Markdown supported.
-            ->content("Hello there!\nNew order has been created!")
+            ->content("Поступила новая заявка!")
 
-            ->button('View Order', $url);
+            ->button('Посмотреть', $url);
     }
 }
