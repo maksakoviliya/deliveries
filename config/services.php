@@ -34,6 +34,11 @@ return [
         'login' => env('SMSC_LOGIN'),
         'password' => env('SMSC_PASSWORD'),
         'sender' => env('SMSC_SENDER'),
-    ]
+    ],
+
+    'telegram-bot-api' => [
+        'token' => env('TELEGRAM_BOT_TOKEN', '5304752488:AAFv6nRIaNBM3ERpKh3A8NGxZXC9aC4VaGQ'),
+        'chat-id' => env('TELEGRAM_CHAT_ID', '-760082998')
+    ],
 
 ];

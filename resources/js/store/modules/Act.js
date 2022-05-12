@@ -1,5 +1,6 @@
 import ApiService from "../../services/ApiService";
 import {getError} from "../../utils/helpers";
+import router from "../../router";
 
 export const namespaced = true;
 
@@ -30,7 +31,7 @@ export const actions = {
     async fetchActs({commit}) {
         commit("SET_LOADING", true, { root: true });
         try {
-            let response = await ApiService.fetchActs();
+            let response = await ApiService.fetchActs(router.currentRoute.value.query);
             commit("SET_ACTS", response.data.data)
             commit("SET_ACTS_META", response.data.meta);
             return response.data.data;

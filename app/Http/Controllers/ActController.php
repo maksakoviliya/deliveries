@@ -16,11 +16,11 @@ class ActController extends Controller
 {
     public function index(Request $request)
     {
-        $user = Auth::user();
+        $user = $request->user();
         if ($user->isAdmin()) {
             $acts = Act::whereHas('client')->paginate(10);
         } else {
-            $acts = Act::whereHas('client')->where('user_id',$user->id)->paginate(10);
+            $acts = Act::whereHas('client')->where('user_id', $user->id)->paginate(10);
         }
         return ActResource::collection($acts);
     }

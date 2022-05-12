@@ -8,24 +8,26 @@ use App\Http\Resources\OrderResource;
 use App\Models\Order;
 use App\Models\Recipient;
 use App\Models\User;
+use App\Notifications\OrderCreated;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class OrderController extends Controller
 {
     public function index(Request $request)
     {
         $user = $request->user();
-        if (!$user->isAdmin()) {
-            $orders = Order::with('courier')
+        if ($user->isAdmin()) {
+            $orders = Order::with(['courier', 'client', 'client.company', 'client.company.tarif'])
                 ->orderBy('created_at', 'desc')
-                ->where('user_id', $user->id)
                 ->filter($request->query())
                 ->paginate(20);
         } else {
-            $orders = Order::with(['courier', 'client', 'client.company', 'client.company.tarif'])
+            $orders = Order::with('courier')
                 ->orderBy('created_at', 'desc')
+                ->where('user_id', $user->id)
                 ->filter($request->query())
                 ->paginate(20);
         }
@@ -75,6 +77,9 @@ class OrderController extends Controller
             'comment' => $request->input('comment'),
             'quantity' => $request->input('quantity'),
         ]);
+
+        Notification::send(User::where('role_id', 1)->get(), new OrderCreated($order));
+
         return new OrderResource($order);
     }
 

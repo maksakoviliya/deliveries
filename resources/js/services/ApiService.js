@@ -76,7 +76,6 @@ export default {
         return authClient.get(`/recipientsForUser/${id}`);
     },
     fetchOrders(params = {}) {
-        console.log('fetchOrders', params)
         return authClient.get("/orders", {
             params
         });
@@ -150,7 +149,9 @@ export default {
 
     // Acts
     fetchActs(params = {}) {
-        return authClient.get('/acts', params)
+        return authClient.get('/acts', {
+            params
+        })
     },
     createAct(params) {
         return authClient.post('/acts', params)

@@ -3,18 +3,18 @@
     <div>
       <h1 class="text-gray-900 font-semibold text-2xl">Список актов приема-передачи</h1>
     </div>
-    <div
-        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">
-      <!--      <ActsSearch v-if="acts && acts.length"/>-->
-      <ActsSearch/>
-      <!--      <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"-->
-      <!--                    :to="{name: $route.name, params: {id: 'create'}, query: $route.query}">-->
-      <!--        <template v-slot:icon>-->
-      <!--          <PlusIcon class="-ml-1 mr-2 h-4 w-4"></PlusIcon>-->
-      <!--        </template>-->
-      <!--        Добавить АПП-->
-      <!--      </CommonButton>-->
-    </div>
+<!--    <div-->
+<!--        class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg px-6 py-4 bg-white mt-5 flex gap-4 justify-between items-center">-->
+<!--      &lt;!&ndash;      <ActsSearch v-if="acts && acts.length"/>&ndash;&gt;-->
+<!--      <ActsSearch/>-->
+<!--      &lt;!&ndash;      <CommonButton class="whitespace-nowrap ml-auto" color="success" component="router-link"&ndash;&gt;-->
+<!--      &lt;!&ndash;                    :to="{name: $route.name, params: {id: 'create'}, query: $route.query}">&ndash;&gt;-->
+<!--      &lt;!&ndash;        <template v-slot:icon>&ndash;&gt;-->
+<!--      &lt;!&ndash;          <PlusIcon class="-ml-1 mr-2 h-4 w-4"></PlusIcon>&ndash;&gt;-->
+<!--      &lt;!&ndash;        </template>&ndash;&gt;-->
+<!--      &lt;!&ndash;        Добавить АПП&ndash;&gt;-->
+<!--      &lt;!&ndash;      </CommonButton>&ndash;&gt;-->
+<!--    </div>-->
     <div class="flex flex-col mt-5">
       <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
         <div class="py-2 align-bottom inline-block min-w-full sm:px-6 lg:px-8">
