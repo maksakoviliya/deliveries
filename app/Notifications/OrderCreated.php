@@ -27,8 +27,7 @@ class OrderCreated extends Notification
 
     public function toTelegram($notifiable)
     {
-//        dd(config('services.telegram-bot-api.chat-id'));
-        $url = route('orders.show', $this->order->id);
+        $url = config('app.url') . '/dashboard/orders/' . $this->order->id;
         return TelegramMessage::create()
             // Optional recipient user id.
             ->to(config('services.telegram-bot-api.chat-id'))
