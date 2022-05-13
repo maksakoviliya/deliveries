@@ -1,5 +1,5 @@
 export default function notAdmin({ to, next, store }) {
-    const loginQuery = { path: "/login", query: { redirect: to.fullPath } };
+    const loginQuery = { path: "/login" };
     if (!store.getters["auth/isAdmin"]) {
         store.dispatch("auth/getAuthUser").then(() => {
             if (!store.getters["auth/authUser"]) {
