@@ -62,7 +62,7 @@ class UserController extends Controller
         $company = Company::create([
             'title' => $request->input('title'),
             'type' => $request->input('type'),
-            "inn" => "234",
+            "inn" => $request->input('inn'),
             "ogrn" => $request->input('ogrn'),
             "okpo" => $request->input('okpo'),
             "address" => $request->input('address'),
@@ -133,7 +133,7 @@ class UserController extends Controller
         $company_data = [
             'title' => $request->input('title'),
             'type' => $request->input('type'),
-            "inn" => "234",
+            "inn" => $request->input('inn'),
             "ogrn" => $request->input('ogrn'),
             "okpo" => $request->input('okpo'),
             "address" => $request->input('address'),
